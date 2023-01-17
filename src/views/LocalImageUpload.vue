@@ -75,7 +75,7 @@ export default {
   name: "LocalImageUpload",
   data(){
     return{
-      uploadUrl: 'http://192.227.225.111:8888/somg/web-image-generate/single',
+      uploadUrl: 'http://nobibibi.top:8888/somg/web-image-generate/single',
       fileList:[],
       linkListVisible: false
     }
