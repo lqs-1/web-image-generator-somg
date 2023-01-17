@@ -12,7 +12,7 @@ public class Constant {
     // 批量网络图片生成目录
     public static final String WEB_IMAGE_MULTI_GENERATE_DIR = "somgWebImageMultiGenerate";
     // 响应对象中的图片地址key
-    public static final String WEB_IMAGE_GENERATE_SINGLE_SUCCESS_RESPONSE_NAME = "web-image-url";
+    public static final String WEB_IMAGE_GENERATE_SINGLE_SUCCESS_RESPONSE_NAME = "webImageUrl";
     public static final String WEB_IMAGE_GENERATE_MULTI_SUCCESS_RESPONSE_NAME = "web-image-url-list";
 
 

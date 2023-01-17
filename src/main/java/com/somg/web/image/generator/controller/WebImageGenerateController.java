@@ -68,7 +68,7 @@ public class WebImageGenerateController {
 
 
     /**
-     * 批量图片上传
+     * 批量图片上传 一般用不上
      * @param images
      * @return
      */
