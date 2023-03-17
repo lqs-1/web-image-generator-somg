@@ -13,9 +13,16 @@ public enum REnum {
     FAIL(1, "失败"),
 
     // 业务需求状态码
-    WEB_IMAGE_GENERATE_SUCCESS(10000, "网页图片生成成功"),
-    WEB_IMAGE_GENERATE_FAIL(20000, "网页图片生成失败"),
-    NETWORK_CONNECT_FAIL(20001, "网络连接失败");
+    WEB_FILE_GENERATE_SUCCESS(10000, "网页文件生成成功"),
+    WEB_FILE_GENERATE_FAIL(20000, "网页文件生成失败"),
+
+
+    NETWORK_CONNECT_FAIL(20001, "网络连接失败"),
+
+    WEB_FILE_SINGLE_DELETE_SUCCESS(10003,"网页文件单个文件删除成功"),
+    WEB_FILE_SINGLE_DELETE_FAIL(20003,"网页文件单个文件删除失败"),
+    WEB_FILE_MULTI_DELETE_SUCCESS(10004,"网页文件批量文件删除成功"),
+    WEB_FILE_MULTI_DELETE_FAIL(20004,"网页文件批量文件删除失败");
 
     private Integer statusCode;
 

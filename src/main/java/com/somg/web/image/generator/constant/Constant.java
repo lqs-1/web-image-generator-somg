@@ -8,12 +8,12 @@ package com.somg.web.image.generator.constant;
 public class Constant {
 
     // 单张网络图片生成目录
-    public static final String WEB_IMAGE_SINGLE_GENERATE_DIR = "somgWebImageSingleGenerate";
+    public static final String WEB_FILE_SINGLE_GENERATE_DIR = "somgWebFileSingleGenerate";
     // 批量网络图片生成目录
-    public static final String WEB_IMAGE_MULTI_GENERATE_DIR = "somgWebImageMultiGenerate";
+    public static final String WEB_FILE_MULTI_GENERATE_DIR = "somgWebFileMultiGenerate";
     // 响应对象中的图片地址key
-    public static final String WEB_IMAGE_GENERATE_SINGLE_SUCCESS_RESPONSE_NAME = "webImageUrl";
-    public static final String WEB_IMAGE_GENERATE_MULTI_SUCCESS_RESPONSE_NAME = "web-image-url-list";
+    public static final String WEB_FILE_GENERATE_SINGLE_SUCCESS_RESPONSE_NAME = "web-file-url";
+    public static final String WEB_FILE_GENERATE_MULTI_SUCCESS_RESPONSE_NAME = "web-file-url-list";
 
 
 
