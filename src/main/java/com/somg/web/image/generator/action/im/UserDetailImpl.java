@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2023/3/17 8:14
  * @do 一句话描述此模块的功能
  */
-@Service
+//@Service
 public class UserDetailImpl implements UserDetailsService {
 
 // 登录逻辑

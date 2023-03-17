@@ -1,0 +1,10 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.somg.web.image.generator.mapper.PermissionMapper">
+
+
+    <select id="getPermissionByPermissionName" resultType="com.somg.web.image.generator.pojo.origin.Permission">
+        select * from permission where `permissionName`=#{permissionName}
+    </select>
+</mapper>
