@@ -4,4 +4,25 @@ mybatis-plus:
       id-type: auto
   configuration:
     map-underscore-to-camel-case: false # 数据库下划线自动转驼峰标示关闭
-  mapper-locations: classpath:/com/somg/web/image/generator/mapper/*.xml
+  mapper-locations: classpath:/com/somg/web/file/generator/mapper/*.xml
+
+
+spring:
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password: # 如果未单独配置默认为空即可
+    timeout: 1000
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/storage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource

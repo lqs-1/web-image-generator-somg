@@ -43,3 +43,627 @@
 ![](https://pub-pce.oss-cn-chengdu.aliyuncs.com/somgWebImageSingleGenerate/2023-01-17/d2af691fb8014f78b0f7bfee097ce7fc.png)
 
 > 只要将这个项目下载下来运行好，再把这个后端jar包运行起来，就可以通过vue前端页面来上传本地图片生成网络图片
+
+# SpringBoot+SpringSecurity+JJWT 前后端分离
+
+导入依赖
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+    <version>2.6.8</version>
+</dependency>
+
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt</artifactId>
+    <version>0.9.0</version>
+</dependency>
+```
+
+## SpringSecurity配置
+```java
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+
+    private JwtToken jwtToken;
+
+    private JedisPool jedisPool;
+
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    public SecurityConfigurerAdapter(JwtToken jwtToken, JedisPool jedisPool, UserDetailsService userDetailsService){
+        this.userDetailsService = userDetailsService;
+        this.jwtToken = jwtToken;
+        this.jedisPool = jedisPool;
+    }
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        http.csrf().disable(); // 关闭csrf防护
+
+        http.exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint()); // 没有权限时候的处理方案(匿名用户，没有登录)
+
+        http.authorizeRequests().anyRequest().authenticated(); // 所有接口都需要做权限认证
+
+        // 在这里就开始准备redis，token工具类
+        http.logout().logoutUrl("/user/logout").addLogoutHandler(new LogoutSuccessHandler(jwtToken, jedisPool)).deleteCookies(); // 登出逻辑和处理器以及如果需要删除cookie
+
+        // 登录过滤器
+        http.addFilter(new TokenLoginFilter(authenticationManager(), jwtToken, jedisPool));
+
+        // 处理权限的过滤器
+        http.addFilter(new TokenAuthFilter(authenticationManager(), jwtToken, jedisPool));
+
+        http.httpBasic();
+    }
+
+
+    /**
+     * 添加获取数据库用户数据的配置
+     * @param auth
+     * @throws Exception
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
+        super.configure(auth);
+    }
+
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+
+        return new BCryptPasswordEncoder();
+
+    }
+
+}
+```
+
+
+### 添加未登录访问处理器
+```java
+public class UnAuthEntryPoint implements AuthenticationEntryPoint {
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        ResponseUtils.out(response, R.error(REnum.NO_AUTH.getStatusCode(),REnum.NO_AUTH.getStatusMsg()));
+    }
+}
+```
+
+### 添加退出登录处理器
+```java
+public class LogoutSuccessHandler implements LogoutHandler {
+
+
+    private JwtToken jwtToken;
+
+    private JedisPool jedisPool;
+
+
+
+    public LogoutSuccessHandler(JwtToken jwtToken, JedisPool jedisPool) {
+        this.jwtToken = jwtToken;
+        this.jedisPool = jedisPool;
+    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+
+        // 从请求头中获取携带的token
+        String token = request.getHeader("token");
+
+        if (!StringUtils.isNullOrEmpty(token)){
+            // 从token中解析出userName
+            String username = jwtToken.parseUsernameFormToken(token);
+            // 删除redis中的权限数据
+            jedisPool.getResource().del(username);
+        }
+
+        ResponseUtils.out(response, R.ok(REnum.LOGOUT_SUCCESS_E.getStatusCode(), REnum.LOGOUT_SUCCESS_E.getStatusMsg()));
+
+    }
+}
+```
+
+
+### 添加处理登录的过滤器
+```java
+public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
+
+    private JwtToken jwtToken;
+
+    private JedisPool jedisPool;
+
+    private AuthenticationManager authenticationManager;
+
+
+    public TokenLoginFilter(AuthenticationManager authenticationManager, JwtToken jwtToken, JedisPool jedisPool) {
+        this.authenticationManager = authenticationManager;
+        this.jwtToken = jwtToken;
+        this.jedisPool = jedisPool;
+    }
+
+    /**
+     * 执行认证的方法 给认证做准备工作，获取前端传递的数据
+     * @param request
+     * @param response
+     * @return
+     * @throws AuthenticationException
+     */
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+        // 获取表单提交的数据
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println("befre");
+
+        try {
+            User user = objectMapper.readValue(request.getInputStream(), User.class);
+
+            // 校验 认证的过程
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>()));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * 认证成功以后
+     * @param request
+     * @param response
+     * @param chain
+     * @param authResult
+     * @throws IOException
+     * @throws ServletException
+     */
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        // 获取当前用户 UserDetails
+        SecurityUser securityUser = (SecurityUser) authResult.getPrincipal();
+
+        System.out.println("login");
+        String username = securityUser.getUsername();
+
+        // 生成token
+        String token = jwtToken.createToken(username);
+
+
+        // 权限存入redis
+        jedisPool.getResource().set(username, securityUser.getPermissionValueList().toString());
+
+        response.setHeader("token", token);
+
+        ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()));
+
+    }
+
+
+    /**
+     * 认证失败
+     * @param request
+     * @param response
+     * @param failed
+     * @throws IOException
+     * @throws ServletException
+     */
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        System.out.println("fail");
+        ResponseUtils.out(response, R.error(REnum.LOGIN_FAIL.getStatusCode(),REnum.LOGIN_FAIL.getStatusMsg()));
+    }
+}
+```
+
+### 添加权限处理的过滤器
+```java
+public class TokenAuthFilter extends BasicAuthenticationFilter {
+
+
+    private JwtToken jwtToken;
+
+    private JedisPool jedisPool;
+
+    private AuthenticationManager authenticationManager;
+
+
+    public TokenAuthFilter(AuthenticationManager authenticationManager, JwtToken jwtToken, JedisPool jedisPool) {
+        super(authenticationManager);
+        this.jwtToken = jwtToken;
+        this.jedisPool = jedisPool;
+    }
+
+
+    /**
+     * 权限相关操作 将权限从redis中取出来
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+        // 获取token
+        String token = request.getHeader("token");
+
+        if (!StringUtils.isNullOrEmpty(token)){
+            String username = jwtToken.parseUsernameFormToken(token);
+
+            // 从redis中获得该用户的权限
+            List<String> permissionValueList = Collections.singletonList(jedisPool.getResource().get(username));
+
+            // 将取出的权限存储到权限上下文
+            Collection<GrantedAuthority> authorityCollection = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(permissionValueList) && jedisPool.getResource().get(username) != null){
+                for (String permissionValue : permissionValueList) {
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permissionValue);
+                    authorityCollection.add(authority);
+                }
+            }
+            // 生成权限信息对象
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,token, authorityCollection);
+            // 把权限信息对象存入到权限上下文中
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        }
+
+        // 放行
+        chain.doFilter(request, response);
+
+    }
+}
+```
+
+### 自定义UserDetails对象
+```java
+public class SecurityUser implements UserDetails {
+
+    // 当前登录的用户
+    private User currentUser;
+
+
+    // 用户的权限列表
+    private List<String> permissionValueList;
+
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public List<String> getPermissionValueList() {
+        return permissionValueList;
+    }
+
+    public void setPermissionValueList(List<String> permissionValueList) {
+        this.permissionValueList = permissionValueList;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+        for (String permissionValue : this.permissionValueList) {
+            if (!StringUtils.isNullOrEmpty(permissionValue)){
+                authorities.add(new SimpleGrantedAuthority(permissionValue));
+            }
+        }
+
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.currentUser.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.currentUser.getUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+}
+```
+
+### 自定义UserDetailsService
+```java
+@Service
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService, UserDetailsService {
+
+    @Autowired
+    private UserRoleService userRoleService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private PermissionService permissionService;
+    @Autowired
+    private UserPermissionService userPermissionService;
+
+    @Override
+    public R getUser(User user, HttpServletRequest request) throws Exception {
+
+        User querUser = this.baseMapper.selectByUserName(user.getUsername());
+
+        if (user == null){
+
+            return R.error(REnum.USER_DOES_NOT_EXIST.getStatusCode(),
+                    REnum.USER_DOES_NOT_EXIST.getStatusMsg());
+
+        } else if (!querUser.getPassword().equals(user.getPassword())) {
+
+            return R.error(REnum.USER_PASSWORD_ERROR.getStatusCode(),
+                    REnum.USER_PASSWORD_ERROR.getStatusMsg());
+
+        }
+        request.getSession().setAttribute("user", querUser);
+
+        return R.ok(REnum.LOGIN_SUCCESS.getStatusCode(),
+                REnum.LOGIN_SUCCESS.getStatusMsg());
+    }
+
+    @Override
+    public List<User> getUserList() {
+
+        List<User> userList = this.baseMapper.selectList(null);
+
+        return userList;
+    }
+
+    @Override
+    public PageUtils getUserPage(Map<String, Object> params) {
+
+        IPage<User> page = this.page(new QueryPage<User>().getPage(params, true),
+                new LambdaQueryWrapper<User>().like(User::getUsername,
+                        (String) params.get("username")));
+
+        return new  PageUtils(page);
+
+    }
+
+    @Override
+    public R addUser(User user) {
+
+        User queryUser = this.baseMapper.getUserByUserName(user.getUsername());
+
+        if (queryUser != null){
+
+            return R.error(REnum.USER_DOES_EXIST.getStatusCode(),
+                    REnum.USER_DOES_EXIST.getStatusMsg());
+
+        }
+
+        String password = user.getPassword();
+
+        String encodePassword = new BCryptPasswordEncoder().encode(password);
+
+        user.setPassword(encodePassword);
+
+        this.baseMapper.insert(user);
+
+        return R.ok(REnum.REGISTER_SUCCESS.getStatusCode(),
+                REnum.REGISTER_SUCCESS.getStatusMsg());
+
+    }
+
+    @Override
+    public void editUser(User user) {
+
+        this.baseMapper.updateById(user);
+
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+
+        this.baseMapper.deleteById(id);
+
+    }
+
+    @Override
+    @Transactional
+    public R alterPwdByUserName(User user) {
+
+        User userByUserName = this.baseMapper.getUserByUserName(user.getUsername());
+
+        if(userByUserName == null){
+
+            return R.error(REnum.USER_DOES_NOT_EXIST.getStatusCode(),
+                    REnum.USER_DOES_NOT_EXIST.getStatusMsg());
+
+        }
+
+        String password = user.getPassword();
+
+        String encodePassword = new BCryptPasswordEncoder().encode(password);
+
+        user.setPassword(encodePassword);
+
+        this.baseMapper.alterPwdByUserName(user);
+
+        return R.ok(REnum.ALTER_PASSWORD_SUCCESS.getStatusCode(),
+                REnum.ALTER_PASSWORD_SUCCESS.getStatusMsg());
+    }
+
+    @Override
+    public User selectUserByName(String username) {
+
+        User user = this.baseMapper.getUserByUserName(username);
+
+        return user;
+
+    }
+
+
+    // 登录逻辑
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        List<String> simpleGrantedAuthorities = new ArrayList<>();
+
+        System.out.println(username);
+
+        try {
+
+            User user = this.baseMapper.getUserByUserName(username);
+            // System.out.println(user);
+
+            if (user != null) {
+
+                List<Long> roleIdList = userRoleService.selectByUserId(user.getId());
+
+                for (Long roleId : roleIdList) {
+
+                    Role role = roleService.getById(roleId);
+
+                    simpleGrantedAuthorities.add("ROLE_" + role.getRoleName());
+
+                }
+
+                List<Long> permissionIdList = userPermissionService.selectByUserId(user.getId());
+
+                for (Long permissionId : permissionIdList) {
+
+                    Permission permission = permissionService.getById(permissionId);
+
+                    simpleGrantedAuthorities.add(permission.getPermissionName());
+
+                }
+
+
+            }
+
+            SecurityUser securityUser = new SecurityUser();
+            securityUser.setCurrentUser(user);
+            securityUser.setPermissionValueList(simpleGrantedAuthorities);
+            return securityUser;
+
+        }catch (Exception e){
+
+            throw new RuntimeException();
+
+        }
+    }
+}
+```
+
+
+### 添加jwtToken类
+```java
+@Component
+@Data
+@ConfigurationProperties("spring.somg.jwt.token")
+public class JwtToken {
+
+    // 设置token的盐(私钥)
+    private String securityKey = "somg";
+
+    // 设置过期时间 默认七天
+    private long expireTime = 60*60*24*7*1000;
+
+
+    /**
+     * 根据usrName生成token
+     * @param userName 用户名
+     * @return
+     */
+    public String createToken(@NotNull String userName) {
+        return Jwts.builder()
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .signWith(SignatureAlgorithm.HS256, securityKey)
+                .setSubject(userName)
+                .setIssuedAt(new Date()).compact();
+    }
+
+    /**
+     * 根据token获取userName
+     * @param token 前端传递的token
+     * @return
+     */
+    public String parseUsernameFormToken(@NotNull String token) {
+        return Jwts.parser().setSigningKey(securityKey).parseClaimsJws(token).getBody().getSubject();
+    }
+}
+```
+
+
+### 添加返回json工具类
+```java
+public class ResponseUtils {
+
+    public static void out(HttpServletResponse response, R result){
+        // 封装response的状态码和内容格式
+        response.setStatus(HttpStatus.OK.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+        // 内容 把数据装化成json类型并返回
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        writer.write(JSON.toJSONString(result));
+
+        writer.flush();
+    }
+}
+```
+
+## SpringSecurity+Jwt逻辑
+
+### 匿名用户访问
+
+> 先去获取权限
+
+> 因为是匿名用户没有登录，从redis中根本获取不到权限信息
+
+> 然后执行匿名访问的返回逻辑
+
+### 用户登录
+
+> 登录认证之前的准备工作先执行
+
+> UserDetailsService登录逻辑执行
+
+> 执行登录成功的逻辑
+
+
+### 用户登录之后访问资源
+
+> 从redis中获取用户权限
+
+
+
+

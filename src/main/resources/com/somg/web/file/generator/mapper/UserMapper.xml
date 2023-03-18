@@ -1,0 +1,16 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.somg.web.file.generator.mapper.UserMapper">
+
+    <select id="selectByUserName" resultType="com.somg.web.file.generator.pojo.origin.User">
+        select * from user where `username`=#{username}
+    </select>
+    <select id="getUserByUserName" resultType="com.somg.web.file.generator.pojo.origin.User">
+        select * from user where `username`=#{username}
+    </select>
+
+    <update id="alterPwdByUserName" parameterType="com.somg.web.file.generator.pojo.origin.User">
+        update user set `password`=#{password} where `username`=#{username}
+    </update>
+</mapper>
