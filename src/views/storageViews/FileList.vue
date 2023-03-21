@@ -129,8 +129,10 @@ export default {
       header: {
         token: localStorage.getItem("token")
       },
-      multiUploadUrl: "http://192.227.225.111:8888/somg/web-file-generate/multi",
-      singleUploadUrl: "http://192.227.225.111:8888/somg/web-file-generate/single",
+      multiUploadUrl: "http://nobibibi.top:8888/somg/web-file-generate/multi",
+      // multiUploadUrl: "http://localhost:8888/somg/web-file-generate/multi",
+      singleUploadUrl: "http://nobibibi.top:8888/somg/web-file-generate/single",
+      // singleUploadUrl: "http://localhost.111:8888/somg/web-file-generate/single",
       activeName: 'first',
       fileList: [],
       uploadFilesVisible: false,

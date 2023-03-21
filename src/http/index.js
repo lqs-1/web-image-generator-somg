@@ -7,6 +7,7 @@ import { Message } from 'element-ui'
 // 创建axios实例
 var instance =  axios.create({
     baseURL: 'http://nobibibi.top:8888/', // 添加基本地址
+    // baseURL: 'http://localhost:8888/', // 添加基本地址
     timeout: 50000, // 所有请求在超时前等待1秒
     // headers: {'Authorization': 'hehe'}, // 添加请求头
     // withCredentials: true // 请求的时候携带cookie

@@ -15,6 +15,7 @@ import ImageList from "@/views/storageViews/ImageList"
 import AudioList from "@/views/storageViews/AudioList"
 import VideoList from "@/views/storageViews/VideoList"
 import MenuList from "@/views/userViews/MenuList"
+import Resource from "@/views/userViews/Resource";
 
 // 自己定义的请求包。只能在组件中使用，如果非要在这里使用，必须引入
 
@@ -83,8 +84,14 @@ const routes = [
         },
         component: MenuList
       },
-
-
+      {
+        path: '/user/resource',
+        name: 'resource',
+        meta: {
+          isLogin: true
+        },
+        component: Resource
+      },
 
       {
         path: '/storage/fileList',
