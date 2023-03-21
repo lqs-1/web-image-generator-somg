@@ -11,12 +11,24 @@ import com.somg.web.file.generator.action.PermissionService;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.mapper.PermissionMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * @author somg
+ * @date 2023/3/20 12:12
+ * @do 权限实现（访问接口的权限）
+ */
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {
+    /**
+     * 获取所有权限 根据给定的关键字来筛选
+     * @param param
+     * @return
+     */
     @Override
     public PageUtils getPermissionPage(Map<String, Object> param) {
 
@@ -27,7 +39,13 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         return new  PageUtils(page);
     }
 
+    /**
+     * 添加权限
+     * @param permission
+     * @return
+     */
     @Override
+    @Transactional(readOnly = false)
     public R addPermission(Permission permission) {
 
         Permission queryPermission = this.baseMapper.getPermissionByPermissionName(permission.getPermissionName());
@@ -46,20 +64,34 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     }
 
+    /**
+     * 编辑权限 更新权限
+     * @param permission
+     */
     @Override
+    @Transactional(readOnly = false)
     public void editPermission(Permission permission) {
 
         this.baseMapper.updateById(permission);
 
     }
 
+    /**
+     * 删除权限 单个
+     * @param id
+     */
     @Override
+    @Transactional(readOnly = false)
     public void deletePermissionById(Long id) {
 
         this.baseMapper.deleteById(id);
 
     }
 
+    /**
+     * 获取所有的权限
+     * @return
+     */
     @Override
     public List<Permission> getList() {
 
@@ -69,6 +101,11 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     }
 
+    /**
+     * 注册和添加用户的时候 在这里查出默认要添加的权限
+     * @param commonPermission
+     * @return
+     */
     @Override
     public List<Permission> selectCommonPermission(String commonPermission) {
 

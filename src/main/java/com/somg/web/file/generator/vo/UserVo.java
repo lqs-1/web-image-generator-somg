@@ -5,6 +5,13 @@ import lombok.Data;
 
 import java.util.List;
 
+
+
+/**
+ * @author somg
+ * @date 2023/3/20 12:02
+ * @do 修改用户Vo 集成权限角色和用户
+ */
 @Data
 public class UserVo extends User {
 

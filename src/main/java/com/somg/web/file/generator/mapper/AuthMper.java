@@ -6,7 +6,7 @@ import com.somg.web.file.generator.pojo.Auth;
 /**
  * @author somg
  * @date 2023/3/10 12:41
- * @do 一句话描述此模块的功能
+ * @do 认证mapper 未用
  */
 public interface AuthMper extends BaseMapper<Auth> {
 }

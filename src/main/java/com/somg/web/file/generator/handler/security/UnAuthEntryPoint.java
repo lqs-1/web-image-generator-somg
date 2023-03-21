@@ -20,6 +20,6 @@ public class UnAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         System.out.println("匿名用户访问执行了");
-        ResponseUtils.out(response, R.error(REnum.NO_AUTH.getStatusCode(),REnum.NO_AUTH.getStatusMsg()));
+        ResponseUtils.out(response, R.error(REnum.NO_LOGIN.getStatusCode(),REnum.NO_LOGIN.getStatusMsg()));
     }
 }

@@ -7,11 +7,24 @@ import com.somg.web.file.generator.constant.Constant;
 
 import java.util.Map;
 
+
+
+/**
+ * @author somg
+ * @date 2023/3/20 12:02
+ * @do 封装前端的分页参数的对象
+ */
 public class QueryPage<T> {
     public IPage<T> getPage(Map<String, Object> param){
         return getPage(param, false);
     }
 
+    /**
+     * 根据前端传递的参数来封装IPage分页对象
+     * @param params
+     * @param isDesc
+     * @return
+     */
     public IPage<T> getPage(Map<String, Object> params, Boolean isDesc) {
         //分页参数
         long curPage = 1;

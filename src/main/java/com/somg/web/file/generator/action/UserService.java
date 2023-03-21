@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author somg
+ * @date 2023/3/20 12:09
+ * @do 用户接口
+ */
 public interface UserService extends IService<User> {
 
     R getUser(User user, HttpServletRequest request) throws Exception;

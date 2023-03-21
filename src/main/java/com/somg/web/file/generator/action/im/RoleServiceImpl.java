@@ -11,13 +11,24 @@ import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.mapper.RoleMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author somg
+ * @date 2023/3/20 12:12
+ * @do 角色实现 （接口权限）
+ */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
+    /**
+     * 获取角色分页数据 可以根据关键字筛选
+     * @param param
+     * @return
+     */
     @Override
     public PageUtils getRolePage(Map<String, Object> param) {
 
@@ -28,7 +39,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return new  PageUtils(page);
     }
 
+    /**
+     * 添加权限
+     * @param role
+     * @return
+     */
     @Override
+    @Transactional(readOnly = false)
     public R addRole(Role role) {
         Role queryRole = this.baseMapper.getRoleByRoleName(role.getRoleName());
 
@@ -46,20 +63,34 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     }
 
+    /**
+     * 更新角色
+     * @param role
+     */
     @Override
+    @Transactional(readOnly = false)
     public void editRole(Role role) {
 
         this.baseMapper.updateById(role);
 
     }
 
+    /**
+     * 删除角色
+     * @param id
+     */
     @Override
+    @Transactional(readOnly = false)
     public void deleteRoleById(Long id) {
 
         this.baseMapper.deleteById(id);
 
     }
 
+    /**
+     * 获取所有的角色
+     * @return
+     */
     @Override
     public List<Role> getList() {
 
@@ -69,6 +100,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     }
 
+    /**
+     * 注册和添加用户的时候 在这里查出默认要添加的角色
+     * @param commonRole
+     * @return
+     */
     @Override
     public List<Role> selectCommonRole(String commonRole) {
 

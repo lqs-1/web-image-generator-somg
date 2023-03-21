@@ -9,11 +9,8 @@ import org.springframework.stereotype.Component;
 /**
  * @author somg
  * @date 2023/3/13 21:37
- * @do 一句话描述此模块的功能
+ * @do 文件上传对象可以根据配置自动选择用什么文件存储的配置属性 强壮版
  */
-
-
-
 
 @Component
 @ConfigurationProperties(prefix = "spring.somg.upload.plus")

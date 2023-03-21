@@ -5,9 +5,9 @@ import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,13 +23,13 @@ public class LogoutSuccessHandler implements LogoutHandler {
 
     private JwtToken jwtToken;
 
-    private JedisPool jedisPool;
+    private RedisTemplate redisTemplate;
 
 
 
-    public LogoutSuccessHandler(JwtToken jwtToken, JedisPool jedisPool) {
+    public LogoutSuccessHandler(JwtToken jwtToken, RedisTemplate redisTemplate) {
         this.jwtToken = jwtToken;
-        this.jedisPool = jedisPool;
+        this.redisTemplate = redisTemplate;
     }
 
     /**
@@ -49,7 +49,7 @@ public class LogoutSuccessHandler implements LogoutHandler {
             // 从token中解析出userName
             String username = jwtToken.parseUsernameFormToken(token);
             // 删除redis中的权限数据
-            jedisPool.getResource().del(username);
+            redisTemplate.delete(username);
         }
 
         ResponseUtils.out(response, R.ok(REnum.LOGOUT_SUCCESS_E.getStatusCode(), REnum.LOGOUT_SUCCESS_E.getStatusMsg()));

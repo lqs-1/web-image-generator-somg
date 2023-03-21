@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author somg
+ * @date 2023/3/20 16:21
+ * @do 角色控制器
+ */
 @RestController
 @RequestMapping("role")
 public class RoleController {
@@ -20,6 +25,11 @@ public class RoleController {
     private RoleService roleService;
 
 
+    /**
+     * 获取角色分页数据
+     * @param param
+     * @return
+     */
     @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("rolePage")
     public R getPage(@RequestParam Map<String, Object> param){
@@ -41,6 +51,10 @@ public class RoleController {
         }
     }
 
+    /**
+     * 获取所有的角色数据
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("roleList")
     public R getList(){
@@ -64,6 +78,11 @@ public class RoleController {
     }
 
 
+    /**
+     * 添加角色
+     * @param role
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addRole")
     public R addRole(@RequestBody Role role){
@@ -84,8 +103,12 @@ public class RoleController {
     }
 
 
+    /**
+     * 修改角色
+     * @param role
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
-
     @PostMapping("editRole")
     public R editRole(@RequestBody Role role){
 
@@ -106,7 +129,11 @@ public class RoleController {
     }
 
 
-
+    /**
+     * 删除角色
+     * @param role
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deleteRole")
     public R deleteRole(@RequestBody Role role){

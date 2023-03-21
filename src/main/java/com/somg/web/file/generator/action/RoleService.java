@@ -8,6 +8,11 @@ import com.somg.web.file.generator.utils.R;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author somg
+ * @date 2023/3/20 12:09
+ * @do 用户角色接口 （接口权限）
+ */
 public interface RoleService extends IService<Role> {
 
     PageUtils getRolePage(Map<String, Object> param);

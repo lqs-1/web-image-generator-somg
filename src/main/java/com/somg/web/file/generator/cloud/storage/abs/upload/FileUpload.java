@@ -16,15 +16,13 @@ import java.util.Arrays;
 /**
  * @author somg
  * @date 2023/3/9 8:17
- * @do 一句话描述此模块的功能
+ * @do 文件上传对象可以根据配置自动选择用什么文件存储 丐版
  */
 
 @Component
 @Data
 public class FileUpload {
 
-    @Autowired(required = false)
-    protected UploadPlusProperties uploadPlusProperties;
 
     @Autowired(required = false)
     private UploadProperties uploadProperties;
@@ -39,9 +37,15 @@ public class FileUpload {
     private MinioProperties minioProperties;
 
 
+    // 用户可以在使用工具的时候自定义上传到什么文件夹 如若文件夹不存在 是可以自动创建的
     protected String fileType = "";
 
 
+    /**
+     * 构建文件存储对象
+     * @param fileTypes
+     * @return
+     */
     public FileStorageAbs build(String... fileTypes){
 
         if (fileTypes.length > 0) structureFileType(fileTypes);
@@ -77,7 +81,10 @@ public class FileUpload {
     }
 
 
-
+    /**
+     * 根据用户传递的上传文件夹的参数来拼接完整的文件夹路径
+     * @param fileTypes
+     */
     protected void structureFileType(String... fileTypes){
 
         StringBuffer stringBuffer = new StringBuffer();

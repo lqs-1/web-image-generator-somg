@@ -1,9 +1,16 @@
 package com.somg.web.file.generator.config;
 
+import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author somg
+ * @date 2023/1/17 10:54
+ * @do mybatisPlus分页拦截器
+ */
 @Configuration
 public class MybatisPlusPaginationInterceptorConfig {
     /**
@@ -24,6 +31,16 @@ public class MybatisPlusPaginationInterceptorConfig {
         return paginationInterceptor;
 
     }
+
+
+
+
+
+    @Bean
+    public ISqlInjector sqlInjector() {
+        return new DefaultSqlInjector();
+    }
+
 
 
 

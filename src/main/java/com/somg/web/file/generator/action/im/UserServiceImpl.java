@@ -5,18 +5,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.somg.web.file.generator.action.*;
+import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.pojo.SecurityUser;
-import com.somg.web.file.generator.pojo.origin.MyUser;
-import com.somg.web.file.generator.pojo.origin.Permission;
-import com.somg.web.file.generator.pojo.origin.Role;
-import com.somg.web.file.generator.pojo.origin.User;
+import com.somg.web.file.generator.pojo.origin.*;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.mapper.UserMapper;
+import com.somg.web.file.generator.vo.MenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +26,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+
+/**
+ * @author somg
+ * @date 2023/3/20 12:13
+ * @do 用户实现 和SpringSecurity登录逻辑实现
+ */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService, UserDetailsService {
 
@@ -41,6 +46,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserPermissionService userPermissionService;
 
+    @Autowired
+    private MenuService menuService;
+
+    @Autowired
+    private UserMenuService userMenuService;
+
+
+    /**
+     * 登录的时候采用session方式来存储用户 已经过时不用
+     * @param user
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @Override
     public R getUser(User user, HttpServletRequest request) throws Exception {
 
@@ -63,6 +82,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 REnum.LOGIN_SUCCESS.getStatusMsg());
     }
 
+    /**
+     * 获取所有用户的列表
+     * @return
+     */
     @Override
     public List<User> getUserList() {
 
@@ -71,6 +94,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userList;
     }
 
+    /**
+     * 获取用户的分页数据 可以根据关键字来筛选
+     * @param params
+     * @return
+     */
     @Override
     public PageUtils getUserPage(Map<String, Object> params) {
 
@@ -82,7 +110,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     }
 
+    /**
+     * 添加或者注册用户 并给定默认的角色 接口权限 菜单权限
+     * @param user
+     * @return
+     */
     @Override
+    @Transactional(readOnly = false)
     public R addUser(User user) {
 
         User queryUser = this.baseMapper.getUserByUserName(user.getUsername());
@@ -102,27 +136,75 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         this.baseMapper.insert(user);
 
+        List<Role> roleList = roleService.selectCommonRole(Constant.COMMON_ROLE);
+
+        List<Long> roleIds = new ArrayList<>();
+
+        for (Role role : roleList) {
+
+            roleIds.add(role.getId());
+
+        }
+        userRoleService.addUserRoleRenation(user.getId(),roleIds);
+
+        List<Permission> permissionList = permissionService.selectCommonPermission(Constant.COMMON_PERMISSION);
+
+        List<Long> permissionIds = new ArrayList<>();
+
+        for (Permission permission : permissionList) {
+            permissionIds.add(permission.getId());
+        }
+
+        userPermissionService.addUserPermissionRelation(user.getId(), permissionIds);
+
+
+        List<Long> commonMenuIds =  menuService.getCommonMenuIds();
+
+        commonMenuIds.stream().forEach(commonMenuId -> {
+            UserMenu userMenu = new UserMenu();
+            userMenu.setUserId(user.getId());
+            userMenu.setMenuId(commonMenuId);
+            userMenuService.save(userMenu);
+        });
+
+
+
         return R.ok(REnum.REGISTER_SUCCESS.getStatusCode(),
                 REnum.REGISTER_SUCCESS.getStatusMsg());
 
     }
 
+    /**
+     * 更新角色
+     * @param user
+     */
     @Override
+    @Transactional(readOnly = false)
     public void editUser(User user) {
 
         this.baseMapper.updateById(user);
 
     }
 
+    /**
+     * 根据用户Id来删除用户
+     * @param id
+     */
     @Override
+    @Transactional(readOnly = false)
     public void deleteUserById(Long id) {
 
         this.baseMapper.deleteById(id);
 
     }
 
+    /**
+     * 修改用户的密码
+     * @param user
+     * @return
+     */
     @Override
-    @Transactional
+    @Transactional(readOnly = false)
     public R alterPwdByUserName(User user) {
 
         User userByUserName = this.baseMapper.getUserByUserName(user.getUsername());
@@ -146,6 +228,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 REnum.ALTER_PASSWORD_SUCCESS.getStatusMsg());
     }
 
+    /**
+     * 根据username查询用户
+     * @param username
+     * @return
+     */
     @Override
     public User selectUserByName(String username) {
 
@@ -156,7 +243,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
 
-    // 登录逻辑
+    /**
+     * 重写UserDetailsService实现登录逻辑
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -194,7 +286,39 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
             }
 
+            List<MenuVo> menuVoList = new ArrayList<>();
+
+            // 获取菜单访问
+            List<Long> menuIds = userMenuService.getMenuIds(user.getId());
+            if (menuIds.size() > 0){
+                List<Menus> menuList = menuService.getMenus(menuIds);
+                // 封装
+
+                List<Menus> parentMenuList = menuList.stream().filter(menu -> menu.getMenuIndex() != null ? true : false).collect(Collectors.toList());
+
+                menuVoList = parentMenuList.stream().map(parentMenu -> {
+                    MenuVo menuVo = new MenuVo();
+                    menuVo.setMenuIndex(parentMenu.getMenuIndex());
+                    menuVo.setMenuName(parentMenu.getMenuName());
+
+                    List<MenuVo.MenuItem> menuItemList = new ArrayList<>();
+
+                    menuList.stream().filter(menu -> menu.getParentIndex() != null && menu.getParentIndex() == parentMenu.getMenuIndex() ? true : false)
+                            .forEach(menu -> {
+                                MenuVo.MenuItem menuItem = new MenuVo.MenuItem();
+                                menuItem.setMenuPath(menu.getMenuPath());
+                                menuItem.setMenuName(menu.getMenuName());
+                                menuItemList.add(menuItem);
+                            });
+                    menuVo.setMenuItems(menuItemList);
+                    return menuVo;
+                }).collect(Collectors.toList());
+            }
+
+
+
             SecurityUser securityUser = new SecurityUser();
+            securityUser.setMenuVoList(menuVoList);
             securityUser.setCurrentUser(user);
             securityUser.setPermissionValueList(simpleGrantedAuthorities);
             return securityUser;

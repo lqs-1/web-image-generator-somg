@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author somg
  * @date 2023/3/13 12:57
- * @do 一句话描述此模块的功能
+ * @do 使用Minio作为存储的配置对象
  */
 
 @Data

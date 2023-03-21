@@ -1,5 +1,6 @@
 package com.somg.web.file.generator.config;
 
+import com.somg.web.file.generator.handler.security.RestfulAccessDeniedHandler;
 import com.somg.web.file.generator.handler.security.UnAuthEntryPoint;
 import com.somg.web.file.generator.handler.security.LogoutSuccessHandler;
 import com.somg.web.file.generator.handler.security.filter.TokenAuthFilter;
@@ -8,57 +9,83 @@ import com.somg.web.file.generator.handler.security.utils.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import redis.clients.jedis.JedisPool;
+import org.springframework.web.cors.CorsUtils;
 
 /**
  * @author somg
  * @date 2023/3/17 8:12
- * @do 一句话描述此模块的功能
+ * @do SpringSecurity配置
  */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-
+    // jwtToken工具
     private JwtToken jwtToken;
 
-    private JedisPool jedisPool;
+    // 连接redis工具
+    private RedisTemplate redisTemplate;
 
+    // 自定义的登录逻辑实现
     private UserDetailsService userDetailsService;
 
+    // 通过构造器注入以上三个参数
     @Autowired
-    public SecurityConfigurerAdapter(JwtToken jwtToken, JedisPool jedisPool, UserDetailsService userDetailsService){
+    public SecurityConfigurerAdapter(JwtToken jwtToken, RedisTemplate redisTemplate, UserDetailsService userDetailsService){
         this.userDetailsService = userDetailsService;
         this.jwtToken = jwtToken;
-        this.jedisPool = jedisPool;
+        this.redisTemplate = redisTemplate;
     }
 
 
+    /**
+     * 认证这一块的配置
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable(); // 关闭csrf防护
 
+        http.cors(Customizer.withDefaults());
+
+        //解决跨域问题。cors 预检请求放行,让Spring security 放行所有preflight request（cors 预检请求）
+        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+
+        http.authorizeRequests()
+                .antMatchers("/user/captcha", "/", "/favicon.ico", "/static/**", "/somg/web-image-generate/simple").permitAll()
+                .antMatchers(HttpMethod.POST, "/user/register", "/user/alterPwd").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/user/register", "/user/alterPwd").permitAll()
+                .anyRequest().authenticated(); // 除了这些接口，所有接口都需要做权限认证
+
+
         http.exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint()); // 没有权限时候的处理方案(匿名用户，没有登录)
 
+        http.exceptionHandling().accessDeniedHandler(new RestfulAccessDeniedHandler()); // 没有权限访问时候的处理方案
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 关闭session
+
         // 在这里就开始准备redis，token工具类
-        http.logout().logoutUrl("/user/logout").addLogoutHandler(new LogoutSuccessHandler(jwtToken, jedisPool)); // 登出逻辑和处理器以及如果需要删除cookie
+        http.logout().logoutUrl("/user/logout").addLogoutHandler(new LogoutSuccessHandler(jwtToken, redisTemplate)); // 登出逻辑和处理器以及如果需要删除cookie
 
         // 登录过滤器
-        http.addFilter(new TokenLoginFilter(authenticationManager(), jwtToken, jedisPool));
+        http.addFilter(new TokenLoginFilter(authenticationManager(), jwtToken, redisTemplate));
 
         // 处理权限的过滤器
-        http.addFilter(new TokenAuthFilter(authenticationManager(), jwtToken, jedisPool));
-
-        http.authorizeRequests().anyRequest().authenticated(); // 所有接口都需要做权限认证
+        http.addFilter(new TokenAuthFilter(authenticationManager(), jwtToken, redisTemplate));
 
         http.httpBasic();
     }
@@ -78,6 +105,10 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     }
 
 
+    /**
+     * 给容器中配置一个加密器
+     * @return
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
 

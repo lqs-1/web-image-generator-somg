@@ -17,17 +17,20 @@ import java.util.stream.Collectors;
 /**
  * @author somg
  * @date 2023/3/13 13:28
- * @do 一句话描述此模块的功能
+ * @do Minio存储抽象类
  */
 public class MinioFileStorageAbs extends FileStorageAbs {
 
-
+    // 地址
     protected String endpoint;
 
+    // 用户名
     protected String username;
 
+    // 密码
     protected String password;
 
+    // 文件大小限制
     protected Long maxSize = 1024L * 1024L * 1024;
 
 
@@ -80,6 +83,11 @@ public class MinioFileStorageAbs extends FileStorageAbs {
     }
 
 
+    /**
+     * 单个文件上传
+     * @param file 要上传的文件对象
+     * @return
+     */
     public R singleFileUpload(MultipartFile file) {
         String uploadFileRealPath = generatorFileUploadPath(file.getOriginalFilename());
 
@@ -124,6 +132,11 @@ public class MinioFileStorageAbs extends FileStorageAbs {
 
     }
 
+    /**
+     * 批量文件上传
+     * @param fileList 要上传的所有文件列表
+     * @return
+     */
     public R multiFileUpload(List<MultipartFile> fileList){
 
         try{
@@ -179,6 +192,11 @@ public class MinioFileStorageAbs extends FileStorageAbs {
                 .put(Constant.WEB_FILE_GENERATE_MULTI_SUCCESS_RESPONSE_NAME, fullUrlList);
     }
 
+    /**
+     * 单个文件删除
+     * @param fileUrl 要被删除文件的url
+     * @return
+     */
     public R singleFileClear(String fileUrl) {
         try{
             // 创建minio客户端
@@ -186,7 +204,6 @@ public class MinioFileStorageAbs extends FileStorageAbs {
 
             // 判断bucket是否存在
             bucketExist(minioClient);
-            System.out.println(extractFileFullPath(fileUrl));
 
 
             // 删除文件
@@ -204,6 +221,11 @@ public class MinioFileStorageAbs extends FileStorageAbs {
 
     }
 
+    /**
+     * 批量文件删除
+     * @param fileUrlList 要被删除的文件url列表
+     * @return
+     */
     public R batchFileClear(List<String> fileUrlList) {
 
         try{
@@ -238,7 +260,22 @@ public class MinioFileStorageAbs extends FileStorageAbs {
     }
 
 
+    /**
+     * 从url中截取要被删除的地址
+     * @param fileUrl 要删除文件的url
+     * @return
+     */
     protected String extractFileFullPath(String fileUrl) {
         return super.extractFileFullPath(fileUrl).replace(this.bucketName + "/", "");
+    }
+
+    /**
+     * 从url中截取要被删除的地址 去不去除开bucket true带上 false去掉
+     * @param fileUrl
+     * @param hasBucket
+     * @return
+     */
+    public String extractFileFullPath(String fileUrl, Boolean hasBucket){
+        return super.extractFileFullPath(fileUrl);
     }
 }

@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 /**
  * @author somg
  * @date 2023/3/18 15:11
- * @do response写入对象
+ * @do response写入对象 返回json
  */
 public class ResponseUtils {
 
@@ -29,7 +29,8 @@ public class ResponseUtils {
             throw new RuntimeException(e);
         }
 
-        writer.write(JSON.toJSONString(result));
+        System.out.println("马上返回数据");
+        writer.print(JSON.toJSONString(result));
 
         writer.flush();
     }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author somg
  * @date 2023/3/7 13:10
- * @do 一句话描述此模块的功能
+ * @do 使用Oss作为存储的配置对象
  */
 
 @Component

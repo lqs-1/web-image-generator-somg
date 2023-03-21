@@ -8,7 +8,7 @@ import com.somg.web.file.generator.mapper.AuthMper;
 /**
  * @author somg
  * @date 2023/3/10 12:44
- * @do 一句话描述此模块的功能
+ * @do 授权实现（未用）
  */
 public class AuthAt extends ServiceImpl<AuthMper, Auth> implements AuthAction {
 }

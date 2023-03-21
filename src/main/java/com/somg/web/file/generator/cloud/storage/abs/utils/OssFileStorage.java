@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author somg
  * @date 2023/3/7 12:41
- * @do 一句话描述此模块的功能
+ * @do OSS存储对象具体构建
  */
 public class OssFileStorage extends OssFileStorageAbs {
 
@@ -30,11 +30,11 @@ public class OssFileStorage extends OssFileStorageAbs {
 
 
     /**
-     * 单个文件上传
+     * 单文件上传
      * @param file 要上传的文件对象
      * @return
      */
-    public R singleFileUpload(@NotNull MultipartFile file) {
+    public R singleFileUpload(MultipartFile file){
         return super.singleFileUpload(file);
     }
 
@@ -44,17 +44,19 @@ public class OssFileStorage extends OssFileStorageAbs {
      * @param fileList 要上传的所有文件列表
      * @return
      */
-    public R multiFileUpload(@NotNull List<MultipartFile> fileList) {
+    @Override
+    public R multiFileUpload(List<MultipartFile> fileList){
         return super.multiFileUpload(fileList);
     }
 
 
     /**
-     * 单个文件删除
+     * 单文件删除
      * @param fileUrl 要被删除文件的url
      * @return
      */
-    public R singleFileClear(@NotNull String fileUrl) {
+    @Override
+    public R singleFileClear(String fileUrl){
         return super.singleFileClear(fileUrl);
     }
 
@@ -64,27 +66,31 @@ public class OssFileStorage extends OssFileStorageAbs {
      * @param fileUrlList 要被删除的文件url列表
      * @return
      */
+    @Override
     public R batchFileClear(List<String> fileUrlList) {
         return super.batchFileClear(fileUrlList);
     }
-
 
     /**
      * 使用建造这模式
      */
     public static class OssFileStorageBuilder{
 
+        // oss客户端
         private OSS ossClient;
 
+        // 存储桶
         private String bucketName;
 
+        // 存储文件夹
         private String type;
 
+        // url前缀和上传地址
         private String baseUrl;
 
 
         /**
-         * 构建简介对象
+         * 构建连接对象
          * @param ossClient oss连接对象
          */
         public OssFileStorageBuilder(@NotNull OSS ossClient){

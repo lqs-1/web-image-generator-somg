@@ -15,6 +15,7 @@ public enum REnum {
 
     // 没有权限
     NO_AUTH(401, "没有权限"),
+    NO_LOGIN(402, "没有登录"),
     LOGOUT_SUCCESS_E(1000, "注销成功"),
 
     // 业务需求状态码
@@ -77,7 +78,45 @@ public enum REnum {
     GET_EXIST_ROLE_SUCCESS(11017, "获取已拥有角色列表成功"),
     GET_EXIST_ROLE_FAIL(21024, "获取已拥有角色列表失败"),
     GET_EXIST_PERMISSION_SUCCESS(11018, "获取已拥有权限列表成功"),
-    GET_EXIST_PERMISSION_FAIL(21025, "获取已拥有权限列表失败");
+    GET_EXIST_PERMISSION_FAIL(21025, "获取已拥有权限列表失败"),
+
+
+    GET_USER_ALL_FILE_LIST_SUCCESS(11019, "获取用户所有文件成功"),
+    GET_USER_ALL_FILE_LIST_FAIL(21026, "获取用户所有文件失败"),
+
+    GET_ALL_PARENT_MENUS_SUCCESS(11020, "获取所有父级菜单成功"),
+    GET_ALL_PARENT_MENUS_FAIL(21027, "获取所有父级菜单失败"),
+
+    ADD_MENUS_SUCCESS(11021, "添加菜单成功"),
+    ADD_MENUS_FAIL(21028, "添加菜单失败"),
+
+    GET_MENUS_LIST_SUCCESS(11022, "获取菜单列表成功"),
+    GET_MENUS_LIST_FAIL(21029, "获取菜单列表失败"),
+
+    DELETE_MENUS_SUCCESS(11023, "删除菜单成功"),
+    DELETE_MENUS_FAIL(21030, "删除菜单失败"),
+
+    GET_CHECKED_MENUS_SUCCESS(11024, "获取已有菜单权限成功"),
+    GET_CHECKED_MENUS_FAIL(21031, "获取已有菜单权限失败"),
+
+    ALTER_MENUS_AUTH_SUCCESS(11025, "修改菜单权限成功"),
+    ALTER_MENUS_AUTH_FAIL(21032, "修改菜单权限失败"),
+
+
+    GET_USER_ALL_IMAGE_LIST_SUCCESS(11026, "获取用户所有图片文件成功"),
+    GET_USER_ALL_IMAGE_LIST_FAIL(21033, "获取用户所有图片文件失败"),
+
+    GET_USER_ALL_VIDEO_LIST_SUCCESS(11027, "获取用户所有视频文件成功"),
+    GET_USER_ALL_VIDEO_LIST_FAIL(21034, "获取用户所有视频文件失败"),
+
+    GET_USER_ALL_AUDIO_LIST_SUCCESS(11028, "获取用户所有音频文件成功"),
+    GET_USER_ALL_AUDIO_LIST_FAIL(21035, "获取用户所有音频文件失败"),
+
+    GET_ALL_STATISTICAL_SUCCESS(11029, "获取所有统计数据成功"),
+    GET_ALL_STATISTICAL_FAIL(21036, "获取所有统计数据失败"),
+
+
+    ;
 
     private Integer statusCode;
 

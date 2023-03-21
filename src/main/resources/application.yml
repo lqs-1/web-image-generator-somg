@@ -2,6 +2,8 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
   configuration:
     map-underscore-to-camel-case: false # 数据库下划线自动转驼峰标示关闭
   mapper-locations: classpath:/com/somg/web/file/generator/mapper/*.xml

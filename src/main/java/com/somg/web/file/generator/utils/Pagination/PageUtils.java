@@ -5,6 +5,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import java.io.Serializable;
 import java.util.List;
 
+
+
+/**
+ * @author somg
+ * @date 2023/3/20 12:02
+ * @do 分页工具类
+ */
 public class PageUtils implements Serializable {
     private int currentPage;
     private int pageSize;
@@ -13,6 +20,10 @@ public class PageUtils implements Serializable {
     private List<?> resultList;
 
 
+    /**
+     * 将分页之后的数据封装到对象中
+     * @param page
+     */
     public PageUtils(IPage<?> page) {
         this.currentPage = (int) page.getCurrent();
         this.pageSize = (int) page.getSize();

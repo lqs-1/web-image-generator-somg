@@ -24,15 +24,21 @@ import java.util.stream.Collectors;
 /**
  * @author somg
  * @date 2023/3/8 13:07
- * @do 一句话描述此模块的功能
+ * @do QIniu文件存储抽象类
  */
 public abstract class QiniuFileStorageAbs extends FileStorageAbs {
 
+    // 用户名
     protected String accessKey;
 
+    // 密码
     protected String accessSecretKey;
 
 
+    /**
+     * 构建Qiniu连接对象
+     * @return
+     */
     private QiniuConnect structureQiniuConnector(){
         // Region.huadong(根据自己的对象空间的地址选) 这个是地区代码 可以看文档
         Configuration cfg = new Configuration(Region.huadong());
@@ -50,6 +56,11 @@ public abstract class QiniuFileStorageAbs extends FileStorageAbs {
         return new QiniuConnect(uploadManager, bucketManager, upToken);
     }
 
+    /**
+     * 单个文件上传
+     * @param file 要上传的文件对象
+     * @return
+     */
     public R singleFileUpload(MultipartFile file) {
         String uploadFileRealPath = generatorFileUploadPath(file.getOriginalFilename());
         try{
@@ -84,6 +95,11 @@ public abstract class QiniuFileStorageAbs extends FileStorageAbs {
     }
 
 
+    /**
+     * 批量文件上传
+     * @param fileList 要上传的所有文件列表
+     * @return
+     */
     public R multiFileUpload(List<MultipartFile> fileList){
 
         try{
@@ -133,7 +149,11 @@ public abstract class QiniuFileStorageAbs extends FileStorageAbs {
     }
 
 
-
+    /**
+     * 单个文件删除
+     * @param fileUrl 要被删除文件的url
+     * @return
+     */
     public R singleFileClear(String fileUrl) {
 
         QiniuConnect qiniuConnect = structureQiniuConnector();
@@ -156,6 +176,11 @@ public abstract class QiniuFileStorageAbs extends FileStorageAbs {
     }
 
 
+    /**
+     * 批量文件删除
+     * @param fileUrlList 要被删除的文件url列表
+     * @return
+     */
     public R batchFileClear(List<String> fileUrlList) {
 
         try{

@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public abstract class OssFileStorageAbs extends FileStorageAbs {
 
 
+    // oss客户端
     protected OSS ossClient;
 
     /**
@@ -40,7 +41,7 @@ public abstract class OssFileStorageAbs extends FileStorageAbs {
             PutObjectResult putObjectResult = ossClient.putObject(bucketName, uploadFileRealPath, file.getInputStream());
             ResponseMessage response = putObjectResult.getResponse();
 
-            System.out.println(response);
+            // System.out.println(response);
             if(response == null){
                 // 上传成功
                 this.fullUrl = baseUrl + uploadFileRealPath;

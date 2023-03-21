@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author somg
+ * @date 2023/3/20 16:21
+ * @do 权限控制器
+ */
 @RestController
 @RequestMapping("permission")
 public class PermissionController {
@@ -20,6 +25,11 @@ public class PermissionController {
     @Autowired
     private PermissionService permissionService;
 
+    /**
+     * 获取权限分页数据
+     * @param param
+     * @return
+     */
     @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionPage")
     public R getPage(@RequestParam Map<String, Object> param){
@@ -42,6 +52,10 @@ public class PermissionController {
     }
 
 
+    /**
+     * 获取所有权限
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionList")
     public R getList(){
@@ -65,6 +79,11 @@ public class PermissionController {
     }
 
 
+    /**
+     * 添加权限
+     * @param permission
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addPermission")
     public R addPermission(@RequestBody Permission permission){
@@ -84,6 +103,11 @@ public class PermissionController {
     }
 
 
+    /**
+     * 修改权限
+     * @param permission
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     @PostMapping("editPermission")
     public R editPermission(@RequestBody Permission permission){
@@ -104,6 +128,11 @@ public class PermissionController {
         }
     }
 
+    /**
+     * 删除权限
+     * @param permission
+     * @return
+     */
 
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deletePermission")

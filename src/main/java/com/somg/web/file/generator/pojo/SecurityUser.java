@@ -2,6 +2,7 @@ package com.somg.web.file.generator.pojo;
 
 import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.pojo.origin.User;
+import com.somg.web.file.generator.vo.MenuVo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,17 @@ public class SecurityUser implements UserDetails {
     // 用户的权限列表
     private List<String> permissionValueList;
 
+
+    // 菜单
+    private List<MenuVo> menuVoList;
+
+    public List<MenuVo> getMenuVoList() {
+        return menuVoList;
+    }
+
+    public void setMenuVoList(List<MenuVo> menuVoList) {
+        this.menuVoList = menuVoList;
+    }
 
     public User getCurrentUser() {
         return currentUser;

@@ -7,14 +7,14 @@ import com.somg.web.file.generator.pojo.SecurityUser;
 import com.somg.web.file.generator.pojo.origin.User;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
+import com.somg.web.file.generator.vo.MenuVo;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import redis.clients.jedis.JedisPool;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -33,15 +33,15 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private JwtToken jwtToken;
 
-    private JedisPool jedisPool;
+    private RedisTemplate redisTemplate;
 
     private AuthenticationManager authenticationManager;
 
 
-    public TokenLoginFilter(AuthenticationManager authenticationManager, JwtToken jwtToken, JedisPool jedisPool) {
+    public TokenLoginFilter(AuthenticationManager authenticationManager, JwtToken jwtToken, RedisTemplate redisTemplate) {
         this.authenticationManager = authenticationManager;
         this.jwtToken = jwtToken;
-        this.jedisPool = jedisPool;
+        this.redisTemplate = redisTemplate;
         // 不是只允许post请求,才能经过这个filter
         this.setPostOnly(false);
         // 设置登录的路径和请求方式
@@ -83,6 +83,21 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+
+        // 先验证图形验证码是否正确
+        String imageKey = request.getParameter("imageKey");
+        String code = request.getParameter("code");
+
+        String realImageCode = (String) redisTemplate.opsForValue().get(imageKey);
+
+        if (!code.toLowerCase().equals(realImageCode.toLowerCase())){
+            redisTemplate.delete(imageKey);
+            ResponseUtils.out(response, R.error(REnum.VALIDATE_CODE_ERROR.getStatusCode(), REnum.VALIDATE_CODE_ERROR.getStatusMsg()));
+            return;
+        }
+
+        redisTemplate.delete(imageKey);
+
         // 获取当前用户 UserDetails
         SecurityUser securityUser = (SecurityUser) authResult.getPrincipal();
 
@@ -95,11 +110,16 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 权限存入redis
         List<String> permissionValueList = securityUser.getPermissionValueList();
-        for (String permissionValue : permissionValueList) {
-            jedisPool.getResource().rpush(username, permissionValue);
-        }
+        System.out.println("存权限");
 
-        ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()).put("token", token));
+        redisTemplate.opsForValue().set(username, permissionValueList);
+
+        List<MenuVo> menuVoList = securityUser.getMenuVoList();
+
+        System.out.println("存储完了");
+        System.out.println("登录成功返回数据");
+
+        ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()).put("token", token).put("menus", menuVoList));
 
     }
 

@@ -1,11 +1,13 @@
 package com.somg.web.file.generator.cloud.storage.abs.upload;
 
 import com.somg.web.file.generator.cloud.storage.abs.FileStorageAbs;
+import com.somg.web.file.generator.cloud.storage.abs.auto.UploadPlusProperties;
 import com.somg.web.file.generator.cloud.storage.abs.exception.FileUploadClientConfigException;
 import com.somg.web.file.generator.cloud.storage.abs.utils.MinioFileStorage;
 import com.somg.web.file.generator.cloud.storage.abs.utils.OssFileStorage;
 import com.somg.web.file.generator.cloud.storage.abs.utils.QiniuFileStorage;
 import com.sun.istack.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,13 +16,20 @@ import java.util.List;
 /**
  * @author somg
  * @date 2023/3/13 21:38
- * @do 一句话描述此模块的功能
+ * @do 文件上传对象可以根据配置自动选择用什么文件存储 强壮版
  */
 
 @Component
 public class FileUploadPlus extends FileUpload{
 
+    @Autowired(required = false)
+    protected UploadPlusProperties uploadPlusProperties;
 
+    /**
+     * 构建文件存储对象
+     * @param fileTypes
+     * @return
+     */
     @Override
     public FileStorageAbs build(String... fileTypes) {
 
@@ -56,12 +65,22 @@ public class FileUploadPlus extends FileUpload{
     }
 
 
+    /**
+     * 构建一个上传图片的对象 TODO 未作
+     * @param image
+     * @param fileTypes
+     * @return
+     */
     public FileStorageAbs buildImg(@NotNull MultipartFile image, String... fileTypes){
-//        FileStorageAbs fileUpload = this.build(fileTypes);
-//        InputStream inputStream = fileUpload.imageCompression(image.getInputStream(),fileUpload.generatorFileUploadPath(image.getOriginalFilename()));
         return null;
     }
 
+    /**
+     * 构建一个上传图片的对象 TODO 未作
+     * @param images
+     * @param fileTypes
+     * @return
+     */
     public FileStorageAbs buildImg(@NotNull List<MultipartFile> images, String... fileTypes){
         return null;
     }

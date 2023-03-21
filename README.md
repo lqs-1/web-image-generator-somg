@@ -88,9 +88,18 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable(); // 关闭csrf防护
 
+        http.cors(Customizer.withDefaults());
+
+        //解决跨域问题。cors 预检请求放行,让Spring security 放行所有preflight request（cors 预检请求）
+        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+
         http.exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint()); // 没有权限时候的处理方案(匿名用户，没有登录)
 
-        http.authorizeRequests().anyRequest().authenticated(); // 所有接口都需要做权限认证
+        http.exceptionHandling().accessDeniedHandler(new RestfulAccessDeniedHandler()); // 没有权限访问时候的处理方案
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 关闭session
+
+        http.authorizeRequests().antMatchers("/user/captcha", "/user/register", "/user/alterPwd", "/", "/favicon.ico", "/static/**", "/somg/web-image-generate/simple").permitAll().anyRequest().authenticated(); // 除了这些接口，所有接口都需要做权限认证
 
         // 在这里就开始准备redis，token工具类
         http.logout().logoutUrl("/user/logout").addLogoutHandler(new LogoutSuccessHandler(jwtToken, jedisPool)).deleteCookies(); // 登出逻辑和处理器以及如果需要删除cookie
@@ -135,6 +144,17 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 public class UnAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        ResponseUtils.out(response, R.error(REnum.NO_AUTH.getStatusCode(),REnum.NO_AUTH.getStatusMsg()));
+    }
+}
+```
+
+### 添加没有权限访问处理器
+```java
+public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        System.out.println("没有资源的访问权限");
         ResponseUtils.out(response, R.error(REnum.NO_AUTH.getStatusCode(),REnum.NO_AUTH.getStatusMsg()));
     }
 }

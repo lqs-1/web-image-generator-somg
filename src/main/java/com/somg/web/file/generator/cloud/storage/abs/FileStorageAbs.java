@@ -20,22 +20,26 @@ import java.util.*;
  */
 public abstract class FileStorageAbs implements FileStorage {
 
-    /**
-     * 帮助信息存放map
-     */
+
+    // 帮助信息存放map
     protected Map<String, Object> helpMap = new HashMap<String, Object>();
 
+    // url前缀和上传地址
     protected String baseUrl;
 
+    // 上传之后的完整路径
     protected String fullUrl;
 
+    // 上传到哪个文件夹
     protected String type;
 
-
+    // 上传到哪个桶
     protected String bucketName;
 
+    // 上传完成之后url列表
     protected List<String> fullUrlList = new ArrayList<String>();
 
+    // 在压缩的时候 先将文件保存到本地的路径 TODO 未做
     protected String localFilePath;
 
 
@@ -60,7 +64,7 @@ public abstract class FileStorageAbs implements FileStorage {
 
 
     /**
-     * 对图片进行处理 TODO 并没有做 后面再加上下载功能
+     * 对图片进行处理 TODO 并没有做 后面再加上下载功能 压缩功能
      * @param imageInputStream 图片的inputStream
      * @param uploadFileRealPath 图片要上传的路径
      * @return
@@ -140,6 +144,13 @@ public abstract class FileStorageAbs implements FileStorage {
         // 截取文件
         return fileUrl.substring(begin);
     }
+
+
+    public String extractFileFullPath(String fileUrl, Boolean hasBucket){
+        return hasBucket ? this.extractFileFullPath(fileUrl) : this.extractFileFullPath(fileUrl).replace(this.bucketName + "/", "");
+    }
+
+
 
     /**
      * 单个文件删除

@@ -1,11 +1,8 @@
 package com.somg.web.file.generator.controller;
 
 import com.somg.web.file.generator.action.*;
-import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.constant.REnum;
-import com.somg.web.file.generator.pojo.origin.Permission;
-import com.somg.web.file.generator.pojo.origin.Role;
-import com.somg.web.file.generator.pojo.origin.User;
+import com.somg.web.file.generator.pojo.origin.*;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.UserLoginVo;
@@ -14,6 +11,7 @@ import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * @author somg
+ * @date 2023/3/20 16:21
+ * @do 用户控制器
+ */
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -49,13 +53,24 @@ public class UserController {
     @Autowired
     private UserPermissionService userPermissionService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
+
+    /**
+     * 图像验证码
+     * @param httpServletResponse
+     * @param httpServletRequest
+     * @throws IOException
+     */
     @GetMapping("captcha")
     public void getCaptcha(
             HttpServletResponse httpServletResponse,
             HttpServletRequest httpServletRequest) throws IOException {
 
         httpServletResponse.setContentType("image/png");
+
+        String imageKey = httpServletRequest.getParameter("imageKey"); // 获取前端传递的时间戳, 当作redis的key
 
         // 三个参数分别为宽、高、位数
         SpecCaptcha captcha = new SpecCaptcha(120, 30, 4);
@@ -67,9 +82,7 @@ public class UserController {
         captcha.setCharType(Captcha.FONT_9);
 
         // 将文本存储到redis
-        // Jedis jedis = jedisPool.getResource();
-        // jedis.setex(username,300, captcha.text());
-        httpServletRequest.getSession().setAttribute("code", captcha.text());
+        redisTemplate.opsForValue().set(imageKey, captcha.text(), 2, TimeUnit.MINUTES);
 
 
         // 输出图片流
@@ -78,7 +91,7 @@ public class UserController {
 
 
     /**
-     * 方法作废用spring-security
+     * 方法作废用spring-security 过时方法 登录方法
      * @param request
      * @param userLoginVo
      * @return
@@ -124,7 +137,7 @@ public class UserController {
     }
 
     /**
-     * 废方法，不会应用到
+     * 废方法，不会应用到 过时方法 登录之后页面加载获取登录状态
      * @param request
      * @return
      */
@@ -147,7 +160,7 @@ public class UserController {
 
 
     /**
-     * 废方法，不会应用到
+     * 废方法，不会应用到 过时方法 退出登录 清除session
      * @param httpServletRequest
      * @return
      */
@@ -162,7 +175,7 @@ public class UserController {
 
 
     /**
-     * 废方法。改用getUserPage了
+     * 废方法。改用getUserPage了 获取所有用户
      * @return
      */
     @PreAuthorize("hasAnyRole('common')")
@@ -185,10 +198,15 @@ public class UserController {
         }
     }
 
-
+    /**
+     * 获取用户分页数据
+     * @param params
+     * @return
+     */
     @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("userPage")
     public R getUserPage(@RequestParam Map<String, Object> params){
+
         try{
 
             // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -208,6 +226,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 添加用户
+     * @param user
+     * @return
+     */
 
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addUser")
@@ -216,30 +239,6 @@ public class UserController {
         try{
 
             R result = userService.addUser(user);
-
-            List<Role> roleList = roleService.selectCommonRole(Constant.COMMON_ROLE);
-
-            List<Long> roleIds = new ArrayList<>();
-
-            for (Role role : roleList) {
-
-                roleIds.add(role.getId());
-
-            }
-            userRoleService.addUserRoleRenation(user.getId(),roleIds);
-
-            List<Permission> permissionList = permissionService.selectCommonPermission(Constant.COMMON_PERMISSION);
-
-            List<Long> permissionIds = new ArrayList<>();
-
-            for (Permission permission : permissionList) {
-                permissionIds.add(permission.getId());
-            }
-
-            userPermissionService.addUserPermissionRelation(user.getId(), permissionIds);
-
-
-
 
             return result;
 
@@ -253,6 +252,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 修改用户
+     * @param userVo
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     @PostMapping("editUser")
     public R editUser(@RequestBody UserVo userVo){
@@ -284,6 +288,11 @@ public class UserController {
     }
 
 
+    /**
+     * 删除用户
+     * @param user
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deleteUser")
     public R deleteUser(@RequestBody User user){
@@ -309,35 +318,17 @@ public class UserController {
     }
 
 
-
-
+    /**
+     * 注册用户 添加用户
+     * @param user
+     * @return
+     */
     @PostMapping("register")
     public R userRegister(@RequestBody User user){
 
         try{
 
             R result = userService.addUser(user);
-
-            List<Role> roleList = roleService.selectCommonRole(Constant.COMMON_ROLE);
-
-            List<Long> roleIds = new ArrayList<>();
-
-            for (Role role : roleList) {
-
-                roleIds.add(role.getId());
-
-            }
-            userRoleService.addUserRoleRenation(user.getId(),roleIds);
-
-            List<Permission> permissionList = permissionService.selectCommonPermission(Constant.COMMON_PERMISSION);
-
-            List<Long> permissionIds = new ArrayList<>();
-
-            for (Permission permission : permissionList) {
-                permissionIds.add(permission.getId());
-            }
-
-            userPermissionService.addUserPermissionRelation(user.getId(), permissionIds);
 
             return result;
         }catch (Exception e){
@@ -350,6 +341,11 @@ public class UserController {
     }
 
 
+    /**
+     * 修改用户密码
+     * @param user
+     * @return
+     */
     @PostMapping("alterPwd")
     public R userAlterPwd(@RequestBody User user){
 
@@ -371,6 +367,11 @@ public class UserController {
     }
 
 
+    /**
+     * 获取用户所有角色数据
+     * @param id
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("roleList")
     public R roleList(@RequestParam Long id){
@@ -405,6 +406,11 @@ public class UserController {
     }
 
 
+    /**
+     * 获取用户所有的权限
+     * @param id
+     * @return
+     */
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionList")
     public R permissionList(@RequestParam Long id){

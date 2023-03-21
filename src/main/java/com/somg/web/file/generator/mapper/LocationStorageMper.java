@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * @author somg
  * @date 2023/3/10 8:53
- * @do 一句话描述此模块的功能
+ * @do 本地存储mapper 未用
  */
 
 @Mapper

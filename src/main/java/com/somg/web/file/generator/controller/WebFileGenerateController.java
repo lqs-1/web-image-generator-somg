@@ -1,5 +1,6 @@
 package com.somg.web.file.generator.controller;
 
+import com.somg.web.file.generator.action.UserFileService;
 import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +21,42 @@ import java.util.List;
 
 @Controller
 @RequestMapping("somg")
-public class WebImageGenerateController {
+public class WebFileGenerateController {
 
     @Autowired
     private FileUploadPlus fileUpload;
 
 
+    @Autowired
+    private UserFileService userFileService;
+
+
     /**
      * 单张图片上传
-     * @param image
+     * @param file
      * @return
      */
-    @PostMapping("web-image-generate/single")
+    @PostMapping("web-file-generate/simple")
     @ResponseBody
-    public R webImageSingleGenerate(@RequestBody MultipartFile image) {
+    public R webFileSingleGenerateSimple(@RequestBody MultipartFile file) {
 
-        return fileUpload.build().singleFileUpload(image);
+        return fileUpload.build().singleFileUpload(file);
+
+
+    }
+
+
+
+    /**
+     * 单张图片上传
+     * @param file
+     * @return
+     */
+    @PostMapping("web-file-generate/single")
+    @ResponseBody
+    public R webFileSingleGenerate(@RequestBody MultipartFile file) {
+
+        return userFileService.singleUpload(file);
 
     }
 
@@ -43,14 +64,15 @@ public class WebImageGenerateController {
 
     /**
      * 批量图片上传 一般用不上
-     * @param images
+     * @param files
      * @return
      */
-    @PostMapping("web-image-generate/multi")
+    @PostMapping("web-file-generate/multi")
     @ResponseBody
-    public R webImageMultiGenerate(@RequestBody List<MultipartFile> images){
+    public R webFileMultiGenerate(@RequestBody List<MultipartFile> files){
 
-        return fileUpload.build().multiFileUpload(images);
+        return userFileService.multiUpload(files);
+
 
     }
 
