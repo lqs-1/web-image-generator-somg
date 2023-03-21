@@ -242,6 +242,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     }
 
+    /**
+     * 根据给定的用户名 模糊查询出用户的id列表
+     * @param username
+     * @return
+     */
+    @Override
+    public List<Long> selectUserLikeName(String username) {
+
+        return this.baseMapper.selectList(new LambdaQueryWrapper<User>().like(User::getUsername, username))
+                .stream().map(user -> user.getId()).collect(Collectors.toList());
+
+    }
+
 
     /**
      * 重写UserDetailsService实现登录逻辑

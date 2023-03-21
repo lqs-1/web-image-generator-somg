@@ -115,6 +115,8 @@ public enum REnum {
     GET_ALL_STATISTICAL_SUCCESS(11029, "获取所有统计数据成功"),
     GET_ALL_STATISTICAL_FAIL(21036, "获取所有统计数据失败"),
 
+    GET_ALL_FILE_LIST_SUCCESS(11030, "获取所有文件成功"),
+    GET_ALL_FILE_LIST_FAIL(21037, "获取所有文件失败"),
 
     ;
 

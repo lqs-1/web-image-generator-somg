@@ -6,6 +6,7 @@ import com.somg.web.file.generator.pojo.origin.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -26,7 +27,7 @@ public class UserFileController {
     private UserFileService userFileService;
 
     /**
-     * 获取用户的文件分页数据
+     * 获取当前用户的文件分页数据
      * @param params
      * @return
      */
@@ -42,6 +43,28 @@ public class UserFileController {
             e.printStackTrace();
             return R.ok(REnum.GET_USER_ALL_FILE_LIST_FAIL.getStatusCode(),
                     REnum.GET_USER_ALL_FILE_LIST_FAIL.getStatusMsg());
+        }
+    }
+
+
+    /**
+     * 超级管理员可以查看所有用户的文件
+     * @param params
+     * @return
+     */
+    @GetMapping("superAdminAllFilePage")
+    @PreAuthorize("hasAnyRole('supermanager')")
+    public R superAdminAllFilePage(@RequestParam Map<String, Object> params){
+        try {
+            PageUtils allFileList = userFileService.superAdminAllFilePage(params);
+
+            return R.ok(REnum.GET_ALL_FILE_LIST_SUCCESS.getStatusCode(),
+                            REnum.GET_ALL_FILE_LIST_SUCCESS.getStatusMsg())
+                    .put("allFileList", allFileList);
+        } catch (Exception e){
+            e.printStackTrace();
+            return R.ok(REnum.GET_ALL_FILE_LIST_FAIL.getStatusCode(),
+                    REnum.GET_ALL_FILE_LIST_FAIL.getStatusMsg());
         }
 
     }
@@ -59,7 +82,7 @@ public class UserFileController {
     }
 
     /**
-     * 获取所有的图片分页数据
+     * 获取当前用户所有的图片分页数据
      * @param params
      * @return
      */
@@ -83,7 +106,7 @@ public class UserFileController {
 
 
     /**
-     * 获取所有的视频分页数据
+     * 获取当前用户所有的视频分页数据
      * @param params
      * @return
      */
@@ -106,7 +129,7 @@ public class UserFileController {
 
 
     /**
-     * 获取所有的音频分页数据
+     * 获取当前用户所有的音频分页数据
      * @param params
      * @return
      */
@@ -126,8 +149,5 @@ public class UserFileController {
             return R.error(REnum.GET_USER_ALL_AUDIO_LIST_FAIL.getStatusCode(), REnum.GET_USER_ALL_AUDIO_LIST_FAIL.getStatusMsg());
         }
     }
-
-
-
 
 }

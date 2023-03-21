@@ -263,6 +263,35 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         return statisticalDataVoList;
     }
 
+    /**
+     * 超级管理员查看所有用户的文件
+     * @param params
+     * @return
+     */
+    @Override
+    public PageUtils superAdminAllFilePage(Map<String, Object> params) {
+
+        List<Long> userIds = new ArrayList<>();
+
+        if (params.get("username") != null){
+            userIds = userService.selectUserLikeName((String)params.get("username"));
+        }
+
+        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),
+                new LambdaQueryWrapper<UserFile>().in(userIds.size() > 0, UserFile::getUserId, userIds));
+
+        List<UserFile> records = page.getRecords();
+
+        records.stream().map(item -> {
+            item.setFile(uploadPlusProperties.getBaseUrl() + item.getFile());
+            User user = userService.getById(item.getUserId());
+            item.setUserName(user.getUsername());
+            return item;
+        }).collect(Collectors.toList());
+
+        return new PageUtils(page);
+    }
+
 
     /**
      * 删除文件
@@ -279,5 +308,11 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         }
 
         return deleteResponse;
+    }
+
+
+    public static void main(String[] args) {
+        List<Long> r = new ArrayList<>();
+        System.out.println(r.size());
     }
 }

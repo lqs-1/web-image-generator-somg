@@ -97,7 +97,7 @@ public class MenuController {
 
 
     /**
-     * 获取当权用户已经拥有的菜单权限
+     * 获取当前用户已经拥有的菜单权限
      * @param userId
      * @return
      */
@@ -179,10 +179,5 @@ public class MenuController {
 
             return R.error(REnum.DELETE_MENUS_FAIL.getStatusCode(), REnum.DELETE_MENUS_FAIL.getStatusMsg());
         }
-
-
     }
-
-
-
 }

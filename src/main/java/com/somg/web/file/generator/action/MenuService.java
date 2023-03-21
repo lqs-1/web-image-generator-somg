@@ -30,4 +30,5 @@ public interface MenuService extends IService<Menus> {
     List<Menus> checkedMenuList(Long userId);
 
     List<Long> getCommonMenuIds();
+
 }

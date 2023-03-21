@@ -1,5 +1,6 @@
 package com.somg.web.file.generator.pojo.origin;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -24,5 +25,8 @@ public class UserFile {
 
     @TableLogic
     private Integer isDelete;
+
+    @TableField(exist = false)
+    private String userName;
 
 }

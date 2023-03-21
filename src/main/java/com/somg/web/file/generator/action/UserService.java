@@ -31,4 +31,6 @@ public interface UserService extends IService<User> {
     R alterPwdByUserName(User user);
 
     User selectUserByName(String username);
+
+    List<Long> selectUserLikeName(String username);
 }

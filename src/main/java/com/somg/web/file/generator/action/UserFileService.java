@@ -31,4 +31,6 @@ public interface UserFileService extends IService<UserFile> {
     PageUtils queryAllVideoFileListByPage(Map<String, Object> params);
 
     List<StatisticalDataVo> allStatisticalData(Boolean currentUser);
+
+    PageUtils superAdminAllFilePage(Map<String, Object> params);
 }
