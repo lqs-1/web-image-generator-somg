@@ -129,8 +129,8 @@ export default {
       header: {
         token: localStorage.getItem("token")
       },
-      multiUploadUrl: "http://127.0.0.1:8888/somg/web-file-generate/multi",
-      singleUploadUrl: "http://127.0.0.1:8888/somg/web-file-generate/single",
+      multiUploadUrl: "http://192.227.225.111:8888/somg/web-file-generate/multi",
+      singleUploadUrl: "http://192.227.225.111:8888/somg/web-file-generate/single",
       activeName: 'first',
       fileList: [],
       uploadFilesVisible: false,

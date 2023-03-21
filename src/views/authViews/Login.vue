@@ -84,7 +84,7 @@ export default {
     // 这里是填充验证码链接的
     updateCaptcha(){
       this.imageTime = new Date().getTime() + Math.round(Math.random()*1000);
-      this.captchaUrl = 'http://localhost:8888/user/captcha?imageKey=' + this.imageTime
+      this.captchaUrl = 'http://192.227.225.111:8888/user/captcha?imageKey=' + this.imageTime
     },
 
     toRegister(){
