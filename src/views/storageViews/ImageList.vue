@@ -17,7 +17,9 @@
 
       <el-table-column
           label="图片"
-          width="100">
+          width="100"
+          align="center"
+      >
         <template slot-scope="scope">
           <img  :src="scope.row.file" alt="" style="width: 70px;height: 60px">
         </template>
@@ -25,7 +27,7 @@
 
       <el-table-column
           label="网络地址"
-          width="800"
+          width="700"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -34,6 +36,16 @@
         </template>
       </el-table-column>
 
+      <el-table-column
+          label="上传时间"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.uploadTime }}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
 
       <el-table-column
           label="文件类型"

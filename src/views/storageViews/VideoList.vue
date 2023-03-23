@@ -33,7 +33,7 @@
 
       <el-table-column
           label="网络地址"
-          width="900"
+          width="800"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -41,6 +41,18 @@
           </div>
         </template>
       </el-table-column>
+
+      <el-table-column
+          label="上传时间"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.uploadTime }}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
+
 
 
       <el-table-column
