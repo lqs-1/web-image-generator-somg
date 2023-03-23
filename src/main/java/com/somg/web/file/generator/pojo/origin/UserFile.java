@@ -27,6 +27,8 @@ public class UserFile {
 
     private Date uploadTime;
 
+    private String fileName;
+
     @TableLogic
     private Integer isDelete;
 

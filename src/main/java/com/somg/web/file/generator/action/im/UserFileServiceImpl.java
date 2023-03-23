@@ -48,23 +48,28 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 单文件上传
-     * @param image
+     * @param file
      * @return
      */
     @Override
     @Transactional(readOnly = false)
-    public R singleUpload(MultipartFile image) {
+    public R singleUpload(MultipartFile file) {
 
-        R result = fileUpload.build().singleFileUpload(image);
+        R result = fileUpload.build().singleFileUpload(file);
 
-        if (result.parseCode() >= 10000){
+        if (result.parseCode() >= 10000 && result.parseCode() < 20000){
+
             User user = this.getUser();
+
+            String originalFilename = file.getOriginalFilename();
+            String fileName = originalFilename.substring(0, originalFilename.lastIndexOf("."));
 
 
             UserFile userFile = new UserFile();
             userFile.setUserId(user.getId());
+            userFile.setFileName(fileName);
             userFile.setFile(fileUpload.build().extractFileFullPath((String) result.get("web-file-url"), true));
-            userFile.setFileType(image.getContentType());
+            userFile.setFileType(file.getContentType());
             userFile.setUploadTime(new Date());
 
             this.baseMapper.insert(userFile);
@@ -96,8 +101,17 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         User user = getUser();
 
-        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),
-                new LambdaQueryWrapper<UserFile>().eq(UserFile::getUserId, user.getId()));
+        System.out.println(params.get("key"));
+
+        // 条件查询
+        LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        userFileLambdaQueryWrapper.eq(UserFile::getUserId, user.getId());
+        if (params.get("key") != null){
+            userFileLambdaQueryWrapper.like(UserFile::getFileName, params.get("key"))
+                    .or().like(UserFile::getFileType, params.get("key"));
+        }
+
+        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),userFileLambdaQueryWrapper);
 
         List<UserFile> records = page.getRecords();
 
@@ -112,26 +126,29 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 批量文件上传
-     * @param images
+     * @param files
      * @return
      */
     @Override
     @Transactional(readOnly = false)
-    public R multiUpload(List<MultipartFile> images) {
+    public R multiUpload(List<MultipartFile> files) {
 
         R result = new R();
 
-        for (MultipartFile image : images) {
-            result = fileUpload.build().singleFileUpload(image);
+        for (MultipartFile file : files) {
+            result = fileUpload.build().singleFileUpload(file);
 
             if (result.parseCode() >= 10000 && result.parseCode() <= 20000){
-                User user = this.getUser();
+                String originalFilename = file.getOriginalFilename();
+                String fileName = originalFilename.substring(0, originalFilename.lastIndexOf("."));
 
+                User user = this.getUser();
 
                 UserFile userFile = new UserFile();
                 userFile.setUserId(user.getId());
+                userFile.setFileName(fileName);
                 userFile.setFile(fileUpload.build().extractFileFullPath((String) result.get("web-file-url"), true));
-                userFile.setFileType(image.getContentType());
+                userFile.setFileType(file.getContentType());
                 userFile.setUploadTime(new Date());
 
                 this.baseMapper.insert(userFile);
@@ -299,12 +316,17 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         List<Long> userIds = new ArrayList<>();
 
-        if (params.get("username") != null){
-            userIds = userService.selectUserLikeName((String)params.get("username"));
+        // 查询条件
+        LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        System.out.println(params.get("key"));
+
+        if (params.get("key") != null){
+            userIds = userService.selectUserLikeName((String)params.get("key"));
+            userFileLambdaQueryWrapper.in(userIds.size() > 0, UserFile::getUserId, userIds).or().like(UserFile::getFileType, params.get("key")).or().like(UserFile::getFileName, params.get("key"));
         }
 
-        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),
-                new LambdaQueryWrapper<UserFile>().in(userIds.size() > 0, UserFile::getUserId, userIds));
+
+        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true), userFileLambdaQueryWrapper);
 
         List<UserFile> records = page.getRecords();
 
