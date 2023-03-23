@@ -3,6 +3,10 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+// 引入视频播放模块
+import VueCoreVideoPlayer from 'vue-core-video-player'
+Vue.use(VueCoreVideoPlayer)
+
 
 // 引入echarts
 import echarts from 'echarts'

@@ -14,6 +14,19 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="预览" align="center" width="100">
+        <template slot-scope="scope">
+          <div class="video">
+            <el-dialog title="预览详情" width="50%" style="height: 100%" append-to-body top="10px" :visible.sync="dialogVisible" @closed="closeDialog">
+              <video  width="100%" :src="playvideo" :poster="playvideo" controls="controls" id="video" preload></video>
+            </el-dialog>
+            <!-- 页面table显示的video标签 -->
+            <video :src="scope.row.file" width="100%" preload></video>
+            <i class="el-icon-video-play playIcon" @click="handleCheck(scope.row.file)"></i>
+          </div>
+        </template>
+      </el-table-column>
+
 
       <el-table-column
           label="网络地址"
@@ -83,6 +96,9 @@ export default {
   name: "VideoList",
   data() {
     return {
+      dialogVisible: false, // 视频播放弹窗
+      playvideo: null, // 存储用户点击的视频播放链接
+      playvideoName: null, // 存储正在播放视频的名称
 
       fileList: [],
 
@@ -107,6 +123,23 @@ export default {
   },
 
   methods: {
+
+    // 查看
+    handleCheck(file) {
+      this.playvideo = file // 存储用户点击的视频播放链接
+      this.playvideoName = file // 存储用户点击的视频播放链接
+      this.dialogVisible = true
+    },
+
+
+    closeDialog(){
+      this.playvideo = ""
+      this.playvideoName = ""
+      this.dialogVisible = false
+    },
+
+
+
 
     changeCurrentPageHandler(currentPage) {
       this.httpRequest.get("storage/allVideoPage?page=" + currentPage +
@@ -149,7 +182,20 @@ export default {
 </script>
 
 <style scoped>
-
-
-
+.iframeCss {
+  border: none;
+}
+.videoPlayBox {
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(0,0,0);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#my-video{
+  object-fit: cover;
+  object-position: center center;
+}
 </style>
