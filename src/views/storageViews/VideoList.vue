@@ -3,7 +3,7 @@
 
     <el-table
         :data="fileList"
-        height="800"
+        height="700"
         style="width: 100%">
       <el-table-column
           label="文件编号"
@@ -17,7 +17,7 @@
       <el-table-column
           label="预览"
           align="center"
-          width="100">
+          width="80">
         <template slot-scope="scope">
           <div class="video">
             <el-dialog title="预览详情" width="50%" style="height: 100%" append-to-body top="10px" :visible.sync="dialogVisible" @closed="closeDialog">
@@ -33,7 +33,7 @@
 
       <el-table-column
           label="网络地址"
-          width="800"
+          width="700"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -53,11 +53,20 @@
         </template>
       </el-table-column>
 
-
+      <el-table-column
+          label="文件名"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.fileName }}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
 
       <el-table-column
           label="文件类型"
-          width="200"
+          width="150"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -65,6 +74,7 @@
           </div>
         </template>
       </el-table-column>
+
 
 
       <el-table-column
@@ -197,20 +207,5 @@ export default {
 </script>
 
 <style scoped>
-.iframeCss {
-  border: none;
-}
-.videoPlayBox {
-  width: 100%;
-  height: 100vh;
-  background-color: rgb(0,0,0);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-#my-video{
-  object-fit: cover;
-  object-position: center center;
-}
+
 </style>

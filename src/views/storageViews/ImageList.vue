@@ -1,9 +1,8 @@
 <template>
   <div class="file_list">
-
     <el-table
         :data="fileList"
-        height="800"
+        height="700"
         style="width: 100%">
       <el-table-column
           label="文件编号"
@@ -17,7 +16,7 @@
 
       <el-table-column
           label="图片"
-          width="100"
+          width="80"
           align="center"
       >
         <template slot-scope="scope">
@@ -48,8 +47,19 @@
       </el-table-column>
 
       <el-table-column
+          label="文件名"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.fileName }}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
+
+      <el-table-column
           label="文件类型"
-          width="250"
+          width="150"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -61,7 +71,7 @@
 
       <el-table-column
           label="操作"
-          width="250"
+          width="220"
           align="center">
         <template slot-scope="scope">
           <el-button
@@ -173,7 +183,5 @@ export default {
 </script>
 
 <style scoped>
-
-
 
 </style>

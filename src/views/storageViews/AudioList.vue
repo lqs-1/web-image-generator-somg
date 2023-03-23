@@ -3,7 +3,7 @@
 
     <el-table
         :data="fileList"
-        height="800"
+        height="700"
         style="width: 100%">
       <el-table-column
           label="文件编号"
@@ -17,7 +17,7 @@
 
       <el-table-column
           label="网络地址"
-          width="800"
+          width="700"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -37,10 +37,21 @@
         </template>
       </el-table-column>
 
+      <el-table-column
+          label="文件名"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.fileName }}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
+
 
       <el-table-column
           label="文件类型"
-          width="300"
+          width="150"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">

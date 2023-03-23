@@ -1,6 +1,7 @@
 <template>
   <div class="file_list">
     <el-button type="primary" icon="el-icon-circle-plus" circle class="uploadFiles" @click="showFileAddForm"></el-button>
+
     <el-dialog
         title="上传图片"
         :visible="uploadFilesVisible"
@@ -43,7 +44,8 @@
   </span>
     </el-dialog>
 
-
+    <el-button type="success" class="queryButton" @click="queryFile">文件查询</el-button>
+    <el-input v-model="key" placeholder="请输入关键字" class="queryFile"></el-input>
     <el-table
         :data="fileList"
         height="700"
@@ -81,8 +83,20 @@
 
 
       <el-table-column
+          label="文件名"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{scope.row.fileName}}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
+
+
+      <el-table-column
           label="文件类型"
-          width="400"
+          width="150"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -159,7 +173,9 @@ export default {
         total: 0,
         // 当前页
         currentPage: 1,
-      }
+      },
+
+      key:""
     }
   },
 
@@ -170,10 +186,15 @@ export default {
 
   methods: {
 
+
+    queryFile() {
+      this.changeCurrentPageHandler(1)
+    },
+
     changeCurrentPageHandler(currentPage) {
       this.httpRequest.get("storage/allFilePage?page=" + currentPage +
           "&limit=" + this.pagination.pageSize +
-          "&orderFiled=id" +
+          "&orderFiled=id" + "&key=" + this.key +
           "&orderType=1")
           .then(response => {
             // console.log(response)
@@ -237,6 +258,15 @@ export default {
 
 <style scoped>
 
+.queryButton {
+  position: absolute;
+  right: 400px;
+}
 
+.queryFile {
+  width: 15%;
+  position: absolute;
+  right: 50px;
+}
 
 </style>

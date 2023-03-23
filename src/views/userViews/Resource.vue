@@ -1,7 +1,7 @@
 <template>
   <div class="file_list">
-    <el-button type="success" class="queryButton" @click="queryByName">资源查询</el-button>
-    <el-input v-model="username" placeholder="请输入用户名" class="queryUserName"></el-input>
+    <el-button type="success" class="queryButton" @click="queryFile">资源查询</el-button>
+    <el-input v-model="key" placeholder="请输入用户名" class="queryFile"></el-input>
     <el-table
         :data="fileList"
         height="700"
@@ -48,10 +48,21 @@
         </template>
       </el-table-column>
 
+      <el-table-column
+          label="文件名"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{scope.row.fileName}}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
+
 
       <el-table-column
           label="文件类型"
-          width="300"
+          width="150"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -106,7 +117,7 @@ export default {
   data() {
     return {
       fileList: [],
-      username:"",
+      key:"",
 
       pagination: {
         // 每页多找个
@@ -133,7 +144,7 @@ export default {
     changeCurrentPageHandler(currentPage) {
       this.httpRequest.get("storage/superAdminAllFilePage?page=" + currentPage +
           "&limit=" + this.pagination.pageSize +
-          "&orderFiled=id" + "&username=" + this.username +
+          "&orderFiled=id" + "&key=" + this.key +
           "&orderType=1")
           .then(response => {
             // console.log(response)
@@ -145,7 +156,7 @@ export default {
           })
     },
 
-    queryByName() {
+    queryFile() {
       this.changeCurrentPageHandler(1)
     },
 
@@ -175,7 +186,7 @@ export default {
 </script>
 
 <style scoped>
-.queryUserName {
+.queryFile {
   width: 15%;
   position: absolute;
   right: 50px;
