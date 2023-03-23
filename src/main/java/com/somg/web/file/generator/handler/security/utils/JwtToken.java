@@ -24,7 +24,7 @@ public class JwtToken {
     private String securityKey = "somg";
 
     // 设置过期时间 默认七天
-    private long expireTime = 60*60*24*7*1000;
+    public static final long expireTime = 60*60*24*7*1000;
 
 
     /**

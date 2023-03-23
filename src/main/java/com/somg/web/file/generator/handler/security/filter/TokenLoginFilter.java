@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author somg
@@ -112,7 +113,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         List<String> permissionValueList = securityUser.getPermissionValueList();
         System.out.println("存权限");
 
-        redisTemplate.opsForValue().set(username, permissionValueList);
+        redisTemplate.opsForValue().set(username, permissionValueList, JwtToken.expireTime, TimeUnit.MINUTES);
 
         List<MenuVo> menuVoList = securityUser.getMenuVoList();
 
