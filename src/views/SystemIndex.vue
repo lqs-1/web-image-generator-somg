@@ -34,12 +34,14 @@ export default {
   },
   async mounted() {
     await this.requestAllStatisticalData()
-    await this.requestCurrentStatisticalData()
+
 
     if (localStorage.getItem("token") != null){
-      this.statisticalOne();
+      await this.requestCurrentStatisticalData()
+      this.statisticalTwo()
     }
-    this.statisticalTwo()
+    this.statisticalOne();
+
 
   },
 
@@ -64,6 +66,7 @@ export default {
             }
 
           })
+
     },
 
 
