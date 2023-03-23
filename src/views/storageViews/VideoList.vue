@@ -14,7 +14,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="预览" align="center" width="100">
+      <el-table-column
+          label="预览"
+          align="center"
+          width="100">
         <template slot-scope="scope">
           <div class="video">
             <el-dialog title="预览详情" width="50%" style="height: 100%" append-to-body top="10px" :visible.sync="dialogVisible" @closed="closeDialog">
@@ -30,11 +33,11 @@
 
       <el-table-column
           label="网络地址"
-          width="700"
+          width="900"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.file }}</el-tag>
+            <el-tag size="medium" >{{ scope.row.file }}</el-tag>
           </div>
         </template>
       </el-table-column>
@@ -42,7 +45,7 @@
 
       <el-table-column
           label="文件类型"
-          width="500"
+          width="200"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
