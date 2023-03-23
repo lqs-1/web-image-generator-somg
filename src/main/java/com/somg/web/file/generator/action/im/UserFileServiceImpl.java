@@ -21,10 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -66,6 +65,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
             userFile.setUserId(user.getId());
             userFile.setFile(fileUpload.build().extractFileFullPath((String) result.get("web-file-url"), true));
             userFile.setFileType(image.getContentType());
+            userFile.setUploadTime(new Date());
 
             this.baseMapper.insert(userFile);
         }
@@ -131,6 +131,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
                 userFile.setUserId(user.getId());
                 userFile.setFile(fileUpload.build().extractFileFullPath((String) result.get("web-file-url"), true));
                 userFile.setFileType(image.getContentType());
+                userFile.setUploadTime(new Date());
 
                 this.baseMapper.insert(userFile);
             }

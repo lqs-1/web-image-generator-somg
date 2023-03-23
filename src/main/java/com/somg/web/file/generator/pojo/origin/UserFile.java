@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author somg
  * @date 2023/3/19 18:05
@@ -22,6 +24,8 @@ public class UserFile {
     private String file;
 
     private String fileType;
+
+    private Date uploadTime;
 
     @TableLogic
     private Integer isDelete;
