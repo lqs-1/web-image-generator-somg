@@ -62,7 +62,7 @@ export default {
         if (valid){
           this.loading = true
 
-          this.httpRequest.post("/user/login?code=" + this.loginForm.code + "&imageKey=" + this.imageTime, {"username":this.loginForm.username,"password":this.loginForm.password})
+          this.httpRequest.post("/user/login?code=" + this.loginForm.code + "&imageKey=" + this.imageKey, {"username":this.loginForm.username,"password":this.loginForm.password})
               .then((response) => {
                 // console.log(response)
                 this.loading = false
