@@ -34,6 +34,10 @@ public class MenuController {
     private UserMenuService userMenuService;
 
 
+    /**
+     * 获取所有的跟菜单
+     * @return
+     */
     @GetMapping("allParentMenus")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     public R allParenMenus(){
@@ -102,7 +106,7 @@ public class MenuController {
      * @return
      */
     @GetMapping("currentUserMenuAuth")
-    @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     public R currentUserMenuAuth(@RequestParam Long userId){
 
         try {
@@ -141,7 +145,7 @@ public class MenuController {
      * @return
      */
     @GetMapping("menuList")
-    @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     public R menusList(){
 
         try {
