@@ -81,6 +81,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
     private User getUser(){
         String username = TokenAuthFilter.userNameThreadLocal.get();
 
+        System.out.println("username" + username);
         return userService.selectUserByName(username);
     }
 
@@ -219,28 +220,45 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
     @Override
     public List<StatisticalDataVo> allStatisticalData(Boolean currentUser) {
 
+
         List<StatisticalDataVo> statisticalDataVoList = new ArrayList<>();
 
         // 获取当前用户
         User user = getUser();
 
         // 统计图片
-        Integer imageFileCount = this.baseMapper.selectCount(new LambdaQueryWrapper<UserFile>()
-                        .eq(currentUser, UserFile::getUserId, user.getId()).in(UserFile::getFileType, Constant.IMAGE_CONTENT_TYPES));
+
+        LambdaQueryWrapper<UserFile> imageWrapper = new LambdaQueryWrapper<>();
+        if (currentUser){
+            imageWrapper.eq(currentUser, UserFile::getUserId, user.getId());
+        }
+        imageWrapper.in(UserFile::getFileType, Constant.IMAGE_CONTENT_TYPES);
+
+        Integer imageFileCount = this.baseMapper.selectCount(imageWrapper);
         StatisticalDataVo statisticalAllImageData = new StatisticalDataVo();
         statisticalAllImageData.setValue(imageFileCount);
         statisticalAllImageData.setName(Constant.IMAGE_STATISTICAL_NAME);
 
         // 统计视频
-        Integer videoFileCount = this.baseMapper.selectCount(new LambdaQueryWrapper<UserFile>()
-                .eq(currentUser, UserFile::getUserId, user.getId()).in(UserFile::getFileType, Constant.VIDEO_CONTENT_TYPES));
+        LambdaQueryWrapper<UserFile> videoWrapper = new LambdaQueryWrapper<>();
+        if (currentUser){
+            videoWrapper.eq(currentUser, UserFile::getUserId, user.getId());
+        }
+        videoWrapper.in(UserFile::getFileType, Constant.VIDEO_CONTENT_TYPES);
+
+        Integer videoFileCount = this.baseMapper.selectCount(videoWrapper);
         StatisticalDataVo statisticalAllVideoData = new StatisticalDataVo();
         statisticalAllVideoData.setValue(videoFileCount);
         statisticalAllVideoData.setName(Constant.VIDEO_STATISTICAL_NAME);
 
         // 统计音频
-        Integer audioFileCount = this.baseMapper.selectCount(new LambdaQueryWrapper<UserFile>()
-                .eq(currentUser, UserFile::getUserId, user.getId()).in(UserFile::getFileType, Constant.AUDIO_CONTENT_TYPES));
+        LambdaQueryWrapper<UserFile> audioWrapper = new LambdaQueryWrapper<>();
+        if (currentUser){
+            audioWrapper.eq(currentUser, UserFile::getUserId, user.getId());
+        }
+        audioWrapper.in(UserFile::getFileType, Constant.AUDIO_CONTENT_TYPES);
+
+        Integer audioFileCount = this.baseMapper.selectCount(audioWrapper);
         StatisticalDataVo statisticalAllaudioData = new StatisticalDataVo();
         statisticalAllaudioData.setValue(audioFileCount);
         statisticalAllaudioData.setName(Constant.AUDIO_STATISTICAL_NAME);
@@ -249,8 +267,15 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         ArrayList typeList=new ArrayList(Arrays.asList(Constant.IMAGE_CONTENT_TYPES));
         typeList.addAll(Arrays.asList(Constant.VIDEO_CONTENT_TYPES));
         typeList.addAll(Arrays.asList(Constant.AUDIO_CONTENT_TYPES));
-        Integer otherFileCount = this.baseMapper.selectCount(new LambdaQueryWrapper<UserFile>()
-                .eq(currentUser, UserFile::getUserId, user.getId()).notIn(UserFile::getFileType, typeList));
+
+        LambdaQueryWrapper<UserFile> otherWrapper = new LambdaQueryWrapper<>();
+        if (currentUser){
+            otherWrapper.eq(currentUser, UserFile::getUserId, user.getId());
+        }
+        otherWrapper.notIn(UserFile::getFileType, typeList);
+
+
+        Integer otherFileCount = this.baseMapper.selectCount(otherWrapper);
         StatisticalDataVo statisticalAllotherData = new StatisticalDataVo();
         statisticalAllotherData.setName(Constant.OTHER_STATISTICAL_NAME);
         statisticalAllotherData.setValue(otherFileCount);

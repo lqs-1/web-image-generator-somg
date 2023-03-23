@@ -35,6 +35,7 @@ public class StatisticalController {
         try {
 
             List<StatisticalDataVo> statisticalAllDataList = userFileService.allStatisticalData(currentUser);
+            System.out.println(statisticalAllDataList);
 
             return R.ok(REnum.GET_ALL_STATISTICAL_SUCCESS.getStatusCode(),
                     REnum.GET_ALL_STATISTICAL_SUCCESS.getStatusMsg())
