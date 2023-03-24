@@ -33,4 +33,6 @@ public interface UserService extends IService<User> {
     User selectUserByName(String username);
 
     List<Long> selectUserLikeName(String username);
+
+    void updateLoginTimeByUserName(String username);
 }

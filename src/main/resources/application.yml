@@ -11,7 +11,7 @@ mybatis-plus:
 
 spring:
   redis:
-    database: 0
+#    database: 0
     host: 192.227.225.111
 #    host: localhost
     port: 6379

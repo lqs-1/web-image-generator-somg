@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
 
 
 /**
@@ -17,6 +18,8 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private Date createTime;
+    private Date loginTime;
     @TableField(exist = false)
     private String token;
     private String sex;

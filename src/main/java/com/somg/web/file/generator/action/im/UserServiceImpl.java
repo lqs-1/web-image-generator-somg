@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -135,6 +136,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encodePassword = new BCryptPasswordEncoder().encode(password);
 
         user.setPassword(encodePassword);
+
+        user.setCreateTime(new Date());
+
+        user.setLoginTime(new Date());
 
         this.baseMapper.insert(user);
 
@@ -255,6 +260,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return this.baseMapper.selectList(new LambdaQueryWrapper<User>().like(User::getUsername, username))
                 .stream().map(user -> user.getId()).collect(Collectors.toList());
 
+    }
+
+    /**
+     * 登录成功更新登录时间
+     * @param username
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void updateLoginTimeByUserName(String username) {
+        User user = this.selectUserByName(username);
+        user.setLoginTime(new Date());
+        this.baseMapper.updateById(user);
     }
 
 

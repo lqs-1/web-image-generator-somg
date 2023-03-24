@@ -1,6 +1,7 @@
 package com.somg.web.file.generator.handler.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.somg.web.file.generator.action.UserService;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
 import com.somg.web.file.generator.pojo.SecurityUser;
@@ -40,11 +41,14 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
+    private UserService userService;
 
-    public TokenLoginFilter(AuthenticationManager authenticationManager, JwtToken jwtToken, RedisTemplate redisTemplate) {
+
+    public TokenLoginFilter(AuthenticationManager authenticationManager, JwtToken jwtToken, RedisTemplate redisTemplate, UserService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtToken = jwtToken;
         this.redisTemplate = redisTemplate;
+        this.userService = userService;
         // 不是只允许post请求,才能经过这个filter
         this.setPostOnly(false);
         // 设置登录的路径和请求方式
@@ -120,6 +124,8 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         List<MenuVo> menuVoList = securityUser.getMenuVoList();
 
         log.info(username + " 登录成功返回数据");
+
+        userService.updateLoginTimeByUserName(username);
 
         ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()).put("token", token).put("menus", menuVoList));
 

@@ -1,5 +1,6 @@
 package com.somg.web.file.generator.config;
 
+import com.somg.web.file.generator.action.UserService;
 import com.somg.web.file.generator.handler.security.RestfulAccessDeniedHandler;
 import com.somg.web.file.generator.handler.security.UnAuthEntryPoint;
 import com.somg.web.file.generator.handler.security.LogoutSuccessHandler;
@@ -41,12 +42,16 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     // 自定义的登录逻辑实现
     private UserDetailsService userDetailsService;
 
+    // 登录成功就更新登录时间
+    private UserService userService;
+
     // 通过构造器注入以上三个参数
     @Autowired
-    public SecurityConfigurerAdapter(JwtToken jwtToken, RedisTemplate redisTemplate, UserDetailsService userDetailsService){
+    public SecurityConfigurerAdapter(JwtToken jwtToken, RedisTemplate redisTemplate, UserDetailsService userDetailsService, UserService userService){
         this.userDetailsService = userDetailsService;
         this.jwtToken = jwtToken;
         this.redisTemplate = redisTemplate;
+        this.userService = userService;
     }
 
 
@@ -82,7 +87,7 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         http.logout().logoutUrl("/user/logout").addLogoutHandler(new LogoutSuccessHandler(jwtToken, redisTemplate)); // 登出逻辑和处理器以及如果需要删除cookie
 
         // 登录过滤器
-        http.addFilter(new TokenLoginFilter(authenticationManager(), jwtToken, redisTemplate));
+        http.addFilter(new TokenLoginFilter(authenticationManager(), jwtToken, redisTemplate, userService));
 
         // 处理权限的过滤器
         http.addFilter(new TokenAuthFilter(authenticationManager(), jwtToken, redisTemplate));
