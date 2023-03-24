@@ -107,7 +107,7 @@
       </el-table-column>
       <el-table-column
           label="密码"
-          width="700"
+          width="500"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -117,7 +117,7 @@
       </el-table-column>
       <el-table-column
           label="性别"
-          width="60"
+          width="150"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -125,9 +125,34 @@
           </div>
         </template>
       </el-table-column>
+
+
+      <el-table-column
+          label="创建时间"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="">{{ scope.row.createTime }}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+          label="登录时间"
+          width="150"
+          align="center">
+        <template slot-scope="scope">
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="">{{ scope.row.loginTime }}</el-tag>
+          </div>
+        </template>
+      </el-table-column>
+
+
       <el-table-column
           label="操作"
-          width="500"
+          width="300"
           align="center">
         <template slot-scope="scope">
           <el-button
