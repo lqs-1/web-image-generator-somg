@@ -3,6 +3,7 @@ package com.somg.web.file.generator.handler.security.utils;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somg.web.file.generator.utils.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
  * @date 2023/3/18 15:11
  * @do response写入对象 返回json
  */
+@Slf4j
 public class ResponseUtils {
 
     public static void out(HttpServletResponse response, R result){
@@ -29,7 +31,7 @@ public class ResponseUtils {
             throw new RuntimeException(e);
         }
 
-        System.out.println("马上返回数据");
+        log.info("马上返回数据");
         writer.print(JSON.toJSONString(result));
 
         writer.flush();

@@ -3,6 +3,7 @@ package com.somg.web.file.generator.action.im;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.action.UserFileService;
 import com.somg.web.file.generator.action.UserService;
 import com.somg.web.file.generator.cloud.storage.abs.auto.UploadPlusProperties;
@@ -86,7 +87,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
     private User getUser(){
         String username = TokenAuthFilter.userNameThreadLocal.get();
 
-        System.out.println("username" + username);
+        // System.out.println("username" + username);
         return userService.selectUserByName(username);
     }
 
@@ -101,12 +102,11 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         User user = getUser();
 
-        System.out.println(params.get("key"));
 
         // 条件查询
         LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userFileLambdaQueryWrapper.eq(UserFile::getUserId, user.getId());
-        if (params.get("key") != null){
+        if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null){
             userFileLambdaQueryWrapper.like(UserFile::getFileName, params.get("key"))
                     .or().like(UserFile::getFileType, params.get("key"));
         }
@@ -318,9 +318,8 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         // 查询条件
         LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        System.out.println(params.get("key"));
 
-        if (params.get("key") != null){
+        if(!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null){
             userIds = userService.selectUserLikeName((String)params.get("key"));
             userFileLambdaQueryWrapper.in(userIds.size() > 0, UserFile::getUserId, userIds).or().like(UserFile::getFileType, params.get("key")).or().like(UserFile::getFileName, params.get("key"));
         }

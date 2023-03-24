@@ -14,6 +14,7 @@ import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.mapper.UserMapper;
 import com.somg.web.file.generator.vo.MenuVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
  * @date 2023/3/20 12:13
  * @do 用户实现 和SpringSecurity登录逻辑实现
  */
+@Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService, UserDetailsService {
 
@@ -267,7 +269,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         List<String> simpleGrantedAuthorities = new ArrayList<>();
 
-        System.out.println("UserDetailsService执行了");
+        log.info(username + " 执行了登录逻辑UserDetailService");
 
         try {
 

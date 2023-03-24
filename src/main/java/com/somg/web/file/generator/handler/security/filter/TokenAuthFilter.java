@@ -2,6 +2,7 @@ package com.somg.web.file.generator.handler.security.filter;
 
 import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,8 @@ import java.util.*;
  * @date 2023/3/18 17:04
  * @do 处理权限的过滤器 请求过来就会来到这里 除了登录请求
  */
+
+@Slf4j
 public class TokenAuthFilter extends BasicAuthenticationFilter {
 
 
@@ -61,10 +64,10 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
         if (!StringUtils.isNullOrEmpty(token)){
             String username = jwtToken.parseUsernameFormToken(token);
 
-            System.out.println("获取redis中的权限执行了");
+            log.info(username +" 正从缓存中获取权限");
             // 从redis中获得该用户的权限
             List<String> permissionValueList = (List<String>) redisTemplate.opsForValue().get(username);
-            System.out.println(permissionValueList);
+            log.info(username + " 的权限为: " + permissionValueList);
 
             // 将取出的权限存储到权限上下文
             Collection<GrantedAuthority> authorityCollection = new ArrayList<>();
@@ -82,7 +85,7 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
             userNameThreadLocal.set(username);
         }
 
-        System.out.println("放行");
+        log.info((userNameThreadLocal.get() == null ? "匿名用户" : userNameThreadLocal.get()) + " 获取了权限 -> 访问路径 [" + request.getRequestURI() + "] -> 放行");
         // 放行
         chain.doFilter(request, response);
 

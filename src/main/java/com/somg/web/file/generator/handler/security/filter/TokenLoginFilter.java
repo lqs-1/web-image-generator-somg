@@ -8,6 +8,7 @@ import com.somg.web.file.generator.pojo.origin.User;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
 import com.somg.web.file.generator.vo.MenuVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/3/18 16:24
  * @do 登录拦截器
  */
+@Slf4j
 public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private JwtToken jwtToken;
@@ -61,7 +63,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 获取表单提交的数据
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println("登录认证之前的准备工作执行了");
+        log.info("登录认证之前的准备工作执行了");
 
         try {
             User user = objectMapper.readValue(request.getInputStream(), User.class);
@@ -102,7 +104,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         // 获取当前用户 UserDetails
         SecurityUser securityUser = (SecurityUser) authResult.getPrincipal();
 
-        System.out.println("登录成功执行了");
+        log.info(securityUser.getUsername() + " 登录成功了");
         String username = securityUser.getUsername();
 
         // 生成token
@@ -111,14 +113,13 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 权限存入redis
         List<String> permissionValueList = securityUser.getPermissionValueList();
-        System.out.println("存权限");
+        log.info(username + " 存权限");
 
         redisTemplate.opsForValue().set(username, permissionValueList, JwtToken.expireTime, TimeUnit.MINUTES);
 
         List<MenuVo> menuVoList = securityUser.getMenuVoList();
 
-        System.out.println("存储完了");
-        System.out.println("登录成功返回数据");
+        log.info(username + " 登录成功返回数据");
 
         ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()).put("token", token).put("menus", menuVoList));
 
@@ -135,7 +136,9 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
      */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        System.out.println("登录失败执行了");
+        ObjectMapper objectMapper = new ObjectMapper();
+        User user = objectMapper.readValue(request.getInputStream(), User.class);
+        log.error(user.getUsername() + " 登录失败了");
         ResponseUtils.out(response, R.error(REnum.LOGIN_FAIL.getStatusCode(),REnum.LOGIN_FAIL.getStatusMsg()));
     }
 }

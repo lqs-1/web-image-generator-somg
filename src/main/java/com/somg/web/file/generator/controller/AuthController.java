@@ -42,7 +42,7 @@ public class AuthController {
 
         List<String> roleList = (List<String>) redisTemplate.opsForValue().get(jwtToken.parseUsernameFormToken(token));
 
-        System.out.println("web层逻辑执行了");
+        // System.out.println("web层逻辑执行了");
 
         return R.ok().put("role", roleList);
     }

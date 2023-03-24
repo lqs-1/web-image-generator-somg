@@ -5,6 +5,7 @@ import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @do 登出处理器
  */
 
+@Slf4j
 public class LogoutSuccessHandler implements LogoutHandler {
 
 
@@ -43,13 +45,13 @@ public class LogoutSuccessHandler implements LogoutHandler {
 
         // 从请求头中获取携带的token
         String token = request.getHeader("token");
-        System.out.println("登出删除权限执行了");
 
         if (!StringUtils.isNullOrEmpty(token)){
             // 从token中解析出userName
             String username = jwtToken.parseUsernameFormToken(token);
             // 删除redis中的权限数据
             redisTemplate.delete(username);
+            log.info(username + " 退出登录了");
         }
 
         ResponseUtils.out(response, R.ok(REnum.LOGOUT_SUCCESS_E.getStatusCode(), REnum.LOGOUT_SUCCESS_E.getStatusMsg()));

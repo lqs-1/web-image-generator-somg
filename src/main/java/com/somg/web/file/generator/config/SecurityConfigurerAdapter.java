@@ -72,9 +72,9 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated(); // 除了这些接口，所有接口都需要做权限认证
 
 
-        http.exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint()); // 没有权限时候的处理方案(匿名用户，没有登录)
+        http.exceptionHandling().authenticationEntryPoint(new UnAuthEntryPoint(jwtToken)); // 没有权限时候的处理方案(匿名用户，没有登录)
 
-        http.exceptionHandling().accessDeniedHandler(new RestfulAccessDeniedHandler()); // 没有权限访问时候的处理方案
+        http.exceptionHandling().accessDeniedHandler(new RestfulAccessDeniedHandler(jwtToken)); // 没有权限访问时候的处理方案
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 关闭session
 
