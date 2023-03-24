@@ -213,6 +213,7 @@ public class UserController {
             // System.out.println(authentication.getPrincipal());
             PageUtils userList = userService.getUserPage(params);
 
+            System.out.println(userList.getResultList());
             return R.ok(REnum.GET_USER_LIST_SUCCESS.getStatusCode(),
                             REnum.GET_USER_LIST_SUCCESS.getStatusMsg())
                     .put("userList", userList);
