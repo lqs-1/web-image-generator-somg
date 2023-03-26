@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.somg.web.file.generator.action.AuthAction;
 import com.somg.web.file.generator.pojo.Auth;
 import com.somg.web.file.generator.mapper.AuthMper;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author somg
