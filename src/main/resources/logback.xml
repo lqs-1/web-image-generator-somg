@@ -23,7 +23,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>debug</level>
+            <level>warn</level>
         </filter>
         <encoder>
             <Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} [%line] - %msg%n</Pattern>
@@ -45,7 +45,7 @@
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志归档 -->
-            <fileNamePattern>${logging.path}/web-warn/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${logging.path}/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
