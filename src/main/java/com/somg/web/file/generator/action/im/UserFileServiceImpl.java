@@ -107,8 +107,11 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userFileLambdaQueryWrapper.eq(UserFile::getUserId, user.getId());
         if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null){
-            userFileLambdaQueryWrapper.like(UserFile::getFileName, params.get("key"))
-                    .or().like(UserFile::getFileType, params.get("key"));
+            userFileLambdaQueryWrapper.and(query -> {
+                query.like(UserFile::getFileName, params.get("key"))
+                        .or().like(UserFile::getFileType, params.get("key"));
+
+                    });
         }
 
         IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),userFileLambdaQueryWrapper);
