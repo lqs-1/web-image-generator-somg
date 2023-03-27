@@ -2,6 +2,7 @@ package com.somg.web.file.generator.controller;
 
 import com.somg.web.file.generator.action.*;
 import com.somg.web.file.generator.constant.REnum;
+import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
 import com.somg.web.file.generator.pojo.origin.*;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
@@ -15,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -84,9 +86,12 @@ public class UserController {
         // 将文本存储到redis
         redisTemplate.opsForValue().set(imageKey, captcha.text(), 2, TimeUnit.MINUTES);
 
+        ServletOutputStream outputStream = httpServletResponse.getOutputStream();
 
         // 输出图片流
-        captcha.out(httpServletResponse.getOutputStream());
+        captcha.out(outputStream);
+
+        outputStream.flush();
     }
 
 
