@@ -5,6 +5,9 @@ import com.somg.web.file.generator.utils.R;
 import com.sun.istack.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -69,6 +72,19 @@ public class MinioFileStorage extends MinioFileStorageAbs {
     @Override
     public R batchFileClear(List<String> fileUrlList) {
         return super.batchFileClear(fileUrlList);
+    }
+
+
+    /**
+     *
+     * @param imageInputStream 图片的inputStream
+     * @param uploadFileRealPath 图片要上传的路径 [originFileName]
+     * @param scale 放大或者缩小 <1表示缩小 >1表示放大
+     * @return
+     */
+    @Override
+    public ScaleResult imageScale(InputStream imageInputStream, String uploadFileRealPath, Float scale) {
+        return super.imageScale(imageInputStream, uploadFileRealPath, scale);
     }
 
     /**

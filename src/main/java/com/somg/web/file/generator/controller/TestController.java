@@ -1,15 +1,22 @@
 package com.somg.web.file.generator.controller;
 
+import com.somg.web.file.generator.action.FileLocationAction;
 import com.somg.web.file.generator.cloud.storage.abs.auto.OssProperties;
 import com.somg.web.file.generator.cloud.storage.abs.auto.QiniuProperties;
 import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.cloud.storage.abs.utils.OssFileStorage;
 import com.somg.web.file.generator.cloud.storage.abs.utils.QiniuFileStorage;
+import com.somg.web.file.generator.cloud.storage.abs.utils.ScaleResult;
+import com.somg.web.file.generator.pojo.FileLocation;
 import com.somg.web.file.generator.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +42,9 @@ public class TestController {
     @Autowired
     private QiniuProperties qiniuProperties;
 
+
+    @Autowired
+    private FileLocationAction fileLocationAction;
     @PostMapping("testUtils")
     public R ThirdFileUploadUtilsTest(@RequestBody MultipartFile image){
 
@@ -213,6 +223,26 @@ public class TestController {
 
     }
 
+
+    @PostMapping("testUtils16")
+    public void  ThirdFileUploadUtilsTest16(@RequestBody MultipartFile image, HttpServletResponse response) throws Exception {
+
+        ScaleResult scaleResult = fileUpload.build().imageScale(image.getInputStream(), image.getOriginalFilename(), 2f);
+
+        byte[] data = scaleResult.getData();
+
+        fileLocationAction.addFileLocation(scaleResult.getImagePath());
+
+        response.setContentType(image.getContentType());
+
+
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
+
+    }
 
 
 

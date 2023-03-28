@@ -4,6 +4,8 @@ import com.somg.web.file.generator.cloud.storage.abs.support.QiniuFileStorageAbs
 import com.somg.web.file.generator.utils.R;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -69,6 +71,18 @@ public class QiniuFileStorage extends QiniuFileStorageAbs {
     @Override
     public R batchFileClear(List<String> fileUrlList) {
         return super.batchFileClear(fileUrlList);
+    }
+
+    /**
+     *
+     * @param imageInputStream 图片的inputStream
+     * @param uploadFileRealPath 图片要上传的路径 [originFileName]
+     * @param scale 放大或者缩小 <1表示缩小 >1表示放大
+     * @return
+     */
+    @Override
+    public ScaleResult imageScale(InputStream imageInputStream, String uploadFileRealPath, Float scale) {
+        return super.imageScale(imageInputStream, uploadFileRealPath, scale);
     }
 
     public static class QiniuFileStorageBuilder{

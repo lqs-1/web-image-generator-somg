@@ -71,8 +71,8 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
 
         http.authorizeRequests()
-                .antMatchers("/user/captcha", "/", "/favicon.ico", "/static/**", "/somg/web-file-generate/simple", "/allStatistical/allStatisticalData").permitAll()
-                .antMatchers(HttpMethod.POST, "/user/register", "/user/alterPwd").permitAll()
+                .antMatchers("/user/captcha", "/", "/favicon.ico", "/static/**", "/somg/web-file-generate/simple", "/allStatistical/allStatisticalData", "/third/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/user/register", "/user/alterPwd", "/image/scale").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/user/register", "/user/alterPwd").permitAll()
                 .anyRequest().authenticated(); // 除了这些接口，所有接口都需要做权限认证
 

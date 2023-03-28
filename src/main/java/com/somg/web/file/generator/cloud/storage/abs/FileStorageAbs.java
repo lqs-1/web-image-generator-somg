@@ -2,13 +2,17 @@ package com.somg.web.file.generator.cloud.storage.abs;
 
 import com.somg.web.file.generator.cloud.storage.abs.exception.FIleLocalDealErrorException;
 import com.somg.web.file.generator.cloud.storage.abs.itfce.FileStorage;
+import com.somg.web.file.generator.cloud.storage.abs.utils.ScaleResult;
 import com.somg.web.file.generator.utils.R;
 import com.sun.istack.NotNull;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -40,7 +44,7 @@ public abstract class FileStorageAbs implements FileStorage {
     protected List<String> fullUrlList = new ArrayList<String>();
 
     // 在压缩的时候 先将文件保存到本地的路径 TODO 未做
-    protected String localFilePath;
+    protected String localFilePath = "/home/somg/img/";
 
 
 
@@ -66,18 +70,19 @@ public abstract class FileStorageAbs implements FileStorage {
     /**
      * 对图片进行处理 TODO 并没有做 后面再加上下载功能 压缩功能
      * @param imageInputStream 图片的inputStream
-     * @param uploadFileRealPath 图片要上传的路径
+     * @param uploadFileRealPath 图片要上传的路径 [originFileName]
+     * @param scale 放大或者缩小 <1表示缩小 >1表示放大
      * @return
      * @throws Exception
      */
-    protected InputStream imageCompression(InputStream imageInputStream, String uploadFileRealPath) {
+    public ScaleResult imageScale(InputStream imageInputStream, String uploadFileRealPath, Float scale) {
 
-        String contentPath = localFilePath + uploadFileRealPath;
+        String contentPath = localFilePath + UUID.randomUUID().toString().replace("-", "") + uploadFileRealPath;
 
         //存的项目的中模版图片
         File localOriginImage = null;
         //上传时从项目中拿到的图片
-        File localDelImage = null;
+        File localDealImage = null;
 
         //图片在项目中的地址(项目位置+图片名,带后缀名)
         localOriginImage = new File(contentPath);
@@ -88,27 +93,38 @@ public abstract class FileStorageAbs implements FileStorage {
             try {
                 FileUtils.copyInputStreamToFile(imageInputStream, localOriginImage);
                 Thumbnails.of(contentPath)
-                        .outputQuality(1f)
-                        .scale(3f)
+                        .outputQuality(1.0f)
+                        .scale(scale)
                         .outputFormat(contentPath.substring(contentPath.lastIndexOf("."))
                                 .replace(".", ""))
                         .toFile(contentPath);
             } catch (IOException e) {
+                e.printStackTrace();
                 throw new FIleLocalDealErrorException();
             }
         }
 
+        localDealImage = new File(contentPath);
 
-        localDelImage = new File(contentPath);
-        try {
-            return new FileInputStream(localDelImage);
-        } catch (FileNotFoundException e) {
+        // 填充返回对象
+        ScaleResult scaleResult = new ScaleResult();
+        try{
+            FileInputStream inputStream = new FileInputStream(localDealImage);
+            byte[] data = new byte[inputStream.available()];
+            inputStream.read(data);
+            scaleResult.setData(data);
+            scaleResult.setInputStream(inputStream);
+            scaleResult.setImagePath(contentPath);
+            // 关闭之后才能让异步定时任务删除
+            inputStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
             throw new FIleLocalDealErrorException();
         }
 
+        return scaleResult;
+
     }
-
-
 
 
 
@@ -196,5 +212,4 @@ public abstract class FileStorageAbs implements FileStorage {
 
         return (HashMap<String, Object>) helpMap;
     }
-
 }
