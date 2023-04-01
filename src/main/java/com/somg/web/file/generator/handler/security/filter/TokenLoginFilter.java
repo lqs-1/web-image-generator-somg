@@ -2,6 +2,7 @@ package com.somg.web.file.generator.handler.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somg.web.file.generator.action.UserService;
+import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
 import com.somg.web.file.generator.pojo.SecurityUser;

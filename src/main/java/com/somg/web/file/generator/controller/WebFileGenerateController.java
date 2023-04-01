@@ -1,6 +1,7 @@
 package com.somg.web.file.generator.controller;
 
 import com.somg.web.file.generator.action.UserFileService;
+import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,7 @@ public class WebFileGenerateController {
      * @param file
      * @return
      */
+    @SysListenLog(serverName = "上传服务", action = "上传单文件")
     @PostMapping("web-file-generate/single")
     @ResponseBody
     public R webFileSingleGenerate(@RequestBody MultipartFile file) {
@@ -67,6 +69,7 @@ public class WebFileGenerateController {
      * @param files
      * @return
      */
+    @SysListenLog(serverName = "上传服务", action = "批量上传")
     @PostMapping("web-file-generate/multi")
     @ResponseBody
     public R webFileMultiGenerate(@RequestBody List<MultipartFile> files){

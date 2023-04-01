@@ -118,6 +118,9 @@ public enum REnum {
     GET_ALL_FILE_LIST_SUCCESS(11030, "获取所有文件成功"),
     GET_ALL_FILE_LIST_FAIL(21037, "获取所有文件失败"),
 
+    GET_LOG_LIST_SUCCESS(11031, "获取日志列表成功"),
+    GET_LOG_LIST_FAIL(21038, "获取日志列表失败"),
+
     ;
 
     private Integer statusCode;

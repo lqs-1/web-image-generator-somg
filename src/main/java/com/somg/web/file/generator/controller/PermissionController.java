@@ -2,6 +2,7 @@ package com.somg.web.file.generator.controller;
 
 
 import com.somg.web.file.generator.action.PermissionService;
+import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.pojo.origin.Permission;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
@@ -30,6 +31,7 @@ public class PermissionController {
      * @param param
      * @return
      */
+    @SysListenLog(serverName = "权限服务", action = "权限列表[展示]")
     @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionPage")
     public R getPage(@RequestParam Map<String, Object> param){
@@ -56,6 +58,7 @@ public class PermissionController {
      * 获取所有权限
      * @return
      */
+    @SysListenLog(serverName = "权限服务", action = "权限列表[授权]")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionList")
     public R getList(){
@@ -84,6 +87,7 @@ public class PermissionController {
      * @param permission
      * @return
      */
+    @SysListenLog(serverName = "权限服务", action = "新增权限")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addPermission")
     public R addPermission(@RequestBody Permission permission){
@@ -108,6 +112,7 @@ public class PermissionController {
      * @param permission
      * @return
      */
+    @SysListenLog(serverName = "权限服务", action = "编辑权限")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     @PostMapping("editPermission")
     public R editPermission(@RequestBody Permission permission){
@@ -134,6 +139,7 @@ public class PermissionController {
      * @return
      */
 
+    @SysListenLog(serverName = "权限服务", action = "删除权限")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deletePermission")
     public R deletePermission(@RequestBody Permission permission){

@@ -2,6 +2,7 @@ package com.somg.web.file.generator.controller;
 
 import com.somg.web.file.generator.action.MenuService;
 import com.somg.web.file.generator.action.UserMenuService;
+import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.pojo.origin.Menus;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
@@ -38,6 +39,7 @@ public class MenuController {
      * 获取所有的跟菜单
      * @return
      */
+    @SysListenLog(serverName = "菜单服务", action = "获取根菜单")
     @GetMapping("allParentMenus")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     public R allParenMenus(){
@@ -59,6 +61,7 @@ public class MenuController {
      * @param addMenuVo
      * @return
      */
+    @SysListenLog(serverName = "菜单服务", action = "添加菜单")
     @PostMapping("addMenu")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     public R addMenu(@RequestBody AddMenuVo addMenuVo){
@@ -80,6 +83,7 @@ public class MenuController {
      * @param params
      * @return
      */
+    @SysListenLog(serverName = "菜单服务", action = "菜单列表[展示]")
     @GetMapping("menusPage")
     @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
     public R allMenusPage(@RequestParam Map<String, Object> params){
@@ -105,6 +109,7 @@ public class MenuController {
      * @param userId
      * @return
      */
+    @SysListenLog(serverName = "菜单服务", action = "查询用户已有菜单权限")
     @GetMapping("currentUserMenuAuth")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     public R currentUserMenuAuth(@RequestParam Long userId){
@@ -127,6 +132,7 @@ public class MenuController {
      * @param addMenuAuthVo
      * @return
      */
+    @SysListenLog(serverName = "菜单服务", action = "给用户授权菜单")
     @PostMapping("alterMenuAuth")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAnyAuthority('add', 'update')")
     public R addMenuAuth(@RequestBody AddMenuAuthVo addMenuAuthVo){
@@ -144,6 +150,7 @@ public class MenuController {
      * 获取所有的菜单
      * @return
      */
+    @SysListenLog(serverName = "菜单服务", action = "菜单列表[授权]")
     @GetMapping("menuList")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     public R menusList(){
@@ -170,6 +177,7 @@ public class MenuController {
      * @param menus
      * @return
      */
+    @SysListenLog(serverName = "菜单服务", action = "删除菜单")
     @PostMapping("deleteMenu")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     public R deleteMenu(@RequestBody Menus menus){

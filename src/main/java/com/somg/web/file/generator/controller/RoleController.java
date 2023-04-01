@@ -1,6 +1,7 @@
 package com.somg.web.file.generator.controller;
 
 import com.somg.web.file.generator.action.RoleService;
+import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.pojo.origin.Role;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
@@ -30,6 +31,7 @@ public class RoleController {
      * @param param
      * @return
      */
+    @SysListenLog(serverName = "角色服务", action = "角色列表[展示]")
     @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("rolePage")
     public R getPage(@RequestParam Map<String, Object> param){
@@ -55,6 +57,7 @@ public class RoleController {
      * 获取所有的角色数据
      * @return
      */
+    @SysListenLog(serverName = "角色服务", action = "角色列表[授权]")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("roleList")
     public R getList(){
@@ -83,6 +86,7 @@ public class RoleController {
      * @param role
      * @return
      */
+    @SysListenLog(serverName = "角色服务", action = "新增角色")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addRole")
     public R addRole(@RequestBody Role role){
@@ -108,6 +112,7 @@ public class RoleController {
      * @param role
      * @return
      */
+    @SysListenLog(serverName = "角色服务", action = "编辑角色")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     @PostMapping("editRole")
     public R editRole(@RequestBody Role role){
@@ -134,6 +139,7 @@ public class RoleController {
      * @param role
      * @return
      */
+    @SysListenLog(serverName = "角色服务", action = "删除角色")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deleteRole")
     public R deleteRole(@RequestBody Role role){

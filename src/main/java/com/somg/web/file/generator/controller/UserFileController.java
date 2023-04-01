@@ -1,6 +1,7 @@
 package com.somg.web.file.generator.controller;
 
 import com.somg.web.file.generator.action.UserFileService;
+import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.pojo.origin.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
@@ -31,6 +32,7 @@ public class UserFileController {
      * @param params
      * @return
      */
+    @SysListenLog(serverName = "文件服务", action = "所有文件列表[用户]")
     @GetMapping("allFilePage")
     public R requestFilePage(@RequestParam Map<String, Object> params){
         try {
@@ -52,6 +54,7 @@ public class UserFileController {
      * @param params
      * @return
      */
+    @SysListenLog(serverName = "文件服务", action = "所有文件列表[所有]")
     @GetMapping("superAdminAllFilePage")
     @PreAuthorize("hasAnyRole('supermanager')")
     public R superAdminAllFilePage(@RequestParam Map<String, Object> params){
@@ -75,6 +78,7 @@ public class UserFileController {
      * @param userFile
      * @return
      */
+    @SysListenLog(serverName = "上传服务", action = "删除文件")
     @PostMapping("deleteFile")
     public R deleteFile(@RequestBody UserFile userFile){
 
@@ -86,7 +90,7 @@ public class UserFileController {
      * @param params
      * @return
      */
-
+    @SysListenLog(serverName = "文件服务", action = "所有图片列表[用户]")
     @GetMapping("allImagePage")
     public R requestAllImageFiles(@RequestParam Map<String, Object> params){
 
@@ -110,6 +114,7 @@ public class UserFileController {
      * @param params
      * @return
      */
+    @SysListenLog(serverName = "文件服务", action = "所有视频列表[用户]")
     @GetMapping("allVideoPage")
     public R requestAllVideoFiles(@RequestParam Map<String, Object> params){
 
@@ -133,6 +138,7 @@ public class UserFileController {
      * @param params
      * @return
      */
+    @SysListenLog(serverName = "文件服务", action = "所有音频列表[用户]")
     @GetMapping("allAudioPage")
     public R requestAllAudioFiles(@RequestParam Map<String, Object> params){
 

@@ -1,8 +1,8 @@
 package com.somg.web.file.generator.controller;
 
 import com.somg.web.file.generator.action.*;
+import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
-import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
 import com.somg.web.file.generator.pojo.origin.*;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
@@ -208,6 +208,7 @@ public class UserController {
      * @param params
      * @return
      */
+    @SysListenLog(serverName = "用户模块", action = "用户列表")
     @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("userPage")
     public R getUserPage(@RequestParam Map<String, Object> params){
@@ -218,7 +219,6 @@ public class UserController {
             // System.out.println(authentication.getPrincipal());
             PageUtils userList = userService.getUserPage(params);
 
-            System.out.println(userList.getResultList());
             return R.ok(REnum.GET_USER_LIST_SUCCESS.getStatusCode(),
                             REnum.GET_USER_LIST_SUCCESS.getStatusMsg())
                     .put("userList", userList);
@@ -237,7 +237,7 @@ public class UserController {
      * @param user
      * @return
      */
-
+    @SysListenLog(serverName = "用户服务", action = "添加用户")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addUser")
     public R addUser(@RequestBody User user){
@@ -263,6 +263,7 @@ public class UserController {
      * @param userVo
      * @return
      */
+    @SysListenLog(serverName = "用户服务", action = "编辑用户")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     @PostMapping("editUser")
     public R editUser(@RequestBody UserVo userVo){
@@ -299,6 +300,7 @@ public class UserController {
      * @param user
      * @return
      */
+    @SysListenLog(serverName = "用户服务", action = "删除用户")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deleteUser")
     public R deleteUser(@RequestBody User user){
@@ -378,6 +380,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @SysListenLog(serverName = "用户服务", action = "修改用户角色")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("roleList")
     public R roleList(@RequestParam Long id){
@@ -417,6 +420,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @SysListenLog(serverName = "用户服务", action = "修改用户权限")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionList")
     public R permissionList(@RequestParam Long id){
