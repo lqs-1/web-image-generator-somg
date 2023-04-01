@@ -92,6 +92,8 @@ public class UserController {
         captcha.out(outputStream);
 
         outputStream.flush();
+
+        outputStream.close();
     }
 
 

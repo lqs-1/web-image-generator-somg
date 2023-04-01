@@ -143,9 +143,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
      */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        User user = objectMapper.readValue(request.getInputStream(), User.class);
-        log.error(user.getUsername() + " 登录失败了");
+        log.error(TokenAuthFilter.userNameThreadLocal.get() + " 登录失败了");
         ResponseUtils.out(response, R.error(REnum.LOGIN_FAIL.getStatusCode(),REnum.LOGIN_FAIL.getStatusMsg()));
     }
 }
