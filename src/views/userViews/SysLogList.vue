@@ -8,7 +8,7 @@
         style="width: 100%">
       <el-table-column
           label="日志编号"
-          width="300"
+          width="100"
           align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.id }}</span>
@@ -17,7 +17,7 @@
 
       <el-table-column
           label="用户id "
-          width="300"
+          width="100"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
