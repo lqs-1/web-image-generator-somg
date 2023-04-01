@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import router from './router'
+
+
+// 引入ElementUi
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI);
 
 // 引入视频播放模块
 import VueCoreVideoPlayer from 'vue-core-video-player'
@@ -27,8 +31,6 @@ import store from "@/store";
 Vue.config.productionTip = false
 
 import App from './App.vue'
-
-Vue.use(ElementUI);
 
 new Vue({
   router,

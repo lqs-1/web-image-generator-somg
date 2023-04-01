@@ -83,7 +83,8 @@ export default {
 
     // 这里是填充验证码链接的
     updateCaptcha(){
-      this.imageKey = new Date().getTime() + Math.round(Math.random()*1000);
+      let uuid = require('uuid')
+      this.imageKey = uuid.v1()
       this.captchaUrl = 'http://nobibibi.top:8888/user/captcha?imageKey=' + this.imageKey
       // this.captchaUrl = 'http://localhost:8888/user/captcha?imageKey=' + this.imageKey
     },

@@ -16,6 +16,7 @@ import AudioList from "@/views/storageViews/AudioList"
 import VideoList from "@/views/storageViews/VideoList"
 import MenuList from "@/views/userViews/MenuList"
 import Resource from "@/views/userViews/Resource";
+import SysLogList from "@/views/userViews/SysLogList";
 
 // 自己定义的请求包。只能在组件中使用，如果非要在这里使用，必须引入
 
@@ -92,6 +93,23 @@ const routes = [
         },
         component: Resource
       },
+      {
+        path: '/user/sysLogList',
+        name: 'sysLogList',
+        meta: {
+          isLogin: true
+        },
+        component: SysLogList
+      },
+
+
+
+
+
+
+
+
+
 
       {
         path: '/storage/fileList',
@@ -125,9 +143,6 @@ const routes = [
         },
         component: AudioList
       }
-
-
-
 
     ]
   },
