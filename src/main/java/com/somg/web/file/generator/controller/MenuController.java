@@ -85,7 +85,7 @@ public class MenuController {
      */
     @SysListenLog(serverName = "菜单服务", action = "菜单列表[展示]")
     @GetMapping("menusPage")
-    @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     public R allMenusPage(@RequestParam Map<String, Object> params){
 
         try {

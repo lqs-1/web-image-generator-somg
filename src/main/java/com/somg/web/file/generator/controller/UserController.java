@@ -183,7 +183,7 @@ public class UserController {
      * 废方法。改用getUserPage了 获取所有用户
      * @return
      */
-    @PreAuthorize("hasAnyRole('common')")
+    @PreAuthorize("hasAnyRole('admin','supermanager')")
     @GetMapping("userList")
     public R getUserList(){
 
@@ -209,7 +209,7 @@ public class UserController {
      * @return
      */
     @SysListenLog(serverName = "用户模块", action = "用户列表")
-    @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("userPage")
     public R getUserPage(@RequestParam Map<String, Object> params){
 

@@ -32,7 +32,7 @@ public class PermissionController {
      * @return
      */
     @SysListenLog(serverName = "权限服务", action = "权限列表[展示]")
-    @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionPage")
     public R getPage(@RequestParam Map<String, Object> param){
 

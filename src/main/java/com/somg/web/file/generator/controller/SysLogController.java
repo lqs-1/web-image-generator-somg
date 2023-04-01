@@ -32,8 +32,7 @@ public class SysLogController {
      * @param params
      * @return
      */
-    @SysListenLog(serverName = "日志服务", action = "日志列表")
-    @PreAuthorize("hasAnyRole('common','admin', 'supermanager') and hasAuthority('select')")
+    @PreAuthorize("hasAnyRole('supermanager') and hasAuthority('select')")
     @GetMapping("logPage")
     public R getLogPage(@RequestParam Map<String, Object> params){
 
