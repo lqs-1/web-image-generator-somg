@@ -6,6 +6,8 @@ import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.pojo.origin.Role;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("role")
+@Api(tags = "角色模块")
 public class RoleController {
 
     @Autowired
@@ -34,6 +37,7 @@ public class RoleController {
     @SysListenLog(serverName = "角色服务", action = "角色列表[展示]")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("rolePage")
+    @ApiOperation(value = "角色列表[展示]")
     public R getPage(@RequestParam Map<String, Object> param){
 
         try{
@@ -60,6 +64,7 @@ public class RoleController {
     @SysListenLog(serverName = "角色服务", action = "角色列表[授权]")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("roleList")
+    @ApiOperation(value = "角色列表[授权]")
     public R getList(){
 
         try{
@@ -89,6 +94,7 @@ public class RoleController {
     @SysListenLog(serverName = "角色服务", action = "新增角色")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addRole")
+    @ApiOperation(value = "新增角色")
     public R addRole(@RequestBody Role role){
 
         try{
@@ -115,6 +121,7 @@ public class RoleController {
     @SysListenLog(serverName = "角色服务", action = "编辑角色")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     @PostMapping("editRole")
+    @ApiOperation(value = "编辑角色")
     public R editRole(@RequestBody Role role){
 
         try{
@@ -142,6 +149,7 @@ public class RoleController {
     @SysListenLog(serverName = "角色服务", action = "删除角色")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deleteRole")
+    @ApiOperation(value = "删除角色")
     public R deleteRole(@RequestBody Role role){
 
         try{

@@ -70,8 +70,29 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         //解决跨域问题。cors 预检请求放行,让Spring security 放行所有preflight request（cors 预检请求）
         http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
 
+     //    /swagger-ui.html
+    //             /webjars/**
+    //      /v2/**
+     //     /swagger-resources/**
+
         http.authorizeRequests()
-                .antMatchers("/user/captcha", "/", "/favicon.ico", "/static/**", "/somg/web-file-generate/simple", "/allStatistical/allStatisticalData", "/third/**").permitAll()
+                // 放行一些功能接口 这个可以是任何请求方式
+                .antMatchers(
+                        "/user/captcha",
+                        "/",
+                        "/favicon.ico",
+                        "/static/**",
+                        "/somg/web-file-generate/simple",
+                        "/allStatistical/allStatisticalData",
+                        "/third/**").permitAll()
+                .antMatchers(
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/webjars/**",
+                        "/v2/**",
+                        "/swagger-resources/**"
+                ).permitAll()
+                // 可以指定请求方式再放行
                 .antMatchers(HttpMethod.POST, "/user/register", "/user/alterPwd", "/image/scale").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/user/register", "/user/alterPwd").permitAll()
                 .anyRequest().authenticated(); // 除了这些接口，所有接口都需要做权限认证

@@ -9,6 +9,8 @@ import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.AddMenuAuthVo;
 import com.somg.web.file.generator.vo.AddMenuVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("menu")
+@Api(tags = "菜单模块")
 public class MenuController {
 
 
@@ -42,6 +45,7 @@ public class MenuController {
     @SysListenLog(serverName = "菜单服务", action = "获取根菜单")
     @GetMapping("allParentMenus")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
+    @ApiOperation(value = "获取根菜单")
     public R allParenMenus(){
         try{
             List<Menus> menusList = menuService.getAllParentMenus();
@@ -64,6 +68,7 @@ public class MenuController {
     @SysListenLog(serverName = "菜单服务", action = "添加菜单")
     @PostMapping("addMenu")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
+    @ApiOperation(value = "添加菜单")
     public R addMenu(@RequestBody AddMenuVo addMenuVo){
 
         try {
@@ -86,6 +91,7 @@ public class MenuController {
     @SysListenLog(serverName = "菜单服务", action = "菜单列表[展示]")
     @GetMapping("menusPage")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
+    @ApiOperation(value = "菜单列表[展示]")
     public R allMenusPage(@RequestParam Map<String, Object> params){
 
         try {
@@ -112,6 +118,7 @@ public class MenuController {
     @SysListenLog(serverName = "菜单服务", action = "查询用户已有菜单权限")
     @GetMapping("currentUserMenuAuth")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
+    @ApiOperation(value = "查询用户已有菜单权限")
     public R currentUserMenuAuth(@RequestParam Long userId){
 
         try {
@@ -135,6 +142,7 @@ public class MenuController {
     @SysListenLog(serverName = "菜单服务", action = "给用户授权菜单")
     @PostMapping("alterMenuAuth")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAnyAuthority('add', 'update')")
+    @ApiOperation(value = "给用户授权菜单")
     public R addMenuAuth(@RequestBody AddMenuAuthVo addMenuAuthVo){
         try {
             userMenuService.addMenuAuth(addMenuAuthVo);
@@ -153,6 +161,7 @@ public class MenuController {
     @SysListenLog(serverName = "菜单服务", action = "菜单列表[授权]")
     @GetMapping("menuList")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
+    @ApiOperation(value = "菜单列表[授权]")
     public R menusList(){
 
         try {
@@ -180,6 +189,7 @@ public class MenuController {
     @SysListenLog(serverName = "菜单服务", action = "删除菜单")
     @PostMapping("deleteMenu")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
+    @ApiOperation(value = "删除菜单")
     public R deleteMenu(@RequestBody Menus menus){
 
         try {

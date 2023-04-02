@@ -3,6 +3,8 @@ package com.somg.web.file.generator.controller;
 import com.somg.web.file.generator.action.FileLocationAction;
 import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.cloud.storage.abs.utils.ScaleResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("image")
+@Api(tags = "图片处理模块")
 public class ImageController {
 
     @Autowired
@@ -37,6 +40,7 @@ public class ImageController {
      */
 
     @PostMapping("scale")
+    @ApiOperation(value = "图片缩放[开放]")
     public void imageScale(@RequestBody MultipartFile image, @RequestParam(value = "scale", required = false) Float scale, HttpServletResponse response) throws IOException {
         if (scale == null){
             scale = 2f;

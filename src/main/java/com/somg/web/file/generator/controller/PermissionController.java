@@ -7,6 +7,8 @@ import com.somg.web.file.generator.pojo.origin.Permission;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.constant.REnum;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("permission")
+@Api(tags = "权限模块")
 public class PermissionController {
 
     @Autowired
@@ -34,6 +37,7 @@ public class PermissionController {
     @SysListenLog(serverName = "权限服务", action = "权限列表[展示]")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionPage")
+    @ApiOperation(value = "权限列表[展示]")
     public R getPage(@RequestParam Map<String, Object> param){
 
         try{
@@ -61,6 +65,7 @@ public class PermissionController {
     @SysListenLog(serverName = "权限服务", action = "权限列表[授权]")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionList")
+    @ApiOperation(value = "权限列表[授权]")
     public R getList(){
 
         try{
@@ -90,6 +95,7 @@ public class PermissionController {
     @SysListenLog(serverName = "权限服务", action = "新增权限")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addPermission")
+    @ApiOperation(value = "新增权限")
     public R addPermission(@RequestBody Permission permission){
         try{
 
@@ -115,6 +121,7 @@ public class PermissionController {
     @SysListenLog(serverName = "权限服务", action = "编辑权限")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     @PostMapping("editPermission")
+    @ApiOperation(value = "编辑权限")
     public R editPermission(@RequestBody Permission permission){
 
         try{
@@ -142,6 +149,7 @@ public class PermissionController {
     @SysListenLog(serverName = "权限服务", action = "删除权限")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deletePermission")
+    @ApiOperation(value = "删除权限")
     public R deletePermission(@RequestBody Permission permission){
 
         try{

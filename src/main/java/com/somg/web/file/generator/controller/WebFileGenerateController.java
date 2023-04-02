@@ -4,6 +4,8 @@ import com.somg.web.file.generator.action.UserFileService;
 import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.utils.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("somg")
+@Api(tags = "上传模块")
 public class WebFileGenerateController {
 
     @Autowired
@@ -39,6 +42,7 @@ public class WebFileGenerateController {
      */
     @PostMapping("web-file-generate/simple")
     @ResponseBody
+    @ApiOperation(value = "单文件上传[开放]")
     public R webFileSingleGenerateSimple(@RequestBody MultipartFile file) {
 
         return fileUpload.build().singleFileUpload(file);
@@ -55,6 +59,7 @@ public class WebFileGenerateController {
      */
     @SysListenLog(serverName = "上传服务", action = "上传单文件")
     @PostMapping("web-file-generate/single")
+    @ApiOperation(value = "单文件上传[需要认证]")
     @ResponseBody
     public R webFileSingleGenerate(@RequestBody MultipartFile file) {
 
@@ -71,6 +76,7 @@ public class WebFileGenerateController {
      */
     @SysListenLog(serverName = "上传服务", action = "批量上传")
     @PostMapping("web-file-generate/multi")
+    @ApiOperation(value = "批量文件上传[需要认证]")
     @ResponseBody
     public R webFileMultiGenerate(@RequestBody List<MultipartFile> files){
 

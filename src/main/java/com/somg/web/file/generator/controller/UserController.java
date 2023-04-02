@@ -10,6 +10,7 @@ import com.somg.web.file.generator.vo.UserLoginVo;
 import com.somg.web.file.generator.vo.UserVo;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;
+import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/3/20 16:21
  * @do 用户控制器
  */
+@Api(tags = "用户模块")
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -66,6 +68,7 @@ public class UserController {
      * @throws IOException
      */
     @GetMapping("captcha")
+    @ApiOperation(value = "获取验证码")
     public void getCaptcha(
             HttpServletResponse httpServletResponse,
             HttpServletRequest httpServletRequest) throws IOException {
@@ -213,6 +216,7 @@ public class UserController {
     @SysListenLog(serverName = "用户模块", action = "用户列表")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("userPage")
+    @ApiOperation(value = "获取用户分页数据")
     public R getUserPage(@RequestParam Map<String, Object> params){
 
         try{
@@ -242,6 +246,7 @@ public class UserController {
     @SysListenLog(serverName = "用户服务", action = "添加用户")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('add')")
     @PostMapping("addUser")
+    @ApiOperation(value = "添加用户")
     public R addUser(@RequestBody User user){
 
         try{
@@ -268,6 +273,7 @@ public class UserController {
     @SysListenLog(serverName = "用户服务", action = "编辑用户")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     @PostMapping("editUser")
+    @ApiOperation(value = "修改用户")
     public R editUser(@RequestBody UserVo userVo){
 
         try{
@@ -305,6 +311,7 @@ public class UserController {
     @SysListenLog(serverName = "用户服务", action = "删除用户")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
     @PostMapping("deleteUser")
+    @ApiOperation(value = "删除用户[物理]")
     public R deleteUser(@RequestBody User user){
 
         try{
@@ -334,6 +341,7 @@ public class UserController {
      * @return
      */
     @PostMapping("register")
+    @ApiOperation(value = "用户注册")
     public R userRegister(@RequestBody User user){
 
         try{
@@ -357,6 +365,7 @@ public class UserController {
      * @return
      */
     @PostMapping("alterPwd")
+    @ApiOperation(value = "修改密码")
     public R userAlterPwd(@RequestBody User user){
 
         try {
@@ -385,6 +394,7 @@ public class UserController {
     @SysListenLog(serverName = "用户服务", action = "修改用户角色")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("roleList")
+    @ApiOperation(value = "获取用户角色信息")
     public R roleList(@RequestParam Long id){
 
         try {
@@ -425,6 +435,7 @@ public class UserController {
     @SysListenLog(serverName = "用户服务", action = "修改用户权限")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
     @GetMapping("permissionList")
+    @ApiOperation(value = "获取用户权限信息")
     public R permissionList(@RequestParam Long id){
         try {
             List<Long> permissionIdList = userPermissionService.selectByUserId(id);

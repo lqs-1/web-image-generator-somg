@@ -4,6 +4,8 @@ import com.somg.web.file.generator.action.UserFileService;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.StatisticalDataVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("allStatistical")
+@Api(tags = "数据统计模块")
 public class StatisticalController {
 
     @Autowired
@@ -31,6 +34,7 @@ public class StatisticalController {
      * @return
      */
     @GetMapping("allStatisticalData")
+    @ApiOperation(value = "所有数据统计[用户/所有用户]")
     public R requestAllStatisticalData(@RequestParam Boolean currentUser){
         try {
 

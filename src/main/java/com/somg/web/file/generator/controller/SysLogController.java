@@ -5,6 +5,8 @@ import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("sysLog")
+@Api(tags = "日志模块")
 public class SysLogController {
 
     @Autowired
@@ -34,6 +37,7 @@ public class SysLogController {
      */
     @PreAuthorize("hasAnyRole('supermanager') and hasAuthority('select')")
     @GetMapping("logPage")
+    @ApiOperation(value = "获取系统日志")
     public R getLogPage(@RequestParam Map<String, Object> params){
 
         try{

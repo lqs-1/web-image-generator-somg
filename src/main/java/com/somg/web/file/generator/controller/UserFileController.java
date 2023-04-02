@@ -6,6 +6,8 @@ import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.pojo.origin.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("storage")
+@Api(tags = "用户文件模块")
 public class UserFileController {
 
 
@@ -33,6 +36,7 @@ public class UserFileController {
      * @return
      */
     @SysListenLog(serverName = "文件服务", action = "所有文件列表[用户]")
+    @ApiOperation(value = "所有文件列表[用户]")
     @GetMapping("allFilePage")
     public R requestFilePage(@RequestParam Map<String, Object> params){
         try {
@@ -57,6 +61,7 @@ public class UserFileController {
     @SysListenLog(serverName = "文件服务", action = "所有文件列表[所有]")
     @GetMapping("superAdminAllFilePage")
     @PreAuthorize("hasAnyRole('supermanager')")
+    @ApiOperation(value = "所有文件列表[所有]")
     public R superAdminAllFilePage(@RequestParam Map<String, Object> params){
         try {
             PageUtils allFileList = userFileService.superAdminAllFilePage(params);
@@ -80,6 +85,7 @@ public class UserFileController {
      */
     @SysListenLog(serverName = "上传服务", action = "删除文件")
     @PostMapping("deleteFile")
+    @ApiOperation(value = "删除文件")
     public R deleteFile(@RequestBody UserFile userFile){
 
         return userFileService.deleteFile(userFile);
@@ -92,6 +98,7 @@ public class UserFileController {
      */
     @SysListenLog(serverName = "文件服务", action = "所有图片列表[用户]")
     @GetMapping("allImagePage")
+    @ApiOperation(value = "所有图片列表[用户]")
     public R requestAllImageFiles(@RequestParam Map<String, Object> params){
 
         try{
@@ -116,6 +123,7 @@ public class UserFileController {
      */
     @SysListenLog(serverName = "文件服务", action = "所有视频列表[用户]")
     @GetMapping("allVideoPage")
+    @ApiOperation(value = "所有视频列表[用户]")
     public R requestAllVideoFiles(@RequestParam Map<String, Object> params){
 
         try{
@@ -140,6 +148,7 @@ public class UserFileController {
      */
     @SysListenLog(serverName = "文件服务", action = "所有音频列表[用户]")
     @GetMapping("allAudioPage")
+    @ApiOperation(value = "所有音频列表[用户]")
     public R requestAllAudioFiles(@RequestParam Map<String, Object> params){
 
         try{
