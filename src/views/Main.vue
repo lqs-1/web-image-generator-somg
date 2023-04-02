@@ -27,7 +27,7 @@
           </div>
       </el-header>
       <el-container>
-        <el-aside width="300px" style="background-image: linear-gradient(to bottom, #bf30ac 0%, #0f9d58 100%);">
+        <el-aside width="300px" style="background-color: #245953;">
           <el-menu @select="userItemHandler"
                    background-color="#282726"
                    text-color="#fff"
