@@ -75,7 +75,6 @@ export default {
   position: fixed;
   background-size:100% 100%;
   background-repeat: space;
-  background-image: url("../../../public/images/background.jpeg");
 }
 
 .loginFormTable{

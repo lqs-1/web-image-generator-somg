@@ -105,15 +105,13 @@ export default {
 </script>
 
 <style scoped>
-  .main{
-    width:100%;
-    height:100%;
+  .main {
+    width: 100%;
+    height: 100%;
     position: fixed;
-    background-size:100% 100%;
+    background-size: 1000% 100%;
     background-repeat: space;
-    background-image: url("/public/images/background.jpeg");
   }
-
   .loginFormTable{
     border-radius: 15px;
     background-clip: padding-box;
@@ -127,9 +125,5 @@ export default {
   .loginTitle{
     margin: 0 auto 40px auto;
     text-align: center;
-  }
-  .remember{
-    text-align: left;
-    margin: 0 0 15px 0;
   }
 </style>

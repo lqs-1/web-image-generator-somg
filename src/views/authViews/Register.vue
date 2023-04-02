@@ -84,7 +84,6 @@ export default {
   position: fixed;
   background-size:100% 100%;
   background-repeat: space;
-  background-image: url("../../../public/images/background.jpeg");
 }
 
 .loginFormTable{
@@ -101,8 +100,5 @@ export default {
   margin: 0 auto 40px auto;
   text-align: center;
 }
-.remember{
-  text-align: left;
-  margin: 0 0 15px 0;
-}
+
 </style>
