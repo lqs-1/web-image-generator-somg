@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_3306
+ Source Server         : 888
  Source Server Type    : MySQL
- Source Server Version : 80031 (8.0.31)
- Source Host           : localhost:3306
+ Source Server Version : 80032 (8.0.32-0ubuntu0.20.04.2)
+ Source Host           : 192.227.225.111:3306
  Source Schema         : storage
 
  Target Server Type    : MySQL
- Target Server Version : 80031 (8.0.31)
+ Target Server Version : 80032 (8.0.32-0ubuntu0.20.04.2)
  File Encoding         : 65001
 
- Date: 01/04/2023 15:29:14
+ Date: 08/04/2023 10:19:44
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,7 @@ CREATE TABLE `file_location`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `imagePath` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of file_location
@@ -42,7 +42,7 @@ CREATE TABLE `menus`  (
   `menuName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `parentIndex` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menus
@@ -107,7 +107,7 @@ CREATE TABLE `sys_log`  (
   `serverName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`, `userId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_log
@@ -145,6 +145,10 @@ INSERT INTO `sys_log` VALUES (30, 23, 'lqs', '2023-04-01 15:25:35', '文件服�
 INSERT INTO `sys_log` VALUES (31, 23, 'lqs', '2023-04-01 15:25:37', '日志服务', '日志列表');
 INSERT INTO `sys_log` VALUES (32, 23, 'lqs', '2023-04-01 15:25:42', '用户模块', '用户列表');
 INSERT INTO `sys_log` VALUES (33, 23, 'lqs', '2023-04-01 15:25:44', '日志服务', '日志列表');
+INSERT INTO `sys_log` VALUES (34, 23, 'lqs', '2023-04-08 18:11:49', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (35, 23, 'lqs', '2023-04-08 18:11:59', '上传服务', '删除文件');
+INSERT INTO `sys_log` VALUES (36, 23, 'lqs', '2023-04-08 18:12:00', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (37, 23, 'lqs', '2023-04-08 18:12:05', '文件服务', '所有视频列表[用户]');
 
 -- ----------------------------
 -- Table structure for user
@@ -182,7 +186,7 @@ CREATE TABLE `user_file`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fru`(`userId` ASC) USING BTREE,
   CONSTRAINT `fru` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 421 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 421 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_file
@@ -219,7 +223,7 @@ INSERT INTO `user_file` VALUES (416, 23, 'public/2023-03-23/8e69bd8e965b47a591d1
 INSERT INTO `user_file` VALUES (417, 23, 'public/2023-03-23/a431b50c2a0e4b46bf49a7a0a8649f0c.jpg', 'image/jpeg', 0, '2023-03-23 15:41:07', 'demo');
 INSERT INTO `user_file` VALUES (418, 23, 'public/2023-03-23/664c1cd9b40243ae8531e0beb4e9687b.jpg', 'image/jpeg', 0, '2023-03-23 15:42:03', 'demo');
 INSERT INTO `user_file` VALUES (419, 23, 'public/2023-03-23/0486319a60804072bad7a9de80c41d9e.jpg', 'image/jpeg', 0, '2023-03-23 15:45:33', 'demo');
-INSERT INTO `user_file` VALUES (420, 23, 'public/2023-03-23/e0bd9171c8ff425f87a329207505ee84.jpg', 'image/jpeg', 0, '2023-03-23 15:53:08', '6');
+INSERT INTO `user_file` VALUES (420, 23, 'public/2023-03-23/e0bd9171c8ff425f87a329207505ee84.jpg', 'image/jpeg', 1, '2023-03-23 15:53:08', '6');
 
 -- ----------------------------
 -- Table structure for user_menu
@@ -234,7 +238,7 @@ CREATE TABLE `user_menu`  (
   INDEX `mrm`(`menuId` ASC) USING BTREE,
   CONSTRAINT `mrm` FOREIGN KEY (`menuId`) REFERENCES `menus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `urm` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 259 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 259 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_menu
@@ -287,7 +291,7 @@ CREATE TABLE `user_permission`  (
   INDEX `urp`(`userId` ASC) USING BTREE,
   CONSTRAINT `prp` FOREIGN KEY (`permissionId`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `urp` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_permission

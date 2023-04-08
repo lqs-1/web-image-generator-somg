@@ -27,7 +27,7 @@ public class AutoCleanLocalImageScheduled {
 
 
     @Async
-    @Scheduled(cron = "*/30 * * * * ?")
+    @Scheduled(cron = "0 0 17 ? * 5") // 每周五下午5点执行一次
     public void autoCleanLocalImageScheduled(){
         try {
             log.info("清除被处理的图片开始了");
