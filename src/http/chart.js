@@ -7,7 +7,7 @@ import { Message } from 'element-ui'
 // 创建axios实例
 var instance =  axios.create({
     baseURL: 'http://nobibibi.top:5000/', // 添加基本地址
-    timeout: 50000, // 所有请求在超时前等待1秒
+    // baseURL: 'http://127.0.0.1:5000/', // 添加基本地址
 })
 
 export default instance
