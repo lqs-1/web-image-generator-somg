@@ -42,7 +42,7 @@ export default {
     return{
       buttonName: "获取验证码",
       disable: false,
-      count: 300,
+      count: 60,
       loading: false,
       registerForm:{
         username: "",
@@ -72,7 +72,7 @@ export default {
         if (this.count < 1) {
           this.disable = false;
           this.buttonName = "获取验证码";
-          this.count = 120;
+          this.count = 60;
           clearInterval(timeout);
         } else {
           this.disable = true;
