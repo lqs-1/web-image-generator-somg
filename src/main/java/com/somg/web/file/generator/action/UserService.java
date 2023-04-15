@@ -28,7 +28,7 @@ public interface UserService extends IService<User> {
 
     void deleteUserById(Long id);
 
-    R alterPwdByUserName(User user);
+    R alterPwdByUserNameAndEmail(User user);
 
     User selectUserByName(String username);
 

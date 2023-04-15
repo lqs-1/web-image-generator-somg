@@ -1,9 +1,12 @@
 package com.somg.web.file.generator.controller;
 
+import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.action.*;
 import com.somg.web.file.generator.annotation.SysListenLog;
+import com.somg.web.file.generator.config.EmailCodeClient;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.pojo.origin.*;
+import com.somg.web.file.generator.utils.GenerateValidateCodeUtils;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.UserLoginVo;
@@ -17,10 +20,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.AddressException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +66,10 @@ public class UserController {
     private RedisTemplate redisTemplate;
 
 
+    @Autowired
+    private EmailCodeClient emailCodeClient;
+
+
     /**
      * 图像验证码
      * @param httpServletResponse
@@ -97,6 +106,32 @@ public class UserController {
         outputStream.flush();
 
         outputStream.close();
+    }
+
+
+    @GetMapping("email")
+    @ApiOperation(value = "获取邮箱验证码")
+    public R getEmailValidate(@RequestParam(value = "email", required = true) String email) throws AddressException, UnsupportedEncodingException {
+
+        // 验证验证码是否已经存在
+        String code = (String) redisTemplate.opsForValue().get(emailCodeClient.getEmailProperties().getCacheKeyPrefix() + email);
+        // 如若已经有验证码，直接返回错误错误消息，发送频繁
+        if (!StringUtils.isNullOrEmpty(code)){
+            return R.error(REnum.EMAIL_VALIDATE_SEND_FAST.getStatusCode(),
+                    REnum.EMAIL_VALIDATE_SEND_FAST.getStatusMsg());
+        }
+
+        // 生成验证码
+        String validateCode = GenerateValidateCodeUtils.generateEmailCodeNumber(7);
+
+        R emailResult = emailCodeClient.sendEmailCode(email, validateCode, false);
+
+        if (emailResult.parseCode() >= 10000 && emailResult.parseCode() < 20000){
+            redisTemplate.opsForValue().set(emailCodeClient.getEmailProperties().getCacheKeyPrefix() + email, validateCode, emailCodeClient.getEmailProperties().getExpireTime(), TimeUnit.SECONDS);
+        }
+
+        return emailResult;
+
     }
 
 
@@ -343,6 +378,15 @@ public class UserController {
     @PostMapping("register")
     @ApiOperation(value = "用户注册")
     public R userRegister(@RequestBody User user){
+        // 获取验证码
+        String realValidateCode = (String) redisTemplate.opsForValue().get(emailCodeClient.getEmailProperties().getCacheKeyPrefix() + user.getEmail());
+        // 验证码
+        if (!realValidateCode.toLowerCase().equals(user.getEmailCode().toLowerCase())){
+            return R.error(REnum.EMAIL_VALIDATE_ERROR.getStatusCode(),
+                    REnum.EMAIL_VALIDATE_ERROR.getStatusMsg());
+        }
+        // 删除验证码
+        redisTemplate.delete(emailCodeClient.getEmailProperties().getCacheKeyPrefix() + user.getEmail());
 
         try{
 
@@ -368,9 +412,20 @@ public class UserController {
     @ApiOperation(value = "修改密码")
     public R userAlterPwd(@RequestBody User user){
 
+        // 获取验证码
+        String realValidateCode = (String) redisTemplate.opsForValue().get(emailCodeClient.getEmailProperties().getCacheKeyPrefix() + user.getEmail());
+        // 验证码
+        if (!realValidateCode.toLowerCase().equals(user.getEmailCode().toLowerCase())){
+            return R.error(REnum.EMAIL_VALIDATE_ERROR.getStatusCode(),
+                    REnum.EMAIL_VALIDATE_ERROR.getStatusMsg());
+        }
+        // 删除验证码
+        redisTemplate.delete(emailCodeClient.getEmailProperties().getCacheKeyPrefix() + user.getEmail());
+
+
         try {
 
-            R result = userService.alterPwdByUserName(user);
+            R result = userService.alterPwdByUserNameAndEmail(user);
 
             return result;
 

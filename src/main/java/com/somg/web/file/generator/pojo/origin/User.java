@@ -20,8 +20,13 @@ public class User {
     private String password;
     private Date createTime;
     private Date loginTime;
+    private String sex;
+    private String email;
+
     @TableField(exist = false)
     private String token;
-    private String sex;
+
+    @TableField(exist = false)
+    private String emailCode;
 
 }

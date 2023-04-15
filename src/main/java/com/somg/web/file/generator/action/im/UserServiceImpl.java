@@ -215,7 +215,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     @Transactional(readOnly = false)
-    public R alterPwdByUserName(User user) {
+    public R alterPwdByUserNameAndEmail(User user) {
 
         User userByUserName = this.baseMapper.getUserByUserName(user.getUsername());
 
@@ -224,6 +224,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return R.error(REnum.USER_DOES_NOT_EXIST.getStatusCode(),
                     REnum.USER_DOES_NOT_EXIST.getStatusMsg());
 
+        }
+
+        if (!user.getEmail().equals(userByUserName.getEmail())){
+            return R.error(REnum.USER_VALID_ERROR.getStatusCode(),
+                    REnum.USER_VALID_ERROR.getStatusMsg());
         }
 
         String password = user.getPassword();

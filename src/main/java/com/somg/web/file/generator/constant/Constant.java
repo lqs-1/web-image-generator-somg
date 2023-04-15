@@ -40,6 +40,7 @@ public class Constant {
     public static final String COMMON_MENU_AUTH_THREE = "image";
 
 
+
     // 图片的contentType
     public static final String[] IMAGE_CONTENT_TYPES
             = {

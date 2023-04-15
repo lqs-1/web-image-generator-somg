@@ -123,6 +123,14 @@ public enum REnum {
 
     FILE_UPLOAD_SUCCESS(11032, "文件上传成功"),
 
+    EMAIL_VALIDATE_CODE_SEND_SUCCESS(11033, "邮箱验证码发送成功,有效时间5分钟"),
+    EMAIL_VALIDATE_CODE_SEND_FAIL(21033, "邮箱验证码发送失败"),
+
+    EMAIL_VALIDATE_SEND_FAST(21034, "发送验证码过于频繁"),
+    EMAIL_VALIDATE_ERROR(21035, "验证码错误"),
+
+    USER_VALID_ERROR(21036, "用户验证错误"),
+
 
     ;
 
