@@ -49,7 +49,7 @@ public class ImageController {
 
     @PostMapping("image")
     @ResponseBody
-    @ApiOperation(value = "图片缩放图片上传[开放]")
+    @ApiOperation(value = "图片缩放图片上传")
     @SysListenLog(serverName = "图片服务", action = "上传缩放图片")
     public R image(@RequestBody MultipartFile image, HttpServletResponse response) throws IOException {
 
