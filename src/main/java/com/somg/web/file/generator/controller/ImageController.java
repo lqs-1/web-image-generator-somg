@@ -50,6 +50,7 @@ public class ImageController {
     @PostMapping("image")
     @ResponseBody
     @ApiOperation(value = "图片缩放图片上传[开放]")
+    @SysListenLog(serverName = "图片服务", action = "上传缩放图片")
     public R image(@RequestBody MultipartFile image, HttpServletResponse response) throws IOException {
 
         // 将图形按原图缩放并保存
@@ -78,7 +79,6 @@ public class ImageController {
      * @throws IOException
      */
 
-    @SysListenLog(serverName = "图片服务", action = "生成缩放图片")
     @GetMapping("scale")
     @ApiOperation(value = "图片缩放[开放]")
     public void imageScale(ScaleVo scale, HttpServletResponse response) throws IOException {
