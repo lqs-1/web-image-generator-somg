@@ -15,6 +15,7 @@
               ref="uploadSingle"
               :headers="header"
               name="file"
+              :limit="1"
               align="center"
               :action="singleUploadUrl"
               :on-success="uploadSuccess">
@@ -27,6 +28,7 @@
                          drag
                          ref="uploadMulti"
                          align="center"
+                        :limit="10"
                          :action="multiUploadUrl"
                          name="files"
                          :headers="header"
