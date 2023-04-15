@@ -18,6 +18,10 @@
               <el-input type="password" v-model="userForm.password"></el-input>
             </el-form-item>
 
+            <el-form-item label="邮箱" prop="email">
+              <el-input type="email" v-model="userForm.email"></el-input>
+            </el-form-item>
+
             <el-form-item label="性别" prop="sex">
               <el-select v-model="userForm.sex" placeholder="请选择">
                 <el-option label="男" value="男"></el-option>
@@ -283,12 +287,14 @@ export default {
         id: "",
         username: "",
         password: "",
-        sex: ""
+        sex: "",
+        email:""
       },
       rules: {
         username: [{required: true, message: '请输入用户名', trigger: "blur"}],
         password: [{required: true, message: '请输入密码', trigger: "blur"}],
-        sex: [{required: true, message: '请选择性别', trigger: "blur"}]
+        sex: [{required: true, message: '请选择性别', trigger: "blur"}],
+        email: [{required: true, message: '邮箱必填', trigger: "blur"}]
       },
       pagination: {
         // 每页多找个

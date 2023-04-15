@@ -16,7 +16,17 @@
         <el-input type="password" v-model="resetForm.password" auto-complete="false" placeholder="请输入新的密码"/>
       </el-form-item>
 
+      <el-form-item prop="email">
+        <el-input type="email" v-model="resetForm.email" auto-complete="false" placeholder="请输入邮箱"style="width: 230px"/>
+        <el-button type="primary" style="margin-left: 5px" @click="toEmailCode" :disabled="disable">{{ buttonName }}</el-button>
+      </el-form-item>
+      <el-form-item prop="emailCode">
+        <el-input type="text" v-model="resetForm.emailCode" auto-complete="false" placeholder="请输入验证码"/>
+      </el-form-item>
+
       <el-button type="primary" style="width: 100%" @click="toAlter">修改密码</el-button>
+      <hr>
+      <el-button type="primary" style="width: 100%" @click="toLogin">去登录</el-button>
     </el-form>
   </div>
 </template>
@@ -26,14 +36,21 @@ export default {
   name: "Reset",
   data(){
     return{
+      buttonName: "获取验证码",
+      disable: false,
+      count: 300,
       loading: false,
       resetForm:{
         username: "",
         password: "",
+        emailCode: "",
+        email:""
       },
       rules:{
         username: [{required: true, message: '请输入用户名', trigger:"blur"}],
         password: [{required: true, message: '请输入密码', trigger:"blur"}],
+        email: [{required: true, message: '邮箱必填', trigger:"blur"}],
+        emailCode: [{required: true, message: '验证码必填', trigger:"blur"}],
       }
     }
   },
@@ -43,6 +60,29 @@ export default {
   },
 
   methods:{
+
+    toLogin(){
+      this.$router.replace("/")
+    },
+
+
+    toEmailCode() {
+      var timeout= setInterval(() => {
+        if (this.count < 1) {
+          this.disable = false;
+          this.buttonName = "获取验证码";
+          this.count = 120;
+          clearInterval(timeout);
+        } else {
+          this.disable = true;
+          this.buttonName = this.count-- + "s后重发";
+        }
+      }, 1000);
+
+      this.httpRequest("/user/email?email=" + this.resetForm.email)
+    },
+
+
     toAlter(){
       this.$refs.form.validate((valid) => {
         if (valid){

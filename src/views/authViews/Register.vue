@@ -15,6 +15,13 @@
       <el-form-item prop="password">
         <el-input type="password" v-model="registerForm.password" auto-complete="false" placeholder="请输入密码"/>
       </el-form-item>
+      <el-form-item prop="email">
+        <el-input type="email" v-model="registerForm.email" auto-complete="false" placeholder="请输入邮箱"style="width: 230px"/>
+        <el-button type="primary" style="margin-left: 5px" @click="toEmailCode" :disabled="disable">{{ buttonName }}</el-button>
+      </el-form-item>
+      <el-form-item prop="emailCode">
+        <el-input type="text" v-model="registerForm.emailCode" auto-complete="false" placeholder="请输入验证码"/>
+      </el-form-item>
       <el-form-item label="性别" prop="sex">
         <el-select v-model="registerForm.sex" placeholder="请选择">
           <el-option label="男" value="男"></el-option>
@@ -22,6 +29,8 @@
         </el-select>
       </el-form-item>
       <el-button type="primary" style="width: 100%" @click="registerHandler">注册</el-button>
+      <hr>
+      <el-button type="primary" style="width: 100%" @click="toLogin">去登录</el-button>
     </el-form>
   </div>
 </template>
@@ -31,17 +40,24 @@ export default {
   name: "Register",
   data(){
     return{
+      buttonName: "获取验证码",
+      disable: false,
+      count: 300,
       loading: false,
       registerForm:{
         username: "",
         password: "",
-        sex: ""
+        sex: "",
+        email: "",
+        emailCode:""
       },
 
       rules:{
         username: [{required: true, message: '请输入用户名', trigger:"blur"}],
         password: [{required: true, message: '请输入密码', trigger:"blur"}],
-        sex: [{required: true, message: '性别不能为空', trigger:"blur"}]
+        sex: [{required: true, message: '性别不能为空', trigger:"blur"}],
+        email: [{required: true, message: '邮箱不能为空', trigger:"blur"}],
+        emailCode: [{required: true, message: '验证码不能为空', trigger:"blur"}]
       }
     }
   },
@@ -51,7 +67,24 @@ export default {
   },
 
   methods:{
-    // 登录请求
+    toEmailCode() {
+      var timeout= setInterval(() => {
+        if (this.count < 1) {
+          this.disable = false;
+          this.buttonName = "获取验证码";
+          this.count = 120;
+          clearInterval(timeout);
+        } else {
+          this.disable = true;
+          this.buttonName = this.count-- + "s后重发";
+        }
+      }, 1000);
+
+      this.httpRequest("/user/email?email=" + this.registerForm.email)
+    },
+
+
+    // 注册
     registerHandler(){
       this.$refs.form.validate((valid) => {
         if (valid){
@@ -71,6 +104,10 @@ export default {
           this.$router.replace("/register")
         }
       })
+    },
+
+    toLogin(){
+      this.$router.replace("/")
     },
   }
 
