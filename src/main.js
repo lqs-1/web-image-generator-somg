@@ -27,7 +27,7 @@ import httpRequest from './http/index'
 Vue.prototype.httpRequest = httpRequest
 
 // axios挂载 chart系统
-import chart from "@/http/chart";
+import chart from "@/http/chat";
 Vue.prototype.chart = chart
 
 // 导入vuex

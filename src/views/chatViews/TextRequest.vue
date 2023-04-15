@@ -5,13 +5,8 @@
       <ul v-for="sessson in sessionList" :key="sessson.request">
         <li style="list-style-type: none;margin-bottom: 5px;border-radius:5px; margin-top: 5px;width: 95%;background-color: #B45B3E">问：{{sessson.request}}</li>
 
-        <li style="list-style-type: none;border-radius:5px; margin-top: 5px;width: 95%;background-color: #00B271">答:<vue-markdown>{{sessson.response}}</vue-markdown></li>
-        <el-button
-            size="mini"
-            v-clipboard:copy="sessson.response"
-            v-clipboard:success="onCopy">
-          复制
-        </el-button>
+        <li  v-clipboard:copy="sessson.response" v-clipboard:success="onCopy" style="list-style-type: none;border-radius:5px; margin-top: 5px;width: 95%;background-color: #00B271">答:<vue-markdown>{{sessson.response}}</vue-markdown></li>
+
       </ul>
 
     </div>

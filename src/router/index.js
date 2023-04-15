@@ -17,7 +17,8 @@ import VideoList from "@/views/storageViews/VideoList"
 import MenuList from "@/views/userViews/MenuList"
 import Resource from "@/views/userViews/Resource";
 import SysLogList from "@/views/userViews/SysLogList";
-import TextRequest from "@/views/chartViews/TextRequest";
+import TextRequest from "@/views/chatViews/TextRequest";
+import Scale from "@/views/imageViews/Scale";
 
 // 自己定义的请求包。只能在组件中使用，如果非要在这里使用，必须引入
 
@@ -26,6 +27,7 @@ Vue.use(VueRouter)
 
 
 const routes = [
+    // 登录相关路由-单独的
   {
     path: '/',
     name: 'login',
@@ -44,6 +46,9 @@ const routes = [
     name: "reset",
     component: Reset
   },
+
+
+    // 首页内嵌路由
   {
     path: '/main',
     name: 'main',
@@ -57,12 +62,7 @@ const routes = [
 
 
 
-
-
-
-
-
-
+        // 用户和权限相关路由
       {
         path: '/user/permissionList',
         name: 'permissionList',
@@ -117,10 +117,7 @@ const routes = [
 
 
 
-
-
-
-
+        // 文件上传和查看相关路由
       {
         path: '/storage/fileList',
         name: 'fileList',
@@ -155,20 +152,36 @@ const routes = [
       },
 
 
-
+       //chatGPT相关路由
       {
-        path: '/chart/textRequest',
+        path: '/chatGPT/textRequest',
         name: 'textRequest',
         meta: {
           isLogin: true
         },
         component: TextRequest
+      },
+
+
+
+
+      // 图片处理路由
+      {
+        path: '/image/scale',
+        name: 'scale',
+        meta: {
+          isLogin: true
+        },
+        component: Scale
       }
 
 
 
     ]
   },
+
+
+    // 404路由
   {
     path: '*',
     name: '404',
