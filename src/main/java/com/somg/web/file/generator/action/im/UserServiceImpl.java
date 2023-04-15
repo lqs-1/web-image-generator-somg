@@ -143,6 +143,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         this.baseMapper.insert(user);
 
+        // 设置默认角色
         List<Role> roleList = roleService.selectCommonRole(Constant.COMMON_ROLE);
 
         List<Long> roleIds = new ArrayList<>();
@@ -154,6 +155,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         userRoleService.addUserRoleRenation(user.getId(),roleIds);
 
+        // 设置默认权限
         List<Permission> permissionList = permissionService.selectCommonPermission(Constant.COMMON_PERMISSION);
 
         List<Long> permissionIds = new ArrayList<>();
@@ -165,6 +167,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userPermissionService.addUserPermissionRelation(user.getId(), permissionIds);
 
 
+        // 设置默认菜单
         List<Long> commonMenuIds =  menuService.getCommonMenuIds();
 
         commonMenuIds.stream().forEach(commonMenuId -> {

@@ -121,6 +121,9 @@ public enum REnum {
     GET_LOG_LIST_SUCCESS(11031, "获取日志列表成功"),
     GET_LOG_LIST_FAIL(21038, "获取日志列表失败"),
 
+    FILE_UPLOAD_SUCCESS(11032, "文件上传成功"),
+
+
     ;
 
     private Integer statusCode;

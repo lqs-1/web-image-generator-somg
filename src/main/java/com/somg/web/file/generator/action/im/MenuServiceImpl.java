@@ -172,7 +172,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
     @Override
     public List<Long> getCommonMenuIds() {
 
-        return this.baseMapper.selectList(new LambdaQueryWrapper<Menus>().like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH)).stream().distinct()
+        return this.baseMapper.selectList(new LambdaQueryWrapper<Menus>()
+                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_ONE).or()
+                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_TWO).or()
+                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_THREE))
+                .stream().distinct()
                 .map(item -> item.getId()).collect(Collectors.toList());
     }
 

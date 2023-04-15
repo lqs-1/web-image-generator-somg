@@ -35,7 +35,10 @@ public class Constant {
     public static final String COMMON_PERMISSION = "select";
 
     // 添加默认菜单权限
-    public static final String COMMON_MENU_AUTH = "storage";
+    public static final String COMMON_MENU_AUTH_ONE = "storage";
+    public static final String COMMON_MENU_AUTH_TWO = "chatGPT";
+    public static final String COMMON_MENU_AUTH_THREE = "image";
+
 
     // 图片的contentType
     public static final String[] IMAGE_CONTENT_TYPES
