@@ -1,12 +1,12 @@
 package com.somg.web.file.generator.cloud.storage.abs.utils;
 
 import com.somg.web.file.generator.cloud.storage.abs.support.MinioFileStorageAbs;
+import com.somg.web.file.generator.cloud.storage.abs.utils.result.LocalFileResult;
+import com.somg.web.file.generator.cloud.storage.abs.utils.result.ScaleResult;
 import com.somg.web.file.generator.utils.R;
 import com.sun.istack.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -85,6 +85,17 @@ public class MinioFileStorage extends MinioFileStorageAbs {
     @Override
     public ScaleResult imageScale(InputStream imageInputStream, String uploadFileRealPath, Float scale) {
         return super.imageScale(imageInputStream, uploadFileRealPath, scale);
+    }
+
+    /**
+     *
+     * @param imageInputStream 图片的inputStream
+     * @param uploadFileRealPath 图片要上传的路径 [originFileName]
+     * @return
+     */
+    @Override
+    public LocalFileResult imageLocalUp(InputStream imageInputStream, String uploadFileRealPath) {
+        return super.imageLocalUp(imageInputStream, uploadFileRealPath);
     }
 
     /**

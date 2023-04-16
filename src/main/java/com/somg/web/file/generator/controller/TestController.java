@@ -6,8 +6,7 @@ import com.somg.web.file.generator.cloud.storage.abs.auto.QiniuProperties;
 import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.cloud.storage.abs.utils.OssFileStorage;
 import com.somg.web.file.generator.cloud.storage.abs.utils.QiniuFileStorage;
-import com.somg.web.file.generator.cloud.storage.abs.utils.ScaleResult;
-import com.somg.web.file.generator.pojo.FileLocation;
+import com.somg.web.file.generator.cloud.storage.abs.utils.result.ScaleResult;
 import com.somg.web.file.generator.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 

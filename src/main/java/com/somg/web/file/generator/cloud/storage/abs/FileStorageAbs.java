@@ -1,18 +1,18 @@
 package com.somg.web.file.generator.cloud.storage.abs;
 
 import com.somg.web.file.generator.cloud.storage.abs.exception.FIleLocalDealErrorException;
+import com.somg.web.file.generator.cloud.storage.abs.exception.FIleLocalUpErrorException;
 import com.somg.web.file.generator.cloud.storage.abs.itfce.FileStorage;
-import com.somg.web.file.generator.cloud.storage.abs.utils.ScaleResult;
+import com.somg.web.file.generator.cloud.storage.abs.utils.result.LocalFileResult;
+import com.somg.web.file.generator.cloud.storage.abs.utils.result.ScaleResult;
 import com.somg.web.file.generator.utils.R;
 import com.sun.istack.NotNull;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -43,9 +43,11 @@ public abstract class FileStorageAbs implements FileStorage {
     // 上传完成之后url列表
     protected List<String> fullUrlList = new ArrayList<String>();
 
-    // 在压缩的时候 先将文件保存到本地的路径 TODO 未做
-    protected String localFilePath = "/home/somg/img/";
+    // 缩放的时候缩放后的图片存放的本地目录
+    protected String localImageScalePath = "/home/somg/img/scale/";
 
+    // 图片上传本地存储的目录
+    protected String localImagePath = "/home/somg/img/local/";
 
 
     /**
@@ -68,7 +70,7 @@ public abstract class FileStorageAbs implements FileStorage {
 
 
     /**
-     * 对图片进行处理 TODO 并没有做 后面再加上下载功能 压缩功能
+     * 对图片进行处理 缩放
      * @param imageInputStream 图片的inputStream
      * @param uploadFileRealPath 图片要上传的路径 [originFileName]
      * @param scale 放大或者缩小 <1表示缩小 >1表示放大
@@ -77,33 +79,35 @@ public abstract class FileStorageAbs implements FileStorage {
      */
     public ScaleResult imageScale(InputStream imageInputStream, String uploadFileRealPath, Float scale) {
 
-        String contentPath = localFilePath + UUID.randomUUID().toString().replace("-", "") + uploadFileRealPath;
+        // 生成存储全路径 文件名UUID + 扩展名
+        String contentPath = localImageScalePath + UUID.randomUUID().toString().replace("-", "") + "." + StringUtils.getFilenameExtension(uploadFileRealPath);
 
-        //存的项目的中模版图片
+        //将上传的图片写入本地
         File localOriginImage = null;
-        //上传时从项目中拿到的图片
+        //将写入本地的图片再次读出
         File localDealImage = null;
 
-        //图片在项目中的地址(项目位置+图片名,带后缀名)
+        //图片在项目中的地址(项目位置) 这里如果文件不存在是不会创建的 要使用localDealImage.createNewFile();才会创建
         localOriginImage = new File(contentPath);
 
+        // 如果这个文件不存在
         if (!localOriginImage.exists()) {
-
-            //生成图片文件
+            //Thumbnails处理之后 生成图片文件
             try {
                 FileUtils.copyInputStreamToFile(imageInputStream, localOriginImage);
                 Thumbnails.of(contentPath)
                         .outputQuality(1.0f)
                         .scale(scale)
                         .outputFormat(contentPath.substring(contentPath.lastIndexOf("."))
-                                .replace(".", ""))
-                        .toFile(contentPath);
+                                .replace(".", "")) // 图片格式如 png jpg
+                        .toFile(contentPath); // 这个toFile会自动创建目录和文件
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new FIleLocalDealErrorException();
             }
         }
 
+        // 将这个创建好的图片读出
         localDealImage = new File(contentPath);
 
         // 填充返回对象
@@ -125,6 +129,55 @@ public abstract class FileStorageAbs implements FileStorage {
         return scaleResult;
 
     }
+
+
+    /**
+     * 图片上传存储到本地
+     * @param imageInputStream 图片的inputStream
+     * @param uploadFileRealPath 图片要上传的路径 [originFileName]
+     * @return
+     */
+    public LocalFileResult imageLocalUp(InputStream imageInputStream, String uploadFileRealPath){
+
+        // 生成存储全路径 文件名UUID + 扩展名
+        String contentPath = localImagePath + UUID.randomUUID().toString().replace("-", "") + "." + StringUtils.getFilenameExtension(uploadFileRealPath);
+
+        //将上传的图片写入本地
+        File localImageFile = null;
+
+        //图片在项目中的地址(项目位置+图片名,带后缀名) 这里如果文件不存在是不会创建的 要使用localDealImage.createNewFile();才会创建
+        localImageFile = new File(contentPath);
+
+        // 创建文件夹
+        new File(localImagePath).mkdirs();
+
+
+        LocalFileResult localFileResult = new LocalFileResult();
+
+        // 将文件创建
+        try {
+            // 将图片拷贝到本地文件中
+            FileUtils.copyInputStreamToFile(imageInputStream, localImageFile);
+            localImageFile.createNewFile();
+
+            FileInputStream inputStream = new FileInputStream(localImageFile);
+            byte[] data = new byte[inputStream.available()];
+            inputStream.read(data);
+            localFileResult.setData(data);
+            localFileResult.setInputStream(inputStream);
+            localFileResult.setImagePath(contentPath);
+
+            // 关闭之后才能让异步定时任务删除
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FIleLocalUpErrorException();
+        }
+
+        return localFileResult;
+    }
+
+
 
 
 

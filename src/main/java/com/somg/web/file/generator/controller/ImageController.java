@@ -3,7 +3,8 @@ package com.somg.web.file.generator.controller;
 import com.somg.web.file.generator.action.FileLocationAction;
 import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
-import com.somg.web.file.generator.cloud.storage.abs.utils.ScaleResult;
+import com.somg.web.file.generator.cloud.storage.abs.utils.result.LocalFileResult;
+import com.somg.web.file.generator.cloud.storage.abs.utils.result.ScaleResult;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.ScaleVo;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,13 +54,13 @@ public class ImageController {
     public R image(@RequestBody MultipartFile image, HttpServletResponse response) throws IOException {
 
         // 将图形按原图缩放并保存
-        ScaleResult scaleResult = fileUpload.build().imageScale(image.getInputStream(), image.getOriginalFilename(), 1f);
+        LocalFileResult localFileResult = fileUpload.build().imageLocalUp(image.getInputStream(), image.getOriginalFilename());
 
         // 保存文件的地址方便定时任务删除
-        fileLocationAction.addFileLocation(scaleResult.getImagePath());
+        fileLocationAction.addFileLocation(localFileResult.getImagePath());
 
         ScaleVo scaleVo = new ScaleVo();
-        scaleVo.setImagePath(scaleResult.getImagePath());
+        scaleVo.setImagePath(localFileResult.getImagePath());
         scaleVo.setContentType(image.getContentType());
 
         // 返回对应数据
