@@ -1,44 +1,32 @@
-# OpenAI API Quickstart - Python example app
+## 对接一个openAi的chatGPT聊天机器人Python版本
 
-This is an example pet name generator app used in the OpenAI API [quickstart tutorial](https://beta.openai.com/docs/quickstart). It uses the [Flask](https://flask.palletsprojects.com/en/2.0.x/) web framework. Check out the tutorial or follow the instructions below to get set up.
+### 创建虚拟环境
 
-## Setup
 
-1. If you don’t have Python installed, [install it from here](https://www.python.org/downloads/).
+```bash
+python -m venv venv
+venv/bin/activate # linux
+venv/Script/activate # windows
+```
 
-2. Clone this repository.
+### 安装依赖:
 
-3. Navigate into the project directory:
+```bash
+pip install -r requirements.txt
+```
 
-   ```bash
-   $ cd openai-quickstart-python
-   ```
+### 获取chatGPT的SecretKey
 
-4. Create a new virtual environment:
+7. [`点击获取SecretKey`](https://beta.openai.com/account/api-keys)
 
-   ```bash
-   $ python -m venv venv
-   $ . venv/bin/activate
-   ```
+### 运行
 
-5. Install the requirements:
+> 不推荐(不会开启自己配置的方式)
+```bash
+flask run
+```
 
-   ```bash
-   $ pip install -r requirements.txt
-   ```
-
-6. Make a copy of the example environment variables file:
-
-   ```bash
-   $ cp .env.example .env
-   ```
-
-7. Add your [API key](https://beta.openai.com/account/api-keys) to the newly created `.env` file.
-
-8. Run the app:
-
-   ```bash
-   $ flask run
-   ```
-
-You should now be able to access the app at [http://localhost:5000](http://localhost:5000)! For the full context behind this example app, check out the [tutorial](https://beta.openai.com/docs/quickstart).
+> 推荐
+```bash
+python app.py
+```

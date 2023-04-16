@@ -6,6 +6,9 @@ import datetime
 
 import requests
 from bs4 import BeautifulSoup
+import logging
+
+logging.getLogger()
 
 
 app = Flask(__name__)
@@ -19,7 +22,6 @@ def index():
     # 获取会话的问题数据
     data = request.get_json()
     # 请求chartGPT
-    print("eeee")
     try:
 
         chartResponse = openai.ChatCompletion.create(
