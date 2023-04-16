@@ -13,7 +13,7 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 # 配置日志记录器,指明日志保存的路径,每个日志文件的最大大小,保存的日志文件的个数上限
-file_log_error_handler = RotatingFileHandler(f"logs/chat/error_{time.strftime('%Y-%m-%d')}.log", maxBytes=1024*1024*100, backupCount=10)
+file_log_error_handler = RotatingFileHandler(f"/home/logs/chat/error_{time.strftime('%Y-%m-%d')}.log", maxBytes=1024*1024*100, backupCount=10)
 # file_log_all_handler = RotatingFileHandler(f"logs/all_{time.strftime('%Y-%m-%d')}.log", maxBytes=1024*1024*100, backupCount=10)
 # 配置写入等级
 file_log_error_handler.setLevel(logging.ERROR)
