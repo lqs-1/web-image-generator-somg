@@ -31,48 +31,48 @@
 
 
 <script>
-  export default {
-    name: "CnTouTiaoNews",
-    data() {
-      return {
-        newsList:[]
-      }
-    },
-
-    mounted() {
-
-    },
-
-    created() {
-      window.document.title = "头条热点要闻"
-      this.requestNewsList()
-    },
-
-    methods: {
-
-      requestNewsList(){
-        this.chart.get("/news/cnTouTiaoNews")
-            .then(resp =>{
-              if (resp.data.code == 200){
-                this.$message.success(resp.data.msg)
-                this.newsList = resp.data.resultList
-                this.requestText = ""
-              }else {
-                this.$message.error(resp.data.msg)
-              }
-            })
-      },
-
-
-
-      toShowNews(index, data) {
-        location.href = data.link
-      },
-
+export default {
+  name: "CnWeiBoHotSearch",
+  data() {
+    return {
+      newsList:[]
     }
+  },
 
+  mounted() {
+
+  },
+
+  created() {
+    window.document.title = "微博热搜榜"
+    this.requestNewsList()
+  },
+
+  methods: {
+
+    requestNewsList(){
+      this.chart.get("/news/cnWeiBoHotSearch")
+          .then(resp =>{
+            if (resp.data.code == 200){
+              this.$message.success(resp.data.msg)
+              this.newsList = resp.data.resultList
+              this.requestText = ""
+            }else {
+              this.$message.error(resp.data.msg)
+            }
+          })
+    },
+
+
+
+    toShowNews(index, data) {
+      location.href = data.link
+    },
 
   }
+
+
+}
 </script>
 
 <style scoped>

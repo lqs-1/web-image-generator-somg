@@ -22,6 +22,7 @@ import Scale from "@/views/imageViews/Scale";
 import CnPeopleNews from "@/views/newsViews/CnPeopleNews";
 import CnTouTiaoNews from "@/views/newsViews/CnTouTiaoNews";
 import CnJingJiItNews from "@/views/newsViews/CnJingJiItNews";
+import CnWeiBoHotSearch from "@/views/newsViews/CnWeiBoHotSearch";
 
 // 自己定义的请求包。只能在组件中使用，如果非要在这里使用，必须引入
 
@@ -208,6 +209,14 @@ const routes = [
         component: CnTouTiaoNews
       },
 
+      {
+        path: '/news/CnWeiBoHotSearch',
+        name: 'cnWeiBoHotSearch',
+        meta: {
+          isLogin: true
+        },
+        component: CnWeiBoHotSearch
+      },
 
 
     ]

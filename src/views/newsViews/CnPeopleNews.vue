@@ -65,7 +65,7 @@
     methods: {
 
       requestNewsList(){
-        this.chart.get("/cnPeopleNews")
+        this.chart.get("/news/cnPeopleNews")
             .then(resp =>{
               if (resp.data.code == 200){
                 this.$message.success(resp.data.msg)

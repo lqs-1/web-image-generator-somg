@@ -61,7 +61,7 @@
 
       onRequest(){
         this.isResponse = true
-        this.chart.post("/session", {"request": this.requestText})
+        this.chart.post("/chat/session", {"request": this.requestText})
             .then(resp =>{
               if (resp.data.code == 200){
                 this.$message.success(resp.data.msg)
