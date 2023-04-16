@@ -19,6 +19,9 @@ import Resource from "@/views/userViews/Resource";
 import SysLogList from "@/views/userViews/SysLogList";
 import TextRequest from "@/views/chatViews/TextRequest";
 import Scale from "@/views/imageViews/Scale";
+import CnPeopleNews from "@/views/newsViews/CnPeopleNews";
+import CnTouTiaoNews from "@/views/newsViews/CnTouTiaoNews";
+import CnJingJiItNews from "@/views/newsViews/CnJingJiItNews";
 
 // 自己定义的请求包。只能在组件中使用，如果非要在这里使用，必须引入
 
@@ -173,7 +176,37 @@ const routes = [
           isLogin: true
         },
         component: Scale
-      }
+      },
+
+
+
+      // 要闻综合路由
+      {
+        path: '/news/cnJingJiItNews',
+        name: 'cnJingJiItNews',
+        meta: {
+          isLogin: true
+        },
+        component: CnJingJiItNews
+      },
+
+      {
+        path: '/news/cnPeopleNews',
+        name: 'cnPeopleNews',
+        meta: {
+          isLogin: true
+        },
+        component: CnPeopleNews
+      },
+
+      {
+        path: '/news/cnTouTiaoNews',
+        name: 'cnTouTiaoNews',
+        meta: {
+          isLogin: true
+        },
+        component: CnTouTiaoNews
+      },
 
 
 

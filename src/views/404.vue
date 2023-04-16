@@ -19,7 +19,7 @@
     },
 
     created() {
-
+      window.document.title = "404"
 
     },
 
