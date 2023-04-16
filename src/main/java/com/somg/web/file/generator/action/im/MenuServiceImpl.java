@@ -175,7 +175,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
         return this.baseMapper.selectList(new LambdaQueryWrapper<Menus>()
                         .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_ONE).or()
                         .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_TWO).or()
-                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_THREE))
+                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_THREE).or()
+                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_FOUR))
                 .stream().distinct()
                 .map(item -> item.getId()).collect(Collectors.toList());
     }

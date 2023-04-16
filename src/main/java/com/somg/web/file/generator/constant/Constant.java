@@ -38,6 +38,7 @@ public class Constant {
     public static final String COMMON_MENU_AUTH_ONE = "storage";
     public static final String COMMON_MENU_AUTH_TWO = "chatGPT";
     public static final String COMMON_MENU_AUTH_THREE = "image";
+    public static final String COMMON_MENU_AUTH_FOUR = "news";
 
 
 
