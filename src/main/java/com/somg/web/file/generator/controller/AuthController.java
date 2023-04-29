@@ -40,7 +40,7 @@ public class AuthController {
     public R getRoleAuth(HttpServletRequest httpServletRequest){
         String token = httpServletRequest.getHeader("token");
 
-        List<String> roleList = (List<String>) redisTemplate.opsForValue().get(jwtToken.parseUsernameFormToken(token));
+        List<String> roleList = (List<String>) redisTemplate.opsForValue().get(jwtToken.parseSingleParamFormToken(token));
 
         // System.out.println("web层逻辑执行了");
 

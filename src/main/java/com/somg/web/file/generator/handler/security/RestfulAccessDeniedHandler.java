@@ -32,7 +32,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         // 从请求头中获取携带的token
         String token = request.getHeader("token");
-        String usrName = jwtToken.parseUsernameFormToken(token);
+        String usrName = jwtToken.parseSingleParamFormToken(token);
         log.info(usrName + " 访问路径 [" + request.getRequestURI() + "] 没有权限");
         ResponseUtils.out(response, R.error(REnum.NO_AUTH.getStatusCode(),REnum.NO_AUTH.getStatusMsg()));
     }

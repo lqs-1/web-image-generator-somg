@@ -114,6 +114,11 @@ public class Constant {
     public static final String RESPONSE_MSG_KEY = "msg";
 
 
+
+    // headers允许前端访问的header字段名
+    public static final String ACCESS_CONTROL_EXPOSE_HEADERS = "Access-Control-Expose-Headers";
+
+
     public static void main(String[] args) {
         System.out.println(Arrays.asList(IMAGE_CONTENT_TYPES).contains("image/jpeg"));
     }

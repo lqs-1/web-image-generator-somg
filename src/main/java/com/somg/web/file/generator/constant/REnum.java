@@ -131,6 +131,8 @@ public enum REnum {
 
     USER_VALID_ERROR(21036, "用户验证错误"),
 
+    AUTH_FAIL(21037, "认证失败,请重新登录")
+
 
     ;
 

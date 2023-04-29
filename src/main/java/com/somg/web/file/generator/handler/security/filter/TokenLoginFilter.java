@@ -2,7 +2,7 @@ package com.somg.web.file.generator.handler.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somg.web.file.generator.action.UserService;
-import com.somg.web.file.generator.annotation.SysListenLog;
+import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
 import com.somg.web.file.generator.pojo.SecurityUser;
@@ -21,6 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -113,20 +114,24 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = securityUser.getUsername();
 
         // 生成token
-        String token = jwtToken.createToken(username);
+        String token = jwtToken.createTokenSingleParamAsSub(username);
 
 
         // 权限存入redis
         List<String> permissionValueList = securityUser.getPermissionValueList();
         log.info(username + " 存权限");
 
-        redisTemplate.opsForValue().set(username, permissionValueList, JwtToken.expireTime, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(username, permissionValueList);
 
         List<MenuVo> menuVoList = securityUser.getMenuVoList();
 
         log.info(username + " 登录成功返回数据");
 
         userService.updateLoginTimeByUserName(username);
+
+        response.addHeader(jwtToken.authHeaderName, token);
+        response.addHeader(Constant.ACCESS_CONTROL_EXPOSE_HEADERS, jwtToken.authHeaderName);
+
 
         ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()).put("token", token).put("menus", menuVoList));
 

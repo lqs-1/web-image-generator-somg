@@ -48,7 +48,7 @@ public class LogoutSuccessHandler implements LogoutHandler {
 
         if (!StringUtils.isNullOrEmpty(token)){
             // 从token中解析出userName
-            String username = jwtToken.parseUsernameFormToken(token);
+            String username = jwtToken.parseSingleParamFormToken(token);
             // 删除redis中的权限数据
             redisTemplate.delete(username);
             log.info(username + " 退出登录了");
