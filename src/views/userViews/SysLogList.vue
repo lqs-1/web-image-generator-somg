@@ -124,7 +124,7 @@
             "&orderFiled=id" + "&keyword=" + this.keyword +
             "&orderType=1")
             .then(response => {
-              console.log(response)
+              // console.log(response)
               this.pagination.currentPage = response.data.logList.currentPage
               this.pagination.pageSize = response.data.logList.pageSize
               this.pagination.total = response.data.logList.totalSize

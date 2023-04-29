@@ -10,7 +10,7 @@ var instance =  axios.create({
     // baseURL: 'http://localhost:8888/', // 添加基本地址
     // timeout: 50000, // 所有请求在超时前等待1秒
     // headers: {'Authorization': 'hehe'}, // 添加请求头
-    // withCredentials: true // 请求的时候携带cookie
+    // withCredentials: true, // 请求的时候携带cookie header
 })
 
 
@@ -34,11 +34,19 @@ instance.interceptors.response.use(function (response) {
     // 表示请求是成功的
     if (response.status && response.status == 200){
         // 表示后台响应的状态也是成功状态
-
+        console.log(response.headers['auth'])
+        if (response.headers['auth'] != null){
+            localStorage.setItem("token", response.headers['auth'])
+        }
         if (response.data.code == 11001){
-
-            localStorage.setItem("token", response.data.token)
             localStorage.setItem("menus", JSON.stringify(response.data.menus))
+        }
+
+        if (response.data.code == 21037){
+            Message.error(response.data.msg)
+            localStorage.clear()
+            location.replace("/")
+            return ;
         }
 
         if (response.data.code == 0 || (response.data.code >= 10000 && response.data.code < 20000) || response.data.code == 1000){

@@ -118,6 +118,7 @@ export default {
     return {
       fileList: [],
       key:"",
+      deleteLoading: false,
 
       pagination: {
         // 每页多找个

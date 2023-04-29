@@ -75,6 +75,7 @@ export default {
       menus: [],
       token: null,
       activeIndex: '/index',
+      currentIndex: '/index',
     }
   },
 
@@ -94,7 +95,9 @@ export default {
   methods: {
     userItemHandler(index) {
       this.$router.push(index)
+      location.reload()
     },
+
 
     checkLogin() {
 
@@ -126,12 +129,8 @@ export default {
           this.$router.replace("/")
 
         })
-
-
       }
     },
-
-
   }
 
 

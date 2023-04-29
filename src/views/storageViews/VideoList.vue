@@ -124,6 +124,7 @@ export default {
       dialogVisible: false, // 视频播放弹窗
       playvideo: null, // 存储用户点击的视频播放链接
       playvideoName: null, // 存储正在播放视频的名称
+      deleteLoading: false,
 
       fileList: [],
 
