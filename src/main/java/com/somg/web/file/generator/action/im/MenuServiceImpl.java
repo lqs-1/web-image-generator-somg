@@ -176,7 +176,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
                         .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_ONE).or()
                         .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_TWO).or()
                         .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_THREE).or()
-                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_FOUR))
+                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_FOUR)
+                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_FIVE))
                 .stream().distinct()
                 .map(item -> item.getId()).collect(Collectors.toList());
     }
