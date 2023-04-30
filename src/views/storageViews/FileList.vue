@@ -3,7 +3,7 @@
     <el-button type="primary" icon="el-icon-circle-plus" circle class="uploadFiles" @click="showFileAddForm"></el-button>
 
     <el-dialog
-        title="上传图片"
+        title="文件上传"
         :visible="uploadFilesVisible"
         width="30%"
         :before-close="addHandleClose">

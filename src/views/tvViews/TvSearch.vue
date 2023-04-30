@@ -3,7 +3,7 @@
     <center>
       <div style="height: 5vh; width: 40%">
         <el-input placeholder="请输入影视名" v-model="searchKey" clearable @clear="clearListAndKey">
-          <el-button :loading="isResponse" slot="append" icon="el-icon-search" @click="getTvList">查询</el-button>
+          <el-button :loading="isResponse" slot="append" icon="el-icon-search" @click="getTvList">搜索</el-button>
         </el-input>
       </div>
     </center>
@@ -12,8 +12,7 @@
       <div
           style="background-color: #F0DAD2;margin: 20px 20px auto; width: 180px; height: 300px; float: left; overflow: auto;word-wrap:break-word;word-break:break-all; border-radius:10px"
           v-for="(tv,index) in tvList" :key="index">
-        <a :href="tv.play_link" target="_blank" style="text-decoration: none"><img :src="tv.img_link"
-                                                                                   style="width: 100%; height: 80%"></a>
+        <a :href="tv.play_link" target="_blank" style="text-decoration: none"><img :src="tv.img_link" style="width: 100%; height: 80%"></a>
         <center><strong>{{ tv.title }}</strong></center>
 
       </div>
