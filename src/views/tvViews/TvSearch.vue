@@ -3,7 +3,7 @@
     <center>
       <div style="height: 5vh; width: 40%">
         <el-input placeholder="请输入影视名" v-model="searchKey" clearable @clear="clearListAndKey">
-          <el-button slot="append" icon="el-icon-search" @click="getGoodsList"></el-button>
+          <el-button  :loading="isResponse" slot="append" icon="el-icon-search" @click="getGoodsList"></el-button>
         </el-input>
       </div>
     </center>
@@ -28,22 +28,7 @@
     data() {
       return {
         searchKey: "",
-
-        queryInfo:{
-
-          //查询参数
-
-          query: '',
-
-          // 当前页码
-
-          pagenum: 1,
-
-          // 每页显示条数
-
-          pagesize: 2
-
-        },
+        isResponse: false,
 
         tvList: []
 
@@ -61,18 +46,19 @@
     methods: {
 
       getGoodsList(){
+        this.tvList=[]
+        this.isResponse = true
 
         this.chart.get("/play/searchMovies?searchKey=" + this.searchKey)
             .then(resp => {
               if (resp.data.code > 10000 && resp.data.code < 20000){
-                console.log(resp)
                 this.$message.success(resp.data.msg)
                 this.tvList = resp.data.result_list
-                console.log(this.tvList)
               }else {
                 this.$message.error(resp.data.msg)
               }
             })
+        this.isResponse = false
       },
 
       clearListAndKey(){
