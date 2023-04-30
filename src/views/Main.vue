@@ -27,7 +27,7 @@
           </div>
       </el-header>
       <el-container>
-        <el-aside width="300px" style="background-color: #245953;">
+        <el-aside width="300px" style="background-color: #245953; height: 90vh">
           <el-menu @select="userItemHandler"
                    background-color="#282726"
                    text-color="#fff"
@@ -95,7 +95,7 @@ export default {
   methods: {
     userItemHandler(index) {
       this.$router.push(index)
-      location.reload()
+      // location.reload()
     },
 
 
@@ -153,5 +153,9 @@ export default {
 .user_info {
   position: absolute;
   right: 50px;
+}
+
+el-aside::-webkit-scrollbar {
+  width: 0;
 }
 </style>

@@ -53,10 +53,10 @@ export default {
     requestNewsList(){
       this.chart.get("/news/cnWeiBoHotSearch")
           .then(resp =>{
-            if (resp.data.code == 200){
+            if (resp.data.code > 10000 && resp.data.code < 20000){
+              console.log(resp)
               this.$message.success(resp.data.msg)
-              this.newsList = resp.data.resultList
-              this.requestText = ""
+              this.newsList = resp.data.result_list
             }else {
               this.$message.error(resp.data.msg)
             }

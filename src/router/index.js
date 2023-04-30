@@ -23,6 +23,7 @@ import CnPeopleNews from "@/views/newsViews/CnPeopleNews";
 import CnTouTiaoNews from "@/views/newsViews/CnTouTiaoNews";
 import CnJingJiItNews from "@/views/newsViews/CnJingJiItNews";
 import CnWeiBoHotSearch from "@/views/newsViews/CnWeiBoHotSearch";
+import TvSearch from "@/views/tvViews/TvSearch";
 
 // 自己定义的请求包。只能在组件中使用，如果非要在这里使用，必须引入
 
@@ -177,6 +178,18 @@ const routes = [
           isLogin: true
         },
         component: Scale
+      },
+
+
+
+      // 影视路由
+      {
+        path: '/tv/tvSearch',
+        name: 'tvSearch',
+        meta: {
+          isLogin: true
+        },
+        component: TvSearch
       },
 
 

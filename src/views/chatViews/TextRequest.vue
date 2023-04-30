@@ -63,7 +63,7 @@
         this.isResponse = true
         this.chart.post("/chat/session", {"request": this.requestText})
             .then(resp =>{
-              if (resp.data.code == 200){
+              if (resp.data.code > 10000 && resp.data.code < 20000){
                 this.$message.success(resp.data.msg)
                 this.sessionList.push({"request": this.requestText, "response": resp.data.responseText})
                 this.requestText = ""
@@ -72,10 +72,6 @@
               }
               this.isResponse = false
             })
-
-
-
-
       },
 
     }

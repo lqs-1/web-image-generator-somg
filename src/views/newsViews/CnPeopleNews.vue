@@ -22,7 +22,7 @@
           width="200"
           align="center">
         <template slot-scope="scope">
-          <a :href="scope.row.link" style="text-decoration: none"><el-tag size="medium">{{ scope.row.time }}</el-tag></a>
+          <a :href="scope.row.link" target="_blank" style="text-decoration: none"><el-tag size="medium">{{ scope.row.time }}</el-tag></a>
         </template>
       </el-table-column>
 
@@ -67,10 +67,9 @@
       requestNewsList(){
         this.chart.get("/news/cnPeopleNews")
             .then(resp =>{
-              if (resp.data.code == 200){
+              if (resp.data.code > 10000 && resp.data.code < 20000){
                 this.$message.success(resp.data.msg)
-                this.newsList = resp.data.resultList
-                this.requestText = ""
+                this.newsList = resp.data.result_list
               }else {
                 this.$message.error(resp.data.msg)
               }
