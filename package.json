@@ -12,6 +12,7 @@
     "core-js": "^3.8.3",
     "echarts": "^4.9.0",
     "element-ui": "^2.15.9",
+    "fake-progress": "^1.0.4",
     "github-markdown-css": "^5.2.0",
     "lib-flexible": "^0.3.2",
     "postcss-px2rem": "^0.3.0",
