@@ -1,7 +1,7 @@
 package com.somg.web.file.generator.action;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.somg.web.file.generator.pojo.origin.UserFile;
+import com.somg.web.file.generator.pojo.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.StatisticalDataVo;

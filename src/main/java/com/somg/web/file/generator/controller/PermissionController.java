@@ -3,7 +3,7 @@ package com.somg.web.file.generator.controller;
 
 import com.somg.web.file.generator.action.PermissionService;
 import com.somg.web.file.generator.annotation.SysListenLog;
-import com.somg.web.file.generator.pojo.origin.Permission;
+import com.somg.web.file.generator.pojo.Permission;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.constant.REnum;

@@ -1,4 +1,4 @@
-package com.somg.web.file.generator.pojo.origin;
+package com.somg.web.file.generator.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;

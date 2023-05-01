@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.somg.web.file.generator.action.UserMenuService;
 import com.somg.web.file.generator.mapper.UserMenuMapper;
-import com.somg.web.file.generator.pojo.origin.UserMenu;
+import com.somg.web.file.generator.pojo.UserMenu;
 import com.somg.web.file.generator.vo.AddMenuAuthVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

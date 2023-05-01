@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 888
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80032 (8.0.32-0ubuntu0.20.04.2)
- Source Host           : 192.227.225.111:3306
+ Source Server Version : 80031 (8.0.31)
+ Source Host           : localhost:3306
  Source Schema         : storage
 
  Target Server Type    : MySQL
- Target Server Version : 80032 (8.0.32-0ubuntu0.20.04.2)
+ Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 29/04/2023 18:01:51
+ Date: 01/05/2023 20:54:10
 */
 
 SET NAMES utf8mb4;
@@ -22,29 +22,33 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `file_location`;
 CREATE TABLE `file_location`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `imagePath` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `imagePath` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件的本地路径',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '本地文件表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of file_location
 -- ----------------------------
 INSERT INTO `file_location` VALUES (35, '/home/somg/img/local/5ff0709b07c54ee2b16695de6200aa85.png');
 INSERT INTO `file_location` VALUES (36, '/home/somg/img/scale/e86419a986914c8997dc139aea8072a5.png');
+INSERT INTO `file_location` VALUES (37, '/home/somg/img/local/d6554390d65a4c4082088938c6077f85.png');
+INSERT INTO `file_location` VALUES (38, '/home/somg/img/scale/8e82e05c2eaf491c89de06ed93387077.png');
+INSERT INTO `file_location` VALUES (39, '/home/somg/img/local/b02dc56d0d25446fa53c292553f3b968.png');
+INSERT INTO `file_location` VALUES (40, '/home/somg/img/scale/f359a3beea2e4d2f9bf01496d2e63c57.png');
 
 -- ----------------------------
 -- Table structure for menus
 -- ----------------------------
 DROP TABLE IF EXISTS `menus`;
 CREATE TABLE `menus`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `menuIndex` int NULL DEFAULT NULL,
-  `menuPath` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `menuName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `parentIndex` int NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `menuIndex` int NULL DEFAULT NULL COMMENT '菜单索引（父级菜单才有）',
+  `menuPath` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '菜单路径（父级菜单和子菜单都有）',
+  `menuName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '菜单名',
+  `parentIndex` int NULL DEFAULT NULL COMMENT '子菜单的父级菜单索引',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menus
@@ -70,16 +74,18 @@ INSERT INTO `menus` VALUES (36, NULL, '/news/cnJingJiItNews', '中国经济网IT
 INSERT INTO `menus` VALUES (37, NULL, '/news/cnPeopleNews', '人民网滚动要闻', 12);
 INSERT INTO `menus` VALUES (38, NULL, '/news/cnTouTiaoNews', '头条热搜榜', 12);
 INSERT INTO `menus` VALUES (39, NULL, '/news/CnWeiBoHotSearch', '微博热搜榜', 12);
+INSERT INTO `menus` VALUES (40, 24, 'tv', '影视', NULL);
+INSERT INTO `menus` VALUES (41, NULL, '/tv/tvSearch', '影视搜索', 24);
 
 -- ----------------------------
 -- Table structure for permission
 -- ----------------------------
 DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `permissionName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `permissionName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '接口权限名字',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '接口权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of permission
@@ -94,10 +100,10 @@ INSERT INTO `permission` VALUES (7, 'update');
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `roleName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `roleName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色名字',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of role
@@ -107,18 +113,35 @@ INSERT INTO `role` VALUES (2, 'supermanager');
 INSERT INTO `role` VALUES (5, 'admin');
 
 -- ----------------------------
+-- Table structure for sys_dict
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict`;
+CREATE TABLE `sys_dict`  (
+  `id` int NOT NULL COMMENT '字典id',
+  `dictCode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典编码',
+  `parentId` int NULL DEFAULT NULL COMMENT '父字典id',
+  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典描述',
+  `dictValue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '字典值',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统字典表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_dict
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `userId` int NOT NULL,
-  `userName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `time` datetime NOT NULL,
-  `serverName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  PRIMARY KEY (`id`, `userId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 309 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `userId` int NOT NULL COMMENT '用户id',
+  `userName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名',
+  `time` datetime NOT NULL COMMENT '操作时间',
+  `serverName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '服务模块名字',
+  `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '执行的操作',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 397 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_log
@@ -431,118 +454,250 @@ INSERT INTO `sys_log` VALUES (305, 23, 'lqs', '2023-04-29 17:59:57', '文件服�
 INSERT INTO `sys_log` VALUES (306, 23, 'lqs', '2023-04-29 18:00:07', '文件服务', '所有文件列表[用户]');
 INSERT INTO `sys_log` VALUES (307, 23, 'lqs', '2023-04-29 18:00:09', '文件服务', '所有图片列表[用户]');
 INSERT INTO `sys_log` VALUES (308, 23, 'lqs', '2023-04-29 18:00:13', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (309, 23, 'lqs', '2023-04-29 18:19:09', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (310, 23, 'lqs', '2023-04-29 18:20:46', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (311, 23, 'lqs', '2023-04-29 18:20:49', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (312, 23, 'lqs', '2023-04-29 18:20:52', '角色服务', '角色列表[展示]');
+INSERT INTO `sys_log` VALUES (313, 23, 'lqs', '2023-04-29 18:21:00', '角色服务', '角色列表[展示]');
+INSERT INTO `sys_log` VALUES (314, 23, 'lqs', '2023-04-29 18:27:40', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (315, 23, 'lqs', '2023-04-29 20:30:15', '文件服务', '所有视频列表[用户]');
+INSERT INTO `sys_log` VALUES (316, 23, 'lqs', '2023-04-29 20:30:20', '权限服务', '权限列表[展示]');
+INSERT INTO `sys_log` VALUES (317, 23, 'lqs', '2023-04-29 20:30:22', '权限服务', '权限列表[展示]');
+INSERT INTO `sys_log` VALUES (318, 23, 'lqs', '2023-04-29 20:30:26', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (319, 23, 'lqs', '2023-04-29 20:30:30', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (320, 23, 'lqs', '2023-04-29 22:51:43', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (321, 23, 'lqs', '2023-04-29 23:29:12', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (322, 23, 'lqs', '2023-04-30 11:02:00', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (323, 23, 'lqs', '2023-04-30 11:02:01', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (324, 23, 'lqs', '2023-04-30 11:18:15', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (325, 23, 'lqs', '2023-04-30 11:18:19', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (326, 23, 'lqs', '2023-04-30 11:18:22', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (327, 23, 'lqs', '2023-04-30 11:18:42', '菜单服务', '添加菜单');
+INSERT INTO `sys_log` VALUES (328, 23, 'lqs', '2023-04-30 11:18:44', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (329, 23, 'lqs', '2023-04-30 11:18:45', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (330, 23, 'lqs', '2023-04-30 11:19:12', '菜单服务', '添加菜单');
+INSERT INTO `sys_log` VALUES (331, 23, 'lqs', '2023-04-30 11:19:13', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (332, 23, 'lqs', '2023-04-30 11:19:17', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (333, 23, 'lqs', '2023-04-30 11:19:18', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (334, 23, 'lqs', '2023-04-30 11:19:21', '角色服务', '角色列表[展示]');
+INSERT INTO `sys_log` VALUES (335, 23, 'lqs', '2023-04-30 11:19:22', '角色服务', '角色列表[展示]');
+INSERT INTO `sys_log` VALUES (336, 23, 'lqs', '2023-04-30 11:19:24', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (337, 23, 'lqs', '2023-04-30 11:19:28', '菜单服务', '菜单列表[授权]');
+INSERT INTO `sys_log` VALUES (338, 23, 'lqs', '2023-04-30 11:19:29', '菜单服务', '查询用户已有菜单权限');
+INSERT INTO `sys_log` VALUES (339, 23, 'lqs', '2023-04-30 11:19:34', '菜单服务', '给用户授权菜单');
+INSERT INTO `sys_log` VALUES (340, 23, 'lqs', '2023-04-30 11:19:35', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (341, 23, 'lqs', '2023-04-30 14:33:52', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (342, 23, 'lqs', '2023-04-30 14:33:54', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (343, 23, 'lqs', '2023-04-30 14:33:56', '文件服务', '所有视频列表[用户]');
+INSERT INTO `sys_log` VALUES (344, 23, 'lqs', '2023-04-30 14:33:58', '文件服务', '所有音频列表[用户]');
+INSERT INTO `sys_log` VALUES (345, 23, 'lqs', '2023-04-30 14:34:02', '角色服务', '角色列表[展示]');
+INSERT INTO `sys_log` VALUES (346, 23, 'lqs', '2023-04-30 14:34:05', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (347, 23, 'lqs', '2023-04-30 14:34:08', '权限服务', '权限列表[展示]');
+INSERT INTO `sys_log` VALUES (348, 23, 'lqs', '2023-04-30 14:34:10', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (349, 23, 'lqs', '2023-04-30 14:34:12', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (350, 23, 'lqs', '2023-04-30 14:34:33', '图片服务', '上传缩放图片');
+INSERT INTO `sys_log` VALUES (351, 23, 'lqs', '2023-04-30 18:22:04', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (352, 23, 'lqs', '2023-04-30 19:11:07', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (353, 23, 'lqs', '2023-04-30 19:16:26', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (354, 23, 'lqs', '2023-04-30 19:16:34', '上传服务', '上传单文件');
+INSERT INTO `sys_log` VALUES (355, 23, 'lqs', '2023-04-30 19:16:36', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (356, 23, 'lqs', '2023-04-30 19:16:59', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (357, 23, 'lqs', '2023-04-30 19:20:25', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (358, 23, 'lqs', '2023-04-30 19:53:22', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (359, 23, 'lqs', '2023-04-30 19:53:32', '菜单服务', '菜单列表[授权]');
+INSERT INTO `sys_log` VALUES (360, 23, 'lqs', '2023-04-30 19:53:32', '菜单服务', '查询用户已有菜单权限');
+INSERT INTO `sys_log` VALUES (361, 23, 'lqs', '2023-04-30 19:53:37', '菜单服务', '给用户授权菜单');
+INSERT INTO `sys_log` VALUES (362, 23, 'lqs', '2023-04-30 19:53:38', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (363, 23, 'lqs', '2023-05-01 00:44:14', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (364, 23, 'lqs', '2023-05-01 00:44:59', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (365, 23, 'lqs', '2023-05-01 00:52:30', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (366, 23, 'lqs', '2023-05-01 01:01:34', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (367, 23, 'lqs', '2023-05-01 01:01:42', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (368, 23, 'lqs', '2023-05-01 01:01:50', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (369, 23, 'lqs', '2023-05-01 01:01:56', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (370, 23, 'lqs', '2023-05-01 01:26:05', '图片服务', '上传缩放图片');
+INSERT INTO `sys_log` VALUES (371, 23, 'lqs', '2023-05-01 01:37:52', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (372, 23, 'lqs', '2023-05-01 01:38:02', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (373, 23, 'lqs', '2023-05-01 01:38:28', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (374, 23, 'lqs', '2023-05-01 01:38:46', '用户服务', '添加用户');
+INSERT INTO `sys_log` VALUES (375, 23, 'lqs', '2023-05-01 01:38:47', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (376, 23, 'lqs', '2023-05-01 01:38:50', '菜单服务', '菜单列表[授权]');
+INSERT INTO `sys_log` VALUES (377, 23, 'lqs', '2023-05-01 01:38:50', '菜单服务', '查询用户已有菜单权限');
+INSERT INTO `sys_log` VALUES (378, 23, 'lqs', '2023-05-01 01:39:05', '菜单服务', '菜单列表[授权]');
+INSERT INTO `sys_log` VALUES (379, 23, 'lqs', '2023-05-01 01:39:05', '菜单服务', '查询用户已有菜单权限');
+INSERT INTO `sys_log` VALUES (380, 23, 'lqs', '2023-05-01 01:40:57', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (381, 23, 'lqs', '2023-05-01 01:41:01', '用户服务', '删除用户');
+INSERT INTO `sys_log` VALUES (382, 23, 'lqs', '2023-05-01 01:41:02', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (383, 23, 'lqs', '2023-05-01 01:43:58', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (384, 23, 'lqs', '2023-05-01 01:44:17', '用户服务', '添加用户');
+INSERT INTO `sys_log` VALUES (385, 23, 'lqs', '2023-05-01 01:44:18', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (386, 23, 'lqs', '2023-05-01 01:44:21', '菜单服务', '菜单列表[授权]');
+INSERT INTO `sys_log` VALUES (387, 23, 'lqs', '2023-05-01 01:44:21', '菜单服务', '查询用户已有菜单权限');
+INSERT INTO `sys_log` VALUES (388, 23, 'lqs', '2023-05-01 01:45:05', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (389, 23, 'lqs', '2023-05-01 01:45:09', '角色服务', '角色列表[授权]');
+INSERT INTO `sys_log` VALUES (390, 23, 'lqs', '2023-05-01 01:45:10', '用户服务', '修改用户权限');
+INSERT INTO `sys_log` VALUES (391, 23, 'lqs', '2023-05-01 01:45:10', '用户服务', '修改用户角色');
+INSERT INTO `sys_log` VALUES (392, 23, 'lqs', '2023-05-01 01:45:10', '权限服务', '权限列表[授权]');
+INSERT INTO `sys_log` VALUES (393, 37, 'liubangqi', '2023-05-01 01:52:23', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (394, 37, 'liubangqi', '2023-05-01 01:52:31', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (395, 37, 'liubangqi', '2023-05-01 09:25:57', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (396, 23, 'lqs', '2023-05-01 10:42:20', '文件服务', '所有图片列表[用户]');
 
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `sex` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `createTime` datetime NOT NULL,
-  `loginTime` datetime NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密码',
+  `sex` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '性别',
+  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `loginTime` datetime NOT NULL COMMENT '登录时间',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (23, 'lqs', '$2a$10$ltNDgsagzDgAo2maKStbcuVHKfHGwJSgB75YV0ExLs0Tzf4dGzIXO', '男', '2023-03-24 11:13:56', '2023-04-29 17:42:06', '749062870@qq.com');
-INSERT INTO `user` VALUES (37, 'liubangqi', '$2a$10$E0WDuyXOy8EdMXYNOihaauSJ//eq0SsrkPzdw81vX0CBynyaNOifi', '女', '2023-04-25 13:10:06', '2023-04-25 13:10:06', '749062870@qq.com');
+INSERT INTO `user` VALUES (23, 'lqs', '$2a$10$ltNDgsagzDgAo2maKStbcuVHKfHGwJSgB75YV0ExLs0Tzf4dGzIXO', '男', '2023-03-24 11:13:56', '2023-05-01 01:44:56', '749062870@qq.com');
+INSERT INTO `user` VALUES (37, 'liubangqi', '$2a$10$E0WDuyXOy8EdMXYNOihaauSJ//eq0SsrkPzdw81vX0CBynyaNOifi', '女', '2023-04-25 13:10:06', '2023-04-30 19:54:07', '749062870@qq.com');
+INSERT INTO `user` VALUES (38, 'guest', '$2a$10$OEO4B8oGcvLnobQbAqLKoe/FJr3iuphz.GvFLYw89wkHjUcCYQbj.', '男', '2023-04-30 19:13:24', '2023-04-30 19:13:24', '749062870@qq.com');
+INSERT INTO `user` VALUES (40, 'lh', '$2a$10$r9c/cQcyLflEt6mUQ4NoYuFkvOflGFWD68Om0RPEQABlccaVIditq', '男', '2023-05-01 01:44:16', '2023-05-01 01:44:39', '749062870@qq.com');
 
 -- ----------------------------
 -- Table structure for user_file
 -- ----------------------------
 DROP TABLE IF EXISTS `user_file`;
 CREATE TABLE `user_file`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `userId` int NOT NULL,
-  `file` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `fileType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `isDelete` int NOT NULL DEFAULT 0,
-  `uploadTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fileName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `userId` int NOT NULL COMMENT '用户id',
+  `file` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件链接',
+  `fileType` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件类型',
+  `isDelete` int NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `uploadTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上传时间',
+  `fileName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件名',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fru`(`userId` ASC) USING BTREE,
   CONSTRAINT `fru` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 422 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 423 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户文件表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_file
 -- ----------------------------
 INSERT INTO `user_file` VALUES (421, 23, 'public/2023-04-25/be6e63f57d054fb2b8ce72625b973275.png', 'image/png', 0, '2023-04-25 13:24:16', 'ximiao');
+INSERT INTO `user_file` VALUES (422, 23, 'public/2023-04-30/48e0ae33ab5f41e7bc0e30240dbeb19d.crt', 'application/x-x509-ca-cert', 0, '2023-04-30 19:16:34', 'ca');
 
 -- ----------------------------
 -- Table structure for user_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `user_menu`;
 CREATE TABLE `user_menu`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `userId` int NOT NULL,
-  `menuId` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `userId` int NOT NULL COMMENT '用户id',
+  `menuId` int NOT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `urm`(`userId` ASC) USING BTREE,
   INDEX `mrm`(`menuId` ASC) USING BTREE,
   CONSTRAINT `mrm` FOREIGN KEY (`menuId`) REFERENCES `menus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `urm` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 308 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 393 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户和菜单权限关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_menu
 -- ----------------------------
-INSERT INTO `user_menu` VALUES (273, 23, 1);
-INSERT INTO `user_menu` VALUES (274, 23, 2);
-INSERT INTO `user_menu` VALUES (275, 23, 3);
-INSERT INTO `user_menu` VALUES (276, 23, 4);
-INSERT INTO `user_menu` VALUES (277, 23, 5);
-INSERT INTO `user_menu` VALUES (278, 23, 6);
-INSERT INTO `user_menu` VALUES (279, 23, 7);
-INSERT INTO `user_menu` VALUES (280, 23, 19);
-INSERT INTO `user_menu` VALUES (281, 23, 22);
-INSERT INTO `user_menu` VALUES (282, 23, 23);
-INSERT INTO `user_menu` VALUES (283, 23, 26);
-INSERT INTO `user_menu` VALUES (284, 23, 27);
-INSERT INTO `user_menu` VALUES (285, 23, 31);
-INSERT INTO `user_menu` VALUES (286, 23, 32);
-INSERT INTO `user_menu` VALUES (287, 23, 33);
-INSERT INTO `user_menu` VALUES (288, 23, 34);
-INSERT INTO `user_menu` VALUES (289, 23, 35);
-INSERT INTO `user_menu` VALUES (290, 23, 36);
-INSERT INTO `user_menu` VALUES (291, 23, 37);
-INSERT INTO `user_menu` VALUES (292, 23, 39);
-INSERT INTO `user_menu` VALUES (293, 23, 38);
-INSERT INTO `user_menu` VALUES (294, 37, 1);
-INSERT INTO `user_menu` VALUES (295, 37, 6);
-INSERT INTO `user_menu` VALUES (296, 37, 19);
-INSERT INTO `user_menu` VALUES (297, 37, 22);
-INSERT INTO `user_menu` VALUES (298, 37, 23);
-INSERT INTO `user_menu` VALUES (299, 37, 31);
-INSERT INTO `user_menu` VALUES (300, 37, 32);
-INSERT INTO `user_menu` VALUES (301, 37, 33);
-INSERT INTO `user_menu` VALUES (302, 37, 34);
-INSERT INTO `user_menu` VALUES (303, 37, 35);
-INSERT INTO `user_menu` VALUES (304, 37, 36);
-INSERT INTO `user_menu` VALUES (305, 37, 37);
-INSERT INTO `user_menu` VALUES (306, 37, 38);
-INSERT INTO `user_menu` VALUES (307, 37, 39);
+INSERT INTO `user_menu` VALUES (308, 23, 1);
+INSERT INTO `user_menu` VALUES (309, 23, 2);
+INSERT INTO `user_menu` VALUES (310, 23, 3);
+INSERT INTO `user_menu` VALUES (311, 23, 4);
+INSERT INTO `user_menu` VALUES (312, 23, 5);
+INSERT INTO `user_menu` VALUES (313, 23, 6);
+INSERT INTO `user_menu` VALUES (314, 23, 7);
+INSERT INTO `user_menu` VALUES (315, 23, 19);
+INSERT INTO `user_menu` VALUES (316, 23, 22);
+INSERT INTO `user_menu` VALUES (317, 23, 23);
+INSERT INTO `user_menu` VALUES (318, 23, 26);
+INSERT INTO `user_menu` VALUES (319, 23, 27);
+INSERT INTO `user_menu` VALUES (320, 23, 31);
+INSERT INTO `user_menu` VALUES (321, 23, 32);
+INSERT INTO `user_menu` VALUES (322, 23, 33);
+INSERT INTO `user_menu` VALUES (323, 23, 34);
+INSERT INTO `user_menu` VALUES (324, 23, 35);
+INSERT INTO `user_menu` VALUES (325, 23, 36);
+INSERT INTO `user_menu` VALUES (326, 23, 37);
+INSERT INTO `user_menu` VALUES (327, 23, 38);
+INSERT INTO `user_menu` VALUES (328, 23, 39);
+INSERT INTO `user_menu` VALUES (329, 23, 40);
+INSERT INTO `user_menu` VALUES (330, 23, 41);
+INSERT INTO `user_menu` VALUES (331, 38, 1);
+INSERT INTO `user_menu` VALUES (332, 38, 6);
+INSERT INTO `user_menu` VALUES (333, 38, 19);
+INSERT INTO `user_menu` VALUES (334, 38, 22);
+INSERT INTO `user_menu` VALUES (335, 38, 23);
+INSERT INTO `user_menu` VALUES (336, 38, 31);
+INSERT INTO `user_menu` VALUES (337, 38, 32);
+INSERT INTO `user_menu` VALUES (338, 38, 33);
+INSERT INTO `user_menu` VALUES (339, 38, 34);
+INSERT INTO `user_menu` VALUES (340, 38, 35);
+INSERT INTO `user_menu` VALUES (341, 38, 36);
+INSERT INTO `user_menu` VALUES (342, 38, 37);
+INSERT INTO `user_menu` VALUES (343, 38, 38);
+INSERT INTO `user_menu` VALUES (344, 38, 39);
+INSERT INTO `user_menu` VALUES (345, 37, 1);
+INSERT INTO `user_menu` VALUES (346, 37, 6);
+INSERT INTO `user_menu` VALUES (347, 37, 19);
+INSERT INTO `user_menu` VALUES (348, 37, 22);
+INSERT INTO `user_menu` VALUES (349, 37, 23);
+INSERT INTO `user_menu` VALUES (350, 37, 31);
+INSERT INTO `user_menu` VALUES (351, 37, 32);
+INSERT INTO `user_menu` VALUES (352, 37, 33);
+INSERT INTO `user_menu` VALUES (353, 37, 34);
+INSERT INTO `user_menu` VALUES (354, 37, 35);
+INSERT INTO `user_menu` VALUES (355, 37, 36);
+INSERT INTO `user_menu` VALUES (356, 37, 37);
+INSERT INTO `user_menu` VALUES (357, 37, 38);
+INSERT INTO `user_menu` VALUES (358, 37, 39);
+INSERT INTO `user_menu` VALUES (359, 37, 2);
+INSERT INTO `user_menu` VALUES (360, 37, 3);
+INSERT INTO `user_menu` VALUES (361, 37, 4);
+INSERT INTO `user_menu` VALUES (362, 37, 5);
+INSERT INTO `user_menu` VALUES (363, 37, 7);
+INSERT INTO `user_menu` VALUES (364, 37, 26);
+INSERT INTO `user_menu` VALUES (365, 37, 27);
+INSERT INTO `user_menu` VALUES (366, 37, 40);
+INSERT INTO `user_menu` VALUES (367, 37, 41);
+INSERT INTO `user_menu` VALUES (377, 40, 1);
+INSERT INTO `user_menu` VALUES (378, 40, 6);
+INSERT INTO `user_menu` VALUES (379, 40, 19);
+INSERT INTO `user_menu` VALUES (380, 40, 22);
+INSERT INTO `user_menu` VALUES (381, 40, 23);
+INSERT INTO `user_menu` VALUES (382, 40, 31);
+INSERT INTO `user_menu` VALUES (383, 40, 32);
+INSERT INTO `user_menu` VALUES (384, 40, 33);
+INSERT INTO `user_menu` VALUES (385, 40, 34);
+INSERT INTO `user_menu` VALUES (386, 40, 35);
+INSERT INTO `user_menu` VALUES (387, 40, 36);
+INSERT INTO `user_menu` VALUES (388, 40, 37);
+INSERT INTO `user_menu` VALUES (389, 40, 38);
+INSERT INTO `user_menu` VALUES (390, 40, 39);
+INSERT INTO `user_menu` VALUES (391, 40, 40);
+INSERT INTO `user_menu` VALUES (392, 40, 41);
 
 -- ----------------------------
 -- Table structure for user_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `user_permission`;
 CREATE TABLE `user_permission`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `userId` int NOT NULL,
-  `permissionId` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `userId` int NOT NULL COMMENT '用户id',
+  `permissionId` int NOT NULL COMMENT '接口权限id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `prp`(`permissionId` ASC) USING BTREE,
   INDEX `urp`(`userId` ASC) USING BTREE,
   CONSTRAINT `prp` FOREIGN KEY (`permissionId`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `urp` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户和接口权限关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_permission
@@ -552,21 +707,23 @@ INSERT INTO `user_permission` VALUES (27, 23, 3);
 INSERT INTO `user_permission` VALUES (28, 23, 4);
 INSERT INTO `user_permission` VALUES (29, 23, 7);
 INSERT INTO `user_permission` VALUES (65, 37, 1);
+INSERT INTO `user_permission` VALUES (66, 38, 1);
+INSERT INTO `user_permission` VALUES (68, 40, 1);
 
 -- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `userId` int NOT NULL,
-  `roleId` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `userId` int NOT NULL COMMENT '用户id',
+  `roleId` int NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `roleRelationRole`(`roleId` ASC) USING BTREE,
   INDEX `userRelationRole`(`userId` ASC) USING BTREE,
   CONSTRAINT `roleRelationRole` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `userRelationRole` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 82 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户和角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_role
@@ -575,5 +732,7 @@ INSERT INTO `user_role` VALUES (43, 23, 1);
 INSERT INTO `user_role` VALUES (44, 23, 2);
 INSERT INTO `user_role` VALUES (45, 23, 5);
 INSERT INTO `user_role` VALUES (78, 37, 1);
+INSERT INTO `user_role` VALUES (79, 38, 1);
+INSERT INTO `user_role` VALUES (81, 40, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

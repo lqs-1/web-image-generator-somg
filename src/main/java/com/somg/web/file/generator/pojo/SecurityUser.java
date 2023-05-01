@@ -1,7 +1,6 @@
 package com.somg.web.file.generator.pojo;
 
 import com.mysql.cj.util.StringUtils;
-import com.somg.web.file.generator.pojo.origin.User;
 import com.somg.web.file.generator.vo.MenuVo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

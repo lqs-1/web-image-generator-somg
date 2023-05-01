@@ -8,7 +8,7 @@ import com.somg.web.file.generator.action.MenuService;
 import com.somg.web.file.generator.action.UserMenuService;
 import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.mapper.MenuMapper;
-import com.somg.web.file.generator.pojo.origin.Menus;
+import com.somg.web.file.generator.pojo.Menus;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
 import com.somg.web.file.generator.vo.AddMenuVo;

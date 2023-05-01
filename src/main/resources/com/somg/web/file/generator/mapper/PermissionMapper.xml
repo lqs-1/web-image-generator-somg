@@ -4,7 +4,7 @@
 <mapper namespace="com.somg.web.file.generator.mapper.PermissionMapper">
 
 
-    <select id="getPermissionByPermissionName" resultType="com.somg.web.file.generator.pojo.origin.Permission">
+    <select id="getPermissionByPermissionName" resultType="com.somg.web.file.generator.pojo.Permission">
         select * from permission where `permissionName`=#{permissionName}
     </select>
 </mapper>

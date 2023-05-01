@@ -1,7 +1,7 @@
 package com.somg.web.file.generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.somg.web.file.generator.pojo.origin.SysLog;
+import com.somg.web.file.generator.pojo.SysLog;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

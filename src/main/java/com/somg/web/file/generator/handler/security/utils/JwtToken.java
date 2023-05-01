@@ -1,13 +1,10 @@
 package com.somg.web.file.generator.handler.security.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.somg.web.file.generator.pojo.origin.User;
 import com.sun.istack.NotNull;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 

@@ -3,7 +3,7 @@ package com.somg.web.file.generator.action.im;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.somg.web.file.generator.action.UserRoleService;
-import com.somg.web.file.generator.pojo.origin.UserRole;
+import com.somg.web.file.generator.pojo.UserRole;
 import com.somg.web.file.generator.mapper.UserRoleMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

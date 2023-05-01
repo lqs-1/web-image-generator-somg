@@ -3,7 +3,7 @@ package com.somg.web.file.generator.action.im;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.somg.web.file.generator.pojo.origin.Permission;
+import com.somg.web.file.generator.pojo.Permission;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
 import com.somg.web.file.generator.utils.R;

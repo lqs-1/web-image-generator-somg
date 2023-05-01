@@ -11,8 +11,8 @@ import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.handler.security.filter.TokenAuthFilter;
 import com.somg.web.file.generator.mapper.UserFileMapper;
-import com.somg.web.file.generator.pojo.origin.User;
-import com.somg.web.file.generator.pojo.origin.UserFile;
+import com.somg.web.file.generator.pojo.User;
+import com.somg.web.file.generator.pojo.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
 import com.somg.web.file.generator.utils.R;
@@ -22,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 

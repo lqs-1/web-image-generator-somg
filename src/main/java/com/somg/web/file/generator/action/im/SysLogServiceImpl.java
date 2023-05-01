@@ -1,12 +1,12 @@
-package com.somg.web.file.generator.action;
+package com.somg.web.file.generator.action.im;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mysql.cj.util.StringUtils;
+import com.somg.web.file.generator.action.SysLogService;
 import com.somg.web.file.generator.mapper.SysLogMapper;
-import com.somg.web.file.generator.pojo.origin.SysLog;
-import com.somg.web.file.generator.pojo.origin.User;
+import com.somg.web.file.generator.pojo.SysLog;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
 import org.springframework.stereotype.Service;

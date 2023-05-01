@@ -4,7 +4,7 @@ import com.somg.web.file.generator.action.MenuService;
 import com.somg.web.file.generator.action.UserMenuService;
 import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
-import com.somg.web.file.generator.pojo.origin.Menus;
+import com.somg.web.file.generator.pojo.Menus;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.AddMenuAuthVo;

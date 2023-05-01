@@ -3,14 +3,14 @@
 
 <mapper namespace="com.somg.web.file.generator.mapper.UserMapper">
 
-    <select id="selectByUserName" resultType="com.somg.web.file.generator.pojo.origin.User">
+    <select id="selectByUserName" resultType="com.somg.web.file.generator.pojo.User">
         select * from user where `username`=#{username}
     </select>
-    <select id="getUserByUserName" resultType="com.somg.web.file.generator.pojo.origin.User">
+    <select id="getUserByUserName" resultType="com.somg.web.file.generator.pojo.User">
         select * from user where `username`=#{username}
     </select>
 
-    <update id="alterPwdByUserName" parameterType="com.somg.web.file.generator.pojo.origin.User">
+    <update id="alterPwdByUserName" parameterType="com.somg.web.file.generator.pojo.User">
         update user set `password`=#{password} where `username`=#{username} and `email`=#{email}
     </update>
 </mapper>

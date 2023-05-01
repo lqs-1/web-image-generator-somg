@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.somg.web.file.generator.action.RoleService;
-import com.somg.web.file.generator.pojo.origin.Role;
+import com.somg.web.file.generator.pojo.Role;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
 import com.somg.web.file.generator.utils.R;

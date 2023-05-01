@@ -1,7 +1,7 @@
 package com.somg.web.file.generator.action;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.somg.web.file.generator.pojo.origin.SysLog;
+import com.somg.web.file.generator.pojo.SysLog;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.somg.web.file.generator.action;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.somg.web.file.generator.pojo.origin.UserMenu;
+import com.somg.web.file.generator.pojo.UserMenu;
 import com.somg.web.file.generator.vo.AddMenuAuthVo;
 
 import java.util.List;

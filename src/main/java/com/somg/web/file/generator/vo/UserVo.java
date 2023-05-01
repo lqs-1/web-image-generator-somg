@@ -1,6 +1,6 @@
 package com.somg.web.file.generator.vo;
 
-import com.somg.web.file.generator.pojo.origin.User;
+import com.somg.web.file.generator.pojo.User;
 import lombok.Data;
 
 import java.util.List;

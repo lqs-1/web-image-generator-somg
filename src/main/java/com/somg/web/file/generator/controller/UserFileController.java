@@ -3,7 +3,7 @@ package com.somg.web.file.generator.controller;
 import com.somg.web.file.generator.action.UserFileService;
 import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
-import com.somg.web.file.generator.pojo.origin.UserFile;
+import com.somg.web.file.generator.pojo.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import io.swagger.annotations.Api;

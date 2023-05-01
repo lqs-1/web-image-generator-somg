@@ -6,7 +6,7 @@ import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
 import com.somg.web.file.generator.pojo.SecurityUser;
-import com.somg.web.file.generator.pojo.origin.User;
+import com.somg.web.file.generator.pojo.User;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
 import com.somg.web.file.generator.vo.MenuVo;
@@ -21,13 +21,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author somg

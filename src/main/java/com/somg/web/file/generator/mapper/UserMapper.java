@@ -1,7 +1,7 @@
 package com.somg.web.file.generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.somg.web.file.generator.pojo.origin.User;
+import com.somg.web.file.generator.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 /**

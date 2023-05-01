@@ -1,7 +1,7 @@
 package com.somg.web.file.generator.action;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.somg.web.file.generator.pojo.origin.UserRole;
+import com.somg.web.file.generator.pojo.UserRole;
 
 import java.util.List;
 /**
