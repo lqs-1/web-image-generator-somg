@@ -131,7 +131,13 @@ public enum REnum {
 
     USER_VALID_ERROR(21036, "用户验证错误"),
 
-    AUTH_FAIL(21037, "认证失败,请重新登录")
+    AUTH_FAIL(21037, "认证失败,请重新登录"),
+
+    ADD_SYS_DICT_SUCCESS(11038, "添加系统字典成功"),
+    ADD_SYS_DICT_FAIL(21038, "添加系统字典失败"),
+
+    GET_ALL_PARENT_DICT_SUCCESS(11039, "获取所有父级字典成功"),
+    GET_ALL_PARENT_DICT_FAIL(21039, "获取所有父级字典失败")
 
 
     ;

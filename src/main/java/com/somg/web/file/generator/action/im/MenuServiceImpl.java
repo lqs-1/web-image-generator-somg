@@ -35,6 +35,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
     /**
      * 根据给定的menuId列表查出对应的菜单
+     *
      * @param menuIds
      * @return
      */
@@ -48,6 +49,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
     /**
      * 查询出所有的父菜单
+     *
      * @return
      */
     @Override
@@ -63,6 +65,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
     /**
      * 添加菜单（前端设计的页面的路径必须和添加的路径一样）
+     *
      * @param addMenuVo
      */
     @Override
@@ -70,7 +73,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
     public void addMenu(AddMenuVo addMenuVo) {
 
 
-        if (!StringUtils.isNullOrEmpty(addMenuVo.getPmenuPath()) && !StringUtils.isNullOrEmpty(addMenuVo.getPmenuName())){
+        if (!StringUtils.isNullOrEmpty(addMenuVo.getPmenuPath()) && !StringUtils.isNullOrEmpty(addMenuVo.getPmenuName())) {
             if (this.baseMapper.selectList(new LambdaQueryWrapper<Menus>().eq(Menus::getMenuName, addMenuVo.getPmenuName())).size() > 0) {
                 return;
             }
@@ -90,9 +93,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
             menus.setMenuIndex(index);
             this.baseMapper.insert(menus);
-        }else if (!StringUtils.isNullOrEmpty(addMenuVo.getMenuName()) &&
+        } else if (!StringUtils.isNullOrEmpty(addMenuVo.getMenuName()) &&
                 !StringUtils.isNullOrEmpty(addMenuVo.getMenuPath()) &&
-                !StringUtils.isNullOrEmpty(addMenuVo.getParentIndex().toString())){
+                !StringUtils.isNullOrEmpty(addMenuVo.getParentIndex().toString())) {
 
             if (this.baseMapper.selectList(new LambdaQueryWrapper<Menus>().eq(Menus::getMenuName, addMenuVo.getMenuName())).size() > 0) {
                 return;
@@ -105,7 +108,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
             menus.setParentIndex(addMenuVo.getParentIndex());
 
             this.baseMapper.insert(menus);
-        }else {
+        } else {
             throw new RuntimeException();
         }
 
@@ -113,6 +116,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
     /**
      * 获取菜单分页数据
+     *
      * @param params
      * @return
      */
@@ -126,18 +130,29 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
     /**
      * 删除对应的菜单 根据id
+     *
      * @param menus
      */
     @Override
     @Transactional(readOnly = false)
     public void deleteMenu(Menus menus) {
 
+        // 是否被使用
+        Menus isMenu = this.baseMapper.selectById(menus.getId());
+        if (isMenu.getParentIndex() == null
+                && this.baseMapper.selectList(new LambdaQueryWrapper<Menus>().eq(Menus::getParentIndex, isMenu.getMenuIndex())).size() > 0) {
+            return;
+
+        }
+
         this.baseMapper.deleteById(menus.getId());
+
 
     }
 
     /**
      * 获取所有的菜单
+     *
      * @return
      */
     @Override
@@ -148,6 +163,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
     /**
      * 获取自己已经有访问权限的菜单
+     *
      * @param userId
      * @return
      */
@@ -156,7 +172,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
         List<Long> menuIds = userMenuService.getMenuIds(userId);
 
-        if (menuIds.size() > 0){
+        if (menuIds.size() > 0) {
             List<Menus> menus = getMenus(menuIds);
             return menus;
         }
@@ -167,6 +183,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
     /**
      * 获取注册和添加用户的时候默认添加的菜单访问权限 所需要用到的MenuId
+     *
      * @return
      */
     @Override

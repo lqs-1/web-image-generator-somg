@@ -13,14 +13,12 @@ import lombok.Data;
 @TableName("sys_dict")
 public class SysDict {
     private Long id;
+    private String  dictCode;
+    private Long parentId;
+    private String dictDesc;
+    private String dictValue;
 
-    private Long dictCode;
 
-    private Long dictValue;
-
-    private String parentId;
-
-    private String desc;
 
 
 
