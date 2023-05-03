@@ -6,7 +6,7 @@
 
 > 通过`java -jar web-image-generator-0.0.1-SNAPSHOT.jar`运行程序
 
-> 打开浏览器输入`http://localhost:8888/` 就可以将本地图片上传为网络图片并返回链接地址
+> 打开浏览器输入`http://localhost:8888/` 就可以将本地图片上传为网络图片并返回链接地址 idyvzneokcpjbgah
 
 # 项目使用说明
 ## 在线工具使用
