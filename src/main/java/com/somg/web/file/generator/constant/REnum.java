@@ -137,7 +137,9 @@ public enum REnum {
     ADD_SYS_DICT_FAIL(21038, "添加系统字典失败"),
 
     GET_ALL_PARENT_DICT_SUCCESS(11039, "获取所有父级字典成功"),
-    GET_ALL_PARENT_DICT_FAIL(21039, "获取所有父级字典失败")
+    GET_ALL_PARENT_DICT_FAIL(21039, "获取所有父级字典失败"),
+    
+    IMAGE_CODE_EXPIRED(11040, "图形验证码失效"),
 
 
     ;
