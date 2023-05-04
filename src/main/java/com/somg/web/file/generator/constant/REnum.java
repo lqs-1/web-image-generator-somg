@@ -21,19 +21,11 @@ public enum REnum {
     // 业务需求状态码
     WEB_FILE_GENERATE_SUCCESS(10000, "网页文件生成成功"),
     WEB_FILE_GENERATE_FAIL(20000, "网页文件生成失败"),
-
-
     NETWORK_CONNECT_FAIL(20001, "网络连接失败"),
-
     WEB_FILE_SINGLE_DELETE_SUCCESS(10003,"网页文件单个文件删除成功"),
     WEB_FILE_SINGLE_DELETE_FAIL(20003,"网页文件单个文件删除失败"),
     WEB_FILE_MULTI_DELETE_SUCCESS(10004,"网页文件批量文件删除成功"),
     WEB_FILE_MULTI_DELETE_FAIL(20004,"网页文件批量文件删除失败"),
-
-
-
-
-
     WELCOME_MAIN(11000, "欢迎来到主页"),
     PLEASE_LOGIN(21000, "请先登录"),
     DATABASE_ERROR(21001, "数据库链接错误"),
@@ -79,66 +71,43 @@ public enum REnum {
     GET_EXIST_ROLE_FAIL(21024, "获取已拥有角色列表失败"),
     GET_EXIST_PERMISSION_SUCCESS(11018, "获取已拥有权限列表成功"),
     GET_EXIST_PERMISSION_FAIL(21025, "获取已拥有权限列表失败"),
-
-
     GET_USER_ALL_FILE_LIST_SUCCESS(11019, "获取用户所有文件成功"),
     GET_USER_ALL_FILE_LIST_FAIL(21026, "获取用户所有文件失败"),
-
     GET_ALL_PARENT_MENUS_SUCCESS(11020, "获取所有父级菜单成功"),
     GET_ALL_PARENT_MENUS_FAIL(21027, "获取所有父级菜单失败"),
-
     ADD_MENUS_SUCCESS(11021, "添加菜单成功"),
     ADD_MENUS_FAIL(21028, "添加菜单失败"),
-
     GET_MENUS_LIST_SUCCESS(11022, "获取菜单列表成功"),
     GET_MENUS_LIST_FAIL(21029, "获取菜单列表失败"),
-
     DELETE_MENUS_SUCCESS(11023, "删除菜单成功"),
     DELETE_MENUS_FAIL(21030, "删除菜单失败"),
-
     GET_CHECKED_MENUS_SUCCESS(11024, "获取已有菜单权限成功"),
     GET_CHECKED_MENUS_FAIL(21031, "获取已有菜单权限失败"),
-
     ALTER_MENUS_AUTH_SUCCESS(11025, "修改菜单权限成功"),
     ALTER_MENUS_AUTH_FAIL(21032, "修改菜单权限失败"),
-
-
     GET_USER_ALL_IMAGE_LIST_SUCCESS(11026, "获取用户所有图片文件成功"),
     GET_USER_ALL_IMAGE_LIST_FAIL(21033, "获取用户所有图片文件失败"),
-
     GET_USER_ALL_VIDEO_LIST_SUCCESS(11027, "获取用户所有视频文件成功"),
     GET_USER_ALL_VIDEO_LIST_FAIL(21034, "获取用户所有视频文件失败"),
-
     GET_USER_ALL_AUDIO_LIST_SUCCESS(11028, "获取用户所有音频文件成功"),
     GET_USER_ALL_AUDIO_LIST_FAIL(21035, "获取用户所有音频文件失败"),
-
     GET_ALL_STATISTICAL_SUCCESS(11029, "获取所有统计数据成功"),
     GET_ALL_STATISTICAL_FAIL(21036, "获取所有统计数据失败"),
-
     GET_ALL_FILE_LIST_SUCCESS(11030, "获取所有文件成功"),
     GET_ALL_FILE_LIST_FAIL(21037, "获取所有文件失败"),
-
     GET_LOG_LIST_SUCCESS(11031, "获取日志列表成功"),
     GET_LOG_LIST_FAIL(21038, "获取日志列表失败"),
-
     FILE_UPLOAD_SUCCESS(11032, "文件上传成功"),
-
     EMAIL_VALIDATE_CODE_SEND_SUCCESS(11033, "邮箱验证码发送成功,有效时间5分钟"),
     EMAIL_VALIDATE_CODE_SEND_FAIL(21033, "邮箱验证码发送失败"),
-
     EMAIL_VALIDATE_SEND_FAST(21034, "发送验证码过于频繁"),
     EMAIL_VALIDATE_ERROR(21035, "验证码错误"),
-
     USER_VALID_ERROR(21036, "用户验证错误"),
-
     AUTH_FAIL(21037, "认证失败,请重新登录"),
-
     ADD_SYS_DICT_SUCCESS(11038, "添加系统字典成功"),
     ADD_SYS_DICT_FAIL(21038, "添加系统字典失败"),
-
     GET_ALL_PARENT_DICT_SUCCESS(11039, "获取所有父级字典成功"),
     GET_ALL_PARENT_DICT_FAIL(21039, "获取所有父级字典失败"),
-    
     IMAGE_CODE_EXPIRED(21040, "图形验证码失效"),
 
 
