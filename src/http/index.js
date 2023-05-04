@@ -33,8 +33,7 @@ instance.interceptors.response.use(function (response) {
     // 对响应的数据做些什么, response就是整个响应
     // 表示请求是成功的
     if (response.status && response.status == 200){
-        // 表示后台响应的状态也是成功状态
-        console.log(response.headers['auth'])
+        // 获取token,新建和刷新都从Headers中获取
         if (response.headers['auth'] != null){
             localStorage.setItem("token", response.headers['auth'])
         }
@@ -48,7 +47,7 @@ instance.interceptors.response.use(function (response) {
             location.replace("/")
             return ;
         }
-
+        // 表示后台响应的状态也是成功状态
         if (response.data.code == 0 || (response.data.code >= 10000 && response.data.code < 20000) || response.data.code == 1000){
             Message.success(response.data.msg)
             return response;
