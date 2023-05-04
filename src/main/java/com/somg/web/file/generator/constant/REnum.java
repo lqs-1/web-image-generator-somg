@@ -13,7 +13,7 @@ public enum REnum {
     FAIL(1, "失败"),
 
 
-    // 没有权限
+    // 没有权限 Security模块状态码 除了登录验证码以外都在这里
     NO_AUTH(401, "没有权限"),
     NO_LOGIN(402, "没有登录"),
     LOGOUT_SUCCESS_E(1000, "注销成功"),
