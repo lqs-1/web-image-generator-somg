@@ -1,6 +1,7 @@
 package com.somg.web.file.generator.handler.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.action.UserService;
 import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.constant.REnum;
@@ -96,6 +97,11 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         String code = request.getParameter("code");
 
         String realImageCode = (String) redisTemplate.opsForValue().get(imageKey);
+        
+        // 校验验证码是否过期
+        if (StringUtils.isNullOrEmpty(realImageCode)){
+            ResponseUtils.out(response, R.error(REnum.IMAGE_CODE_EXPIRED.getStatusCode(), REnum.IMAGE_CODE_EXPIRED.getStatusMsg()));
+        }
 
         if (!code.toLowerCase().equals(realImageCode.toLowerCase())){
             redisTemplate.delete(imageKey);
