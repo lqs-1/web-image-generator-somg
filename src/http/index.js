@@ -37,21 +37,22 @@ instance.interceptors.response.use(function (response) {
         if (response.headers['auth'] != null){
             localStorage.setItem("token", response.headers['auth'])
         }
+        // 获取登录成功之后返回的菜单权限
         if (response.data.code == 11001){
             localStorage.setItem("menus", JSON.stringify(response.data.menus))
         }
-
+        // 认证失败(token过期) 跳转登录页
         if (response.data.code == 21037){
             Message.error(response.data.msg)
             localStorage.clear()
             location.replace("/")
             return ;
         }
-        // 表示后台响应的状态也是成功状态
+        // 表示后台响应的状态也是成功状态 上面是特殊处理的 这里是一般处理
         if (response.data.code == 0 || (response.data.code >= 10000 && response.data.code < 20000) || response.data.code == 1000){
             Message.success(response.data.msg)
             return response;
-        }else if(response.data.code > 20000){
+        }else if(response.data.code > 20000){ // 表示后台响应的状态是失败状态
             Message.error(response.data.msg)
             return ;
         }else{
