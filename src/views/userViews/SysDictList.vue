@@ -141,7 +141,7 @@
         :before-close="editHandleClose">
 
       <span>
-          <el-form ref="editForm" :model="currentDict" label-width="80px">
+          <el-form :model="currentDict" label-width="80px">
             <el-form-item label="字典id" prop="id">
               <el-input v-model="currentDict.id" :disabled="true"></el-input>
             </el-form-item>
@@ -256,86 +256,81 @@ export default {
         this.currentDict = {}
         this.dictEditVisible = false
       })
-  },
+    },
 
 
-  changeCurrentPageHandler(currentPage) {
+    changeCurrentPageHandler(currentPage) {
 
-    // console.log(this.type)
-    if (this.type == 1 && this.isSon == false) {
-      this.dictList = []
-      this.isSon = true
-      this.getAllParentDict()
-    }
-    if (this.type == 0 && this.isSon == true) {
-      this.parentId = ""
-      this.isSon = false
-    }
+      // console.log(this.type)
+      if (this.type == 1 && this.isSon == false) {
+        this.dictList = []
+        this.isSon = true
+        this.getAllParentDict()
+      }
+      if (this.type == 0 && this.isSon == true) {
+        this.parentId = ""
+        this.isSon = false
+      }
 
-    if (this.type == 0 || (this.parentId != "" && this.type == 1)) {
-      this.httpRequest.get("sysDict/selectDict?page=" + currentPage +
-          "&limit=" + this.pagination.pageSize +
-          "&orderFiled=id" +
-          "&orderType=1" + "&type=" + this.type + "&parentId=" + this.parentId)
-          .then(response => {
-            this.pagination.currentPage = response.data.dictList.currentPage
-            this.pagination.pageSize = response.data.dictList.pageSize
-            this.pagination.total = response.data.dictList.totalSize
-            this.pagination.totalPage = response.data.dictList.totalPage
-            this.dictList = response.data.dictList.resultList
-            // console.log(response)
+      if (this.type == 0 || (this.parentId != "" && this.type == 1)) {
+        this.httpRequest.get("sysDict/selectDict?page=" + currentPage +
+            "&limit=" + this.pagination.pageSize +
+            "&orderFiled=id" +
+            "&orderType=1" + "&type=" + this.type + "&parentId=" + this.parentId).then(response => {
+              this.pagination.currentPage = response.data.dictList.currentPage
+              this.pagination.pageSize = response.data.dictList.pageSize
+              this.pagination.total = response.data.dictList.totalSize
+              this.pagination.totalPage = response.data.dictList.totalPage
+              this.dictList = response.data.dictList.resultList
+              // console.log(response)
+            })
+      }
+
+    },
+
+
+    addDict() {
+
+      let params = {
+        "dictCode": this.SysDic.dictCode,
+        "dictValue": this.SysDic.dictValue,
+        "dictDesc": this.SysDic.dictDesc,
+        "parentCode": this.SysDic.parentCode,
+      }
+
+      this.httpRequest.post('sysDict/addDict', params)
+          .then((response) => {
+            this.sysDictAddVisible = false
+            this.SysDic = {}
+            this.changeCurrentPageHandler(1)
           })
-    }
-
-  },
+    },
 
 
-  addDict() {
 
-    let params = {
-      "dictCode": this.SysDic.dictCode,
-      "dictValue": this.SysDic.dictValue,
-      "dictDesc": this.SysDic.dictDesc,
-      "parentCode": this.SysDic.parentCode,
-    }
+    getAllParentDict() {
 
-    this.httpRequest.post('sysDict/addDict', params)
-        .then((response) => {
-          this.sysDictAddVisible = false
-          this.SysDic = {}
-          this.changeCurrentPageHandler(1)
-        })
-  },
+      this.httpRequest.get('sysDict/parentSysDictList')
+          .then((response) => {
+            this.allParentDict = response.data.sysDictList
+          })
+    },
 
-  // 字典类型发生改变
-  selectType() {
+    showSysDictAddForm() {
+      this.getAllParentDict()
+      this.sysDictAddVisible = true
+    },
 
-  },
+    addHandleClose() {
+      this.sysDictAddVisible = false
+      this.changeCurrentPageHandler(1)
+    },
 
+    handleClick(tab, event) {
+      // console.log(tab, event);
+    },
 
-  getAllParentDict() {
-
-    this.httpRequest.get('sysDict/parentSysDictList')
-        .then((response) => {
-          this.allParentDict = response.data.sysDictList
-        })
-  },
-
-  showSysDictAddForm() {
-    this.getAllParentDict()
-    this.sysDictAddVisible = true
-  },
-
-  addHandleClose() {
-    this.sysDictAddVisible = false
-    this.changeCurrentPageHandler(1)
-  },
-
-  handleClick(tab, event) {
-    // console.log(tab, event);
-  },
-
-}
+  }
 
 
 }
@@ -343,7 +338,7 @@ export default {
 
 <style scoped>
 
-.dictSelector{
+.dictSelector {
   float: right;
 }
 
