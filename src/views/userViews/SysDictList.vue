@@ -59,6 +59,28 @@
   </span>
     </el-dialog>
 
+    <el-select class="dictSelector" v-model="type" placeholder="请选择字典类型">
+      <el-option
+          v-for="item in dictType"
+          :key="item.value"
+          :label="item.desc"
+          :value="item.value"
+          :disabled="item.disabled"
+          @click.native="changeCurrentPageHandler(1)">
+      </el-option>
+    </el-select>
+
+    <el-select class="dictSelector" v-if="isSon" v-model="parentId" placeholder="请选择根字典">
+      <el-option
+          v-for="item in allParentDict"
+          :key="item.dictCode"
+          :label="item.dictDesc"
+          :value="item.id"
+          :disabled="item.disabled"
+          @click.native="changeCurrentPageHandler(1)">
+      </el-option>
+    </el-select>
+
 
     <el-table
         :data="dictList"
@@ -66,7 +88,7 @@
         style="width: 100%">
       <el-table-column
           label="字典编号"
-          width="250"
+          width="300"
           align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.id }}</span>
@@ -74,7 +96,7 @@
       </el-table-column>
       <el-table-column
           label="字典编码"
-          width="300"
+          width="400"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -99,12 +121,47 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
+              @click="handleEdit(scope.$index, scope.row)">修改
+          </el-button>
+          <el-button
+              size="mini"
               type="danger"
               @click="handleDelete(scope.$index, scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
+
+
+    <!--  字典编辑-->
+    <el-dialog
+        title="字典编辑"
+        :visible="dictEditVisible"
+        width="30%"
+        :before-close="editHandleClose">
+
+      <span>
+          <el-form ref="editForm" :model="currentDict" label-width="80px">
+            <el-form-item label="字典id" prop="id">
+              <el-input v-model="currentDict.id" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="字典编码" prop="dictCode">
+              <el-input type="text" v-model="currentDict.dictCode"></el-input>
+            </el-form-item>
+            <el-form-item label="字典值" prop="dictValue" v-if="type==1">
+              <el-input type="text" v-model="currentDict.dictValue"></el-input>
+            </el-form-item>
+            <el-form-item label="字典描述" prop="dictDesc">
+              <el-input type="text" v-model="currentDict.dictDesc"></el-input>
+            </el-form-item>
+          </el-form>
+      </span>
+
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dictEditVisible = false">取 消</el-button>
+    <el-button type="primary" @click="editDict">修改</el-button>
+      </span>
+    </el-dialog>
 
 
     <el-pagination
@@ -128,6 +185,13 @@ export default {
       dictList: [],
       allParentDict: [],
       SysDic: {},
+      dictType: [
+        {desc: "根字典", value: "0"},
+        {desc: "子字典", value: "1"},
+      ],
+      type: "",
+      isSon: false,
+      parentId: "",
       activeName: 'first',
       sysDictAddVisible: false,
       parentMenuList: [],
@@ -146,6 +210,9 @@ export default {
         currentPage: 1,
       },
 
+      dictEditVisible: false,
+      currentDict: {}
+
     }
   },
 
@@ -155,6 +222,7 @@ export default {
 
   created() {
     window.document.title = "系统字典"
+    this.type = "0"
     this.changeCurrentPageHandler(1)
   },
 
@@ -162,75 +230,121 @@ export default {
 
 
     handleDelete(index, data) {
-      this.httpRequest.post("sysDict/deleteMenu", {"id": data.id}).then(response => {
+      this.httpRequest.post("sysDict/deleteDict/" + data.id).then(response => {
         this.changeCurrentPageHandler(1)
       })
     },
 
+    editHandleClose() {
+      this.dictEditVisible = false
+    },
 
-    changeCurrentPageHandler(currentPage) {
-      // this.httpRequest.get("menu/menusPage?page=" + currentPage +
-      //     "&limit=" + this.pagination.pageSize +
-      //     "&orderFiled=id" +
-      //     "&orderType=1")
-      //     .then(response => {
-      //       this.pagination.currentPage = response.data.dictList.currentPage
-      //       this.pagination.pageSize = response.data.dictList.pageSize
-      //       this.pagination.total = response.data.dictList.totalSize
-      //       this.pagination.totalPage = response.data.dictList.totalPage
-      //       this.dictList = response.data.dictList.resultList
-      //       // console.log(response)
-      //     })
+
+    handleEdit(index, data) {
+      console.log(data)
+      this.currentDict = data
+      this.dictEditVisible = true
 
     },
 
 
-    addDict() {
+    editDict() {
 
-      let params = {
-        "dictCode": this.SysDic.dictCode,
-        "dictValue": this.SysDic.dictValue,
-        "dictDesc": this.SysDic.dictDesc,
-        "parentCode": this.SysDic.parentCode,
-      }
-
-      this.httpRequest.post('sysDict/addDict', params)
-          .then((response) => {
-            this.sysDictAddVisible = false
-            this.SysDic = {}
-            this.changeCurrentPageHandler(1)
-          })
-    },
+      // console.log(this.userForm)
+      this.httpRequest.post("sysDict/editDict", this.currentDict).then(response => {
+        this.changeCurrentPageHandler(1)
+        this.currentDict = {}
+        this.dictEditVisible = false
+      })
+  },
 
 
-    getAllParentDict() {
+  changeCurrentPageHandler(currentPage) {
 
-      this.httpRequest.get('sysDict/parentSysDictList')
-          .then((response) => {
-            this.allParentDict = response.data.sysDictList
-          })
-    },
-
-    showSysDictAddForm() {
+    // console.log(this.type)
+    if (this.type == 1 && this.isSon == false) {
+      this.dictList = []
+      this.isSon = true
       this.getAllParentDict()
-      this.sysDictAddVisible = true
-    },
+    }
+    if (this.type == 0 && this.isSon == true) {
+      this.parentId = ""
+      this.isSon = false
+    }
 
-    addHandleClose() {
-      this.sysDictAddVisible = false
-      this.changeCurrentPageHandler(1)
-    },
+    if (this.type == 0 || (this.parentId != "" && this.type == 1)) {
+      this.httpRequest.get("sysDict/selectDict?page=" + currentPage +
+          "&limit=" + this.pagination.pageSize +
+          "&orderFiled=id" +
+          "&orderType=1" + "&type=" + this.type + "&parentId=" + this.parentId)
+          .then(response => {
+            this.pagination.currentPage = response.data.dictList.currentPage
+            this.pagination.pageSize = response.data.dictList.pageSize
+            this.pagination.total = response.data.dictList.totalSize
+            this.pagination.totalPage = response.data.dictList.totalPage
+            this.dictList = response.data.dictList.resultList
+            // console.log(response)
+          })
+    }
 
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
+  },
 
-  }
+
+  addDict() {
+
+    let params = {
+      "dictCode": this.SysDic.dictCode,
+      "dictValue": this.SysDic.dictValue,
+      "dictDesc": this.SysDic.dictDesc,
+      "parentCode": this.SysDic.parentCode,
+    }
+
+    this.httpRequest.post('sysDict/addDict', params)
+        .then((response) => {
+          this.sysDictAddVisible = false
+          this.SysDic = {}
+          this.changeCurrentPageHandler(1)
+        })
+  },
+
+  // 字典类型发生改变
+  selectType() {
+
+  },
+
+
+  getAllParentDict() {
+
+    this.httpRequest.get('sysDict/parentSysDictList')
+        .then((response) => {
+          this.allParentDict = response.data.sysDictList
+        })
+  },
+
+  showSysDictAddForm() {
+    this.getAllParentDict()
+    this.sysDictAddVisible = true
+  },
+
+  addHandleClose() {
+    this.sysDictAddVisible = false
+    this.changeCurrentPageHandler(1)
+  },
+
+  handleClick(tab, event) {
+    // console.log(tab, event);
+  },
+
+}
 
 
 }
 </script>
 
 <style scoped>
+
+.dictSelector{
+  float: right;
+}
 
 </style>
