@@ -449,7 +449,7 @@ public class UserController {
      */
     @PostMapping("resetPassWord/{userId}")
     @SysListenLog(serverName = "用户服务", action = "重置密码")
-    @ApiOperation(value = "修改密码")
+    @ApiOperation(value = "重置密码")
     @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
     public R resetPassWord(@PathVariable Long userId){
 
