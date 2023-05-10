@@ -113,15 +113,19 @@ public class Constant {
     public static final String RESPONSE_CODE_KEY = "code";
     // R对象中使用的常量
     public static final String RESPONSE_MSG_KEY = "msg";
-    // 父类字典
+    // 根字典
     public static final String  DICT_TYPE_PARENT = "0";
     // 子字典
     public static final String  DICT_TYPE_SON = "1";
 
+    // 根菜单
     public static final String MENU_TYPE_PARENT = "0";
+    // 子菜单
     public static final String MENU_TYPE_SON = "1";
-
-
+    // 系统默认配置项根字典编码
+    public static final String SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE = "SYSTEM_DEFAULT_SETTING";
+    // 系统默认配置项中用户重置默认密码字典编码
+    public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_RESET_PASSWORD = "USER_DEFAULT_PASSWORD";
 
 
     // headers允许前端访问的header字段名

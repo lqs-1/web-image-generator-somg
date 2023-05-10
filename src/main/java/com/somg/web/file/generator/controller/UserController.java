@@ -442,6 +442,31 @@ public class UserController {
 
     }
 
+    /**
+     * 重置密码
+     * @param userId
+     * @return
+     */
+    @PostMapping("resetPassWord/{userId}")
+    @SysListenLog(serverName = "用户服务", action = "重置密码")
+    @ApiOperation(value = "修改密码")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
+    public R resetPassWord(@PathVariable Long userId){
+
+        try {
+
+            return userService.resetPassWord(userId);
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+            return R.error(REnum.DEFAULT_PASSWORD_RESET_FAIL.getStatusCode(),
+                    REnum.DEFAULT_PASSWORD_RESET_FAIL.getStatusMsg());
+
+        }
+
+    }
+
 
     /**
      * 获取用户所有角色数据

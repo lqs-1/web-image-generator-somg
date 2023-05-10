@@ -22,4 +22,6 @@ public interface SysDictService extends IService<SysDict> {
     PageUtils selectDictByPage(Map<String, Object> param);
 
     R deleteDict(Long dictId);
+
+    SysDict findDictByParentAndSelfCode(String parentDictCode, String sonDictCode);
 }

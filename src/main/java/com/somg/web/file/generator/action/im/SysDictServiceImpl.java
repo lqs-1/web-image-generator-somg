@@ -2,6 +2,7 @@ package com.somg.web.file.generator.action.im;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.action.SysDictService;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author somg
@@ -128,5 +130,26 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         }
 
         return R.ok(REnum.DICT_DELETE_SUCCESS.getStatusCode(), REnum.DICT_DELETE_SUCCESS.getStatusMsg());
+    }
+
+    /**
+     * 根据根字典编码和子字典编码找到字典值
+     * @param parentDictCode
+     * @param sonDictCode
+     * @return
+     */
+    @Override
+    public SysDict findDictByParentAndSelfCode(String parentDictCode, String sonDictCode) {
+
+        SysDict parentDict = this.baseMapper.selectOne(new LambdaQueryWrapper<SysDict>().eq(SysDict::getDictCode, parentDictCode));
+        if (ObjectUtils.isEmpty(parentDict)){
+            return null;
+        }
+        List<SysDict> sonDictList = this.baseMapper.selectList(new LambdaQueryWrapper<SysDict>().eq(SysDict::getParentId, parentDict.getId()));
+        List<SysDict> dict = sonDictList.stream().filter(sonDict -> sonDict.getDictCode().equals(sonDictCode)).collect(Collectors.toList());
+        if (dict != null && dict.size() == 1){
+            return dict.get(0);
+        }
+        return null;
     }
 }

@@ -35,4 +35,6 @@ public interface UserService extends IService<User> {
     List<Long> selectUserLikeName(String username);
 
     void updateLoginTimeByUserName(String username);
+
+    R resetPassWord(Long userId);
 }

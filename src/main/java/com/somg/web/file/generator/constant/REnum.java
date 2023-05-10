@@ -48,7 +48,7 @@ public enum REnum {
     REGISTER_FAIL(21011, "用户注册失败"),
     ALTER_PASSWORD_SUCCESS(11008, "用户密码修改成功"),
     ALTER_PASSWORD_FAIL(21012, "用户密码修改失败"),
-    USER_DOES_EXIST(21013, "用户已经存在，请登录"),
+    USER_DOES_EXIST(21013, "用户已经存在 请登录"),
     GET_ROLE_SUCCESS(11009, "获取角色列表成功"),
     GET_ROLE_FAIL(21014, "获取角色列表失败"),
     ROLE_DOES_EXIST(21015, "角色已经存在"),
@@ -121,6 +121,9 @@ public enum REnum {
     PARENT_MENU_USED(21045, "当前操作菜单被引用 不允许删除"),
     ALERT_MENUS_SUCCESS(11046, "更新菜单成功"),
     ALERT_MENUS_FAIL(21046, "更新菜单失败"),
+    DEFAULT_PASSWORD_RESET_FAIL(21047, "默认密码重置失败"),
+    DEFAULT_PASSWORD_RESET_SUCCESS(11047, "默认密码重置成功"),
+    UNKNOW_DEFAULT_PASSWORD_DICT(21048, "密码重置失败 未找到对应字典值")
 
 
 

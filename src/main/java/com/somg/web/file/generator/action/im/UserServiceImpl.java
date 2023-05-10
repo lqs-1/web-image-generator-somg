@@ -3,6 +3,7 @@ package com.somg.web.file.generator.action.im;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.somg.web.file.generator.action.*;
 import com.somg.web.file.generator.constant.Constant;
@@ -53,6 +54,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private UserMenuService userMenuService;
+
+    @Autowired
+    private SysDictService sysDictService;
 
 
     /**
@@ -279,6 +283,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = this.selectUserByName(username);
         user.setLoginTime(new Date());
         this.baseMapper.updateById(user);
+    }
+
+    /**
+     * 重置用户密码
+     * @param userId
+     * @return
+     */
+    @Override
+    public R resetPassWord(Long userId) {
+        SysDict sysDict = sysDictService.findDictByParentAndSelfCode(Constant.SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE, Constant.SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_RESET_PASSWORD);
+
+        if (ObjectUtils.isEmpty(sysDict)){
+            return R.error(REnum.UNKNOW_DEFAULT_PASSWORD_DICT.getStatusCode(), REnum.UNKNOW_DEFAULT_PASSWORD_DICT.getStatusMsg());
+        }
+
+        String defaultPassWord = sysDict.getDictValue();
+
+        User user = this.baseMapper.selectById(userId);
+
+        String encodePassword = new BCryptPasswordEncoder().encode(defaultPassWord);
+
+        user.setPassword(encodePassword);
+
+        this.updateById(user);
+
+        return R.ok(REnum.DEFAULT_PASSWORD_RESET_SUCCESS.getStatusCode(), REnum.DEFAULT_PASSWORD_RESET_SUCCESS.getStatusMsg());
     }
 
 
