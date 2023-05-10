@@ -121,7 +121,7 @@
       </el-table-column>
       <el-table-column
           label="性别"
-          width="150"
+          width="50"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -156,7 +156,7 @@
 
       <el-table-column
           label="操作"
-          width="300"
+          width="450"
           align="center">
         <template slot-scope="scope">
           <el-button
@@ -166,6 +166,10 @@
           <el-button
               size="mini"
               @click="authEdit(scope.$index, scope.row)">菜单授权
+          </el-button>
+          <el-button
+              size="mini"
+              @click="resetPassWord(scope.$index, scope.row)">重置密码
           </el-button>
           <el-button
               size="mini"
@@ -373,6 +377,13 @@ export default {
     showUserAddForm() {
       this.userForm = {}
       this.userAddVisible = true
+    },
+
+    resetPassWord(index, data){
+      this.httpRequest.post("user/resetPassWord/" + data.id)
+          .then(response => {
+            this.changeCurrentPageHandler(1)
+          })
     },
 
 
