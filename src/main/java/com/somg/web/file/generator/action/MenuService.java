@@ -3,6 +3,7 @@ package com.somg.web.file.generator.action;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.somg.web.file.generator.pojo.Menus;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
+import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.AddMenuVo;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface MenuService extends IService<Menus> {
 
     PageUtils allMenusPage(Map<String, Object> params);
 
-    void deleteMenu(Menus menus);
+    R deleteMenu(Menus menus);
 
     List<Menus> getAllMenus();
 

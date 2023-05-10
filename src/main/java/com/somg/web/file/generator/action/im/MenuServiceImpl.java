@@ -7,10 +7,12 @@ import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.action.MenuService;
 import com.somg.web.file.generator.action.UserMenuService;
 import com.somg.web.file.generator.constant.Constant;
+import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.mapper.MenuMapper;
 import com.somg.web.file.generator.pojo.Menus;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
+import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.AddMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,32 +124,52 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
      */
     @Override
     public PageUtils allMenusPage(Map<String, Object> params) {
-        IPage<Menus> page = this.page(new QueryPage<Menus>().getPage(params, true),
-                null);
 
-        return new PageUtils(page);
+        // 根菜单
+        if (params.get("type").equals(Constant.MENU_TYPE_PARENT)){
+
+            IPage<Menus> page = this.page(new QueryPage<Menus>().getPage(params, true),
+
+                    new LambdaQueryWrapper<Menus>().isNull(Menus::getParentIndex));
+
+            return new PageUtils(page);
+
+        } else if (params.get("type").equals(Constant.MENU_TYPE_SON)) { // 子菜单
+
+            IPage<Menus> page = this.page(new QueryPage<Menus>().getPage(params, true),
+
+                    new LambdaQueryWrapper<Menus>().eq(Menus::getParentIndex, params.get("parentIndex")));
+
+            return new PageUtils(page);
+        }
+
+        return null;
+
     }
 
     /**
      * 删除对应的菜单 根据id
      *
      * @param menus
+     * @return
      */
     @Override
     @Transactional(readOnly = false)
-    public void deleteMenu(Menus menus) {
+    public R deleteMenu(Menus menus) {
 
         // 是否被使用
         Menus isMenu = this.baseMapper.selectById(menus.getId());
-        if (isMenu.getParentIndex() == null
-                && this.baseMapper.selectList(new LambdaQueryWrapper<Menus>().eq(Menus::getParentIndex, isMenu.getMenuIndex())).size() > 0) {
-            return;
+        if (isMenu.getParentIndex() == null) {
+            List<Menus> sonMenu = this.baseMapper.selectList(new LambdaQueryWrapper<Menus>().eq(Menus::getParentIndex, isMenu.getMenuIndex()));
+            if (sonMenu != null && sonMenu.size() > 0) {
+                return R.error(REnum.PARENT_MENU_USED.getStatusCode(), REnum.PARENT_MENU_USED.getStatusMsg());
+            }
+            this.baseMapper.deleteById(menus.getId());
 
+        }else {
+            this.baseMapper.deleteById(menus.getId());
         }
-
-        this.baseMapper.deleteById(menus.getId());
-
-
+        return R.ok(REnum.DELETE_MENUS_SUCCESS.getStatusCode(),REnum.DELETE_MENUS_SUCCESS.getStatusMsg());
     }
 
     /**

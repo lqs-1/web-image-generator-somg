@@ -118,6 +118,9 @@ public enum REnum {
     DICT_DELETE_FAIL(21043, "字典删除失败"),
     ALTER_DICT_SUCCESS(11044, "字典更新成功"),
     ALTER_DICT_FAIL(21044, "字典更新失败"),
+    PARENT_MENU_USED(21045, "当前操作菜单被引用 不允许删除"),
+    ALERT_MENUS_SUCCESS(11046, "更新菜单成功"),
+    ALERT_MENUS_FAIL(21046, "更新菜单失败"),
 
 
 

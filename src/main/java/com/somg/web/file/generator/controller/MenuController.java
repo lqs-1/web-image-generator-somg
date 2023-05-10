@@ -84,7 +84,31 @@ public class MenuController {
 
 
     /**
-     * 获取菜单分页数据
+     * 修改菜单
+     * @param menus
+     * @return
+     */
+    @SysListenLog(serverName = "菜单服务", action = "修改菜单")
+    @PostMapping("editMenu")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
+    @ApiOperation(value = "修改菜单")
+    public R editMenu(@RequestBody Menus menus){
+
+        try {
+            menuService.updateById(menus);
+
+            return R.ok(REnum.ALERT_MENUS_SUCCESS.getStatusCode(),REnum.ALERT_MENUS_SUCCESS.getStatusMsg());
+        }catch (Exception e){
+            e.printStackTrace();
+            return R.error(REnum.ALERT_MENUS_FAIL.getStatusCode(), REnum.ALERT_MENUS_FAIL.getStatusMsg());
+        }
+
+    }
+
+
+
+    /**
+     * 获取菜单分页数据 根据田间
      * @param params
      * @return
      */
@@ -194,9 +218,8 @@ public class MenuController {
 
         try {
 
-            menuService.deleteMenu(menus);
+            return menuService.deleteMenu(menus);
 
-            return R.ok(REnum.DELETE_MENUS_SUCCESS.getStatusCode(),REnum.DELETE_MENUS_SUCCESS.getStatusMsg());
         }catch (Exception e){
 
             return R.error(REnum.DELETE_MENUS_FAIL.getStatusCode(), REnum.DELETE_MENUS_FAIL.getStatusMsg());

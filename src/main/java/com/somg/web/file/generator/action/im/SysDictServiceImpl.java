@@ -86,7 +86,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
      */
     @Override
     public PageUtils selectDictByPage(Map<String, Object> param) {
-        // 父类字典
+        // 根字典
         if (param.get("type").equals(Constant.DICT_TYPE_PARENT)){
 
             IPage<SysDict> page = this.page(new QueryPage<SysDict>().getPage(param, true),

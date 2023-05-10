@@ -118,6 +118,9 @@ public class Constant {
     // 子字典
     public static final String  DICT_TYPE_SON = "1";
 
+    public static final String MENU_TYPE_PARENT = "0";
+    public static final String MENU_TYPE_SON = "1";
+
 
 
 
