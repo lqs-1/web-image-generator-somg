@@ -11,7 +11,7 @@
  Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 01/05/2023 20:54:10
+ Date: 10/05/2023 10:50:03
 */
 
 SET NAMES utf8mb4;
@@ -48,7 +48,7 @@ CREATE TABLE `menus`  (
   `menuName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '菜单名',
   `parentIndex` int NULL DEFAULT NULL COMMENT '子菜单的父级菜单索引',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menus
@@ -74,8 +74,9 @@ INSERT INTO `menus` VALUES (36, NULL, '/news/cnJingJiItNews', '中国经济网IT
 INSERT INTO `menus` VALUES (37, NULL, '/news/cnPeopleNews', '人民网滚动要闻', 12);
 INSERT INTO `menus` VALUES (38, NULL, '/news/cnTouTiaoNews', '头条热搜榜', 12);
 INSERT INTO `menus` VALUES (39, NULL, '/news/CnWeiBoHotSearch', '微博热搜榜', 12);
-INSERT INTO `menus` VALUES (40, 24, 'tv', '影视', NULL);
-INSERT INTO `menus` VALUES (41, NULL, '/tv/tvSearch', '影视搜索', 24);
+INSERT INTO `menus` VALUES (43, NULL, '/user/sysDictList', '系统字典', 2);
+INSERT INTO `menus` VALUES (44, 24, 'tv', '影视', NULL);
+INSERT INTO `menus` VALUES (45, NULL, '/tv/tvSearch', '影视搜索', 24);
 
 -- ----------------------------
 -- Table structure for permission
@@ -117,17 +118,55 @@ INSERT INTO `role` VALUES (5, 'admin');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict`  (
-  `id` int NOT NULL COMMENT '字典id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '字典id',
   `dictCode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典编码',
   `parentId` int NULL DEFAULT NULL COMMENT '父字典id',
-  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典描述',
+  `dictDesc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典描述',
   `dictValue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '字典值',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统字典表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统字典表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict
 -- ----------------------------
+INSERT INTO `sys_dict` VALUES (4, 'PATH_DICT', NULL, '所有路径字典', NULL);
+INSERT INTO `sys_dict` VALUES (5, 'ha', 4, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (6, 'ha', 4, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (7, 'ha', 4, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (8, 'ha', 4, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (9, 'ha', 4, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (10, 'ha', 4, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (11, 'ha', 4, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (28, 'SYSTEM_STATUS_CODE', NULL, '所有环境变量', NULL);
+INSERT INTO `sys_dict` VALUES (29, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (30, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (31, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (32, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (33, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (34, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (35, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (36, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (37, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (38, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (39, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (40, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (41, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (42, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (43, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (44, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (45, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (46, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (47, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (48, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (49, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (50, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (51, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (52, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (53, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (54, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (55, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (56, 'ha', 28, 'desc', '23');
+INSERT INTO `sys_dict` VALUES (57, 'ha', 28, 'desc', '23');
 
 -- ----------------------------
 -- Table structure for sys_log
@@ -141,7 +180,7 @@ CREATE TABLE `sys_log`  (
   `serverName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '服务模块名字',
   `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '执行的操作',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 397 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 749 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_log
@@ -542,6 +581,358 @@ INSERT INTO `sys_log` VALUES (393, 37, 'liubangqi', '2023-05-01 01:52:23', '文�
 INSERT INTO `sys_log` VALUES (394, 37, 'liubangqi', '2023-05-01 01:52:31', '文件服务', '所有文件列表[用户]');
 INSERT INTO `sys_log` VALUES (395, 37, 'liubangqi', '2023-05-01 09:25:57', '文件服务', '所有文件列表[用户]');
 INSERT INTO `sys_log` VALUES (396, 23, 'lqs', '2023-05-01 10:42:20', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (397, 23, 'lqs', '2023-05-01 21:46:45', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (398, 23, 'lqs', '2023-05-01 21:46:47', '菜单服务', '菜单列表[授权]');
+INSERT INTO `sys_log` VALUES (399, 23, 'lqs', '2023-05-01 21:46:47', '菜单服务', '查询用户已有菜单权限');
+INSERT INTO `sys_log` VALUES (400, 23, 'lqs', '2023-05-01 21:46:56', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (401, 23, 'lqs', '2023-05-01 21:46:57', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (402, 23, 'lqs', '2023-05-01 21:46:58', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (403, 23, 'lqs', '2023-05-01 21:47:18', '菜单服务', '添加菜单');
+INSERT INTO `sys_log` VALUES (404, 23, 'lqs', '2023-05-01 21:47:18', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (405, 23, 'lqs', '2023-05-01 21:47:20', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (406, 23, 'lqs', '2023-05-01 21:47:22', '菜单服务', '菜单列表[授权]');
+INSERT INTO `sys_log` VALUES (407, 23, 'lqs', '2023-05-01 21:47:22', '菜单服务', '查询用户已有菜单权限');
+INSERT INTO `sys_log` VALUES (408, 23, 'lqs', '2023-05-01 21:47:26', '菜单服务', '给用户授权菜单');
+INSERT INTO `sys_log` VALUES (409, 23, 'lqs', '2023-05-01 21:47:26', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (410, 23, 'lqs', '2023-05-01 21:48:19', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (411, 23, 'lqs', '2023-05-01 21:48:22', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (412, 23, 'lqs', '2023-05-01 21:48:22', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (413, 23, 'lqs', '2023-05-01 21:48:24', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (414, 23, 'lqs', '2023-05-01 21:48:41', '菜单服务', '添加菜单');
+INSERT INTO `sys_log` VALUES (415, 23, 'lqs', '2023-05-01 21:48:41', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (416, 23, 'lqs', '2023-05-01 21:48:42', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (417, 23, 'lqs', '2023-05-01 21:48:44', '菜单服务', '菜单列表[授权]');
+INSERT INTO `sys_log` VALUES (418, 23, 'lqs', '2023-05-01 21:48:44', '菜单服务', '查询用户已有菜单权限');
+INSERT INTO `sys_log` VALUES (419, 23, 'lqs', '2023-05-01 21:48:48', '菜单服务', '给用户授权菜单');
+INSERT INTO `sys_log` VALUES (420, 23, 'lqs', '2023-05-01 21:48:48', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (421, 23, 'lqs', '2023-05-01 21:49:00', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (422, 23, 'lqs', '2023-05-01 21:49:24', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (423, 23, 'lqs', '2023-05-01 21:49:33', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (424, 23, 'lqs', '2023-05-01 21:49:33', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (425, 23, 'lqs', '2023-05-01 21:50:02', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (426, 23, 'lqs', '2023-05-01 21:50:02', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (427, 23, 'lqs', '2023-05-01 21:54:05', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (428, 23, 'lqs', '2023-05-01 21:54:05', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (429, 23, 'lqs', '2023-05-01 21:54:45', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (430, 23, 'lqs', '2023-05-01 21:54:45', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (431, 23, 'lqs', '2023-05-01 21:56:32', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (432, 23, 'lqs', '2023-05-01 21:56:32', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (433, 23, 'lqs', '2023-05-01 21:56:56', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (434, 23, 'lqs', '2023-05-01 21:56:56', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (435, 23, 'lqs', '2023-05-01 21:58:45', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (436, 23, 'lqs', '2023-05-01 21:59:26', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (437, 23, 'lqs', '2023-05-01 21:59:26', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (438, 23, 'lqs', '2023-05-01 22:00:13', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (439, 23, 'lqs', '2023-05-01 22:00:13', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (440, 23, 'lqs', '2023-05-01 22:00:59', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (441, 23, 'lqs', '2023-05-01 22:00:59', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (442, 23, 'lqs', '2023-05-01 22:08:53', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (443, 23, 'lqs', '2023-05-01 22:08:59', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (444, 23, 'lqs', '2023-05-01 22:09:12', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (445, 23, 'lqs', '2023-05-01 22:09:50', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (446, 23, 'lqs', '2023-05-01 22:09:50', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (447, 23, 'lqs', '2023-05-01 22:09:52', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (448, 23, 'lqs', '2023-05-01 22:11:18', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (449, 23, 'lqs', '2023-05-01 22:11:18', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (450, 23, 'lqs', '2023-05-02 15:26:28', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (451, 23, 'lqs', '2023-05-02 15:26:31', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (452, 23, 'lqs', '2023-05-02 15:27:00', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (453, 23, 'lqs', '2023-05-02 15:27:00', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (454, 23, 'lqs', '2023-05-02 15:33:33', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (455, 23, 'lqs', '2023-05-02 15:33:52', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (456, 23, 'lqs', '2023-05-02 15:33:52', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (457, 23, 'lqs', '2023-05-02 15:34:22', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (458, 23, 'lqs', '2023-05-02 15:34:23', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (459, 23, 'lqs', '2023-05-02 15:35:26', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (460, 23, 'lqs', '2023-05-02 15:35:26', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (461, 23, 'lqs', '2023-05-02 15:35:54', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (462, 23, 'lqs', '2023-05-02 15:35:54', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (463, 23, 'lqs', '2023-05-02 15:35:59', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (464, 23, 'lqs', '2023-05-02 15:36:09', '菜单服务', '添加菜单');
+INSERT INTO `sys_log` VALUES (465, 23, 'lqs', '2023-05-02 15:36:09', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (466, 23, 'lqs', '2023-05-02 15:36:11', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (467, 23, 'lqs', '2023-05-02 15:36:25', '菜单服务', '添加菜单');
+INSERT INTO `sys_log` VALUES (468, 23, 'lqs', '2023-05-02 15:36:25', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (469, 23, 'lqs', '2023-05-02 15:36:35', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (470, 23, 'lqs', '2023-05-02 15:36:35', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (471, 23, 'lqs', '2023-05-02 15:36:44', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (472, 23, 'lqs', '2023-05-02 15:36:52', '菜单服务', '添加菜单');
+INSERT INTO `sys_log` VALUES (473, 23, 'lqs', '2023-05-02 15:36:52', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (474, 23, 'lqs', '2023-05-02 15:37:01', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (475, 23, 'lqs', '2023-05-02 15:37:01', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (476, 23, 'lqs', '2023-05-02 15:37:04', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (477, 23, 'lqs', '2023-05-02 15:37:04', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (478, 23, 'lqs', '2023-05-02 15:37:11', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (479, 23, 'lqs', '2023-05-02 15:37:11', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (480, 23, 'lqs', '2023-05-02 15:37:13', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (481, 23, 'lqs', '2023-05-02 15:37:13', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (482, 23, 'lqs', '2023-05-02 15:37:17', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (483, 23, 'lqs', '2023-05-02 15:37:25', '菜单服务', '添加菜单');
+INSERT INTO `sys_log` VALUES (484, 23, 'lqs', '2023-05-02 15:37:25', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (485, 23, 'lqs', '2023-05-02 15:37:27', '菜单服务', '删除菜单');
+INSERT INTO `sys_log` VALUES (486, 23, 'lqs', '2023-05-02 15:37:27', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (487, 23, 'lqs', '2023-05-10 09:32:19', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (488, 23, 'lqs', '2023-05-10 09:32:24', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (489, 23, 'lqs', '2023-05-10 09:32:26', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (490, 23, 'lqs', '2023-05-10 09:32:33', '权限服务', '权限列表[展示]');
+INSERT INTO `sys_log` VALUES (491, 23, 'lqs', '2023-05-10 09:32:35', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (492, 23, 'lqs', '2023-05-10 09:33:25', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (493, 23, 'lqs', '2023-05-10 09:33:29', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (494, 23, 'lqs', '2023-05-10 09:33:46', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (495, 23, 'lqs', '2023-05-10 09:34:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (496, 23, 'lqs', '2023-05-10 09:34:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (497, 23, 'lqs', '2023-05-10 09:34:55', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (498, 23, 'lqs', '2023-05-10 09:34:58', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (499, 23, 'lqs', '2023-05-10 09:35:46', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (500, 23, 'lqs', '2023-05-10 09:35:53', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (501, 23, 'lqs', '2023-05-10 09:35:55', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (502, 23, 'lqs', '2023-05-10 09:39:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (503, 23, 'lqs', '2023-05-10 09:42:53', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (504, 23, 'lqs', '2023-05-10 09:43:40', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (505, 23, 'lqs', '2023-05-10 09:44:28', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (506, 23, 'lqs', '2023-05-10 09:44:31', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (507, 23, 'lqs', '2023-05-10 09:44:32', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (508, 23, 'lqs', '2023-05-10 09:44:34', '权限服务', '权限列表[展示]');
+INSERT INTO `sys_log` VALUES (509, 23, 'lqs', '2023-05-10 09:44:35', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (510, 23, 'lqs', '2023-05-10 09:44:40', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (511, 23, 'lqs', '2023-05-10 09:44:41', '角色服务', '角色列表[展示]');
+INSERT INTO `sys_log` VALUES (512, 23, 'lqs', '2023-05-10 09:44:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (513, 23, 'lqs', '2023-05-10 09:47:33', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (514, 23, 'lqs', '2023-05-10 09:48:26', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (515, 23, 'lqs', '2023-05-10 09:48:29', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (516, 23, 'lqs', '2023-05-10 09:48:35', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (517, 23, 'lqs', '2023-05-10 09:52:35', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (518, 23, 'lqs', '2023-05-10 09:52:59', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (519, 23, 'lqs', '2023-05-10 09:54:31', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (520, 23, 'lqs', '2023-05-10 09:56:25', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (521, 23, 'lqs', '2023-05-10 09:56:28', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (522, 23, 'lqs', '2023-05-10 09:56:30', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (523, 23, 'lqs', '2023-05-10 09:56:36', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (524, 23, 'lqs', '2023-05-10 09:56:45', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (525, 23, 'lqs', '2023-05-10 10:01:08', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (526, 23, 'lqs', '2023-05-10 10:01:11', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (527, 23, 'lqs', '2023-05-10 10:01:17', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (528, 23, 'lqs', '2023-05-10 10:01:21', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (529, 23, 'lqs', '2023-05-10 10:01:24', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (530, 23, 'lqs', '2023-05-10 10:01:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (531, 23, 'lqs', '2023-05-10 10:01:29', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (532, 23, 'lqs', '2023-05-10 10:01:29', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (533, 23, 'lqs', '2023-05-10 10:02:24', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (534, 23, 'lqs', '2023-05-10 10:02:26', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (535, 23, 'lqs', '2023-05-10 10:02:26', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (536, 23, 'lqs', '2023-05-10 10:02:32', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (537, 23, 'lqs', '2023-05-10 10:02:32', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (538, 23, 'lqs', '2023-05-10 10:03:45', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (539, 23, 'lqs', '2023-05-10 10:03:47', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (540, 23, 'lqs', '2023-05-10 10:03:51', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (541, 23, 'lqs', '2023-05-10 10:03:54', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (542, 23, 'lqs', '2023-05-10 10:03:58', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (543, 23, 'lqs', '2023-05-10 10:04:14', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (544, 23, 'lqs', '2023-05-10 10:04:21', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (545, 23, 'lqs', '2023-05-10 10:04:23', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (546, 23, 'lqs', '2023-05-10 10:04:46', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (547, 23, 'lqs', '2023-05-10 10:08:55', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (548, 23, 'lqs', '2023-05-10 10:16:53', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (549, 23, 'lqs', '2023-05-10 10:17:04', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (550, 23, 'lqs', '2023-05-10 10:17:12', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (551, 23, 'lqs', '2023-05-10 10:19:30', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (552, 23, 'lqs', '2023-05-10 10:19:37', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (553, 23, 'lqs', '2023-05-10 10:19:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (554, 23, 'lqs', '2023-05-10 10:19:43', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (555, 23, 'lqs', '2023-05-10 10:19:45', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (556, 23, 'lqs', '2023-05-10 10:19:54', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (557, 23, 'lqs', '2023-05-10 10:21:42', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (558, 23, 'lqs', '2023-05-10 10:22:43', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (559, 23, 'lqs', '2023-05-10 10:22:47', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (560, 23, 'lqs', '2023-05-10 10:22:47', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (561, 23, 'lqs', '2023-05-10 10:22:51', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (562, 23, 'lqs', '2023-05-10 10:22:54', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (563, 23, 'lqs', '2023-05-10 10:22:56', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (564, 23, 'lqs', '2023-05-10 10:22:56', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (565, 23, 'lqs', '2023-05-10 10:23:00', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (566, 23, 'lqs', '2023-05-10 10:23:03', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (567, 23, 'lqs', '2023-05-10 10:23:03', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (568, 23, 'lqs', '2023-05-10 10:23:07', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (569, 23, 'lqs', '2023-05-10 10:23:09', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (570, 23, 'lqs', '2023-05-10 10:23:09', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (571, 23, 'lqs', '2023-05-10 10:23:14', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (572, 23, 'lqs', '2023-05-10 10:23:30', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (573, 23, 'lqs', '2023-05-10 10:23:30', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (574, 23, 'lqs', '2023-05-10 10:23:40', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (575, 23, 'lqs', '2023-05-10 10:23:43', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (576, 23, 'lqs', '2023-05-10 10:23:43', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (577, 23, 'lqs', '2023-05-10 10:23:52', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (578, 23, 'lqs', '2023-05-10 10:23:54', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (579, 23, 'lqs', '2023-05-10 10:23:54', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (580, 23, 'lqs', '2023-05-10 10:24:37', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (581, 23, 'lqs', '2023-05-10 10:24:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (582, 23, 'lqs', '2023-05-10 10:24:40', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (583, 23, 'lqs', '2023-05-10 10:24:43', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (584, 23, 'lqs', '2023-05-10 10:24:43', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (585, 23, 'lqs', '2023-05-10 10:24:45', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (586, 23, 'lqs', '2023-05-10 10:25:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (587, 23, 'lqs', '2023-05-10 10:25:30', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (588, 23, 'lqs', '2023-05-10 10:25:30', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (589, 23, 'lqs', '2023-05-10 10:25:35', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (590, 23, 'lqs', '2023-05-10 10:25:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (591, 23, 'lqs', '2023-05-10 10:25:38', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (592, 23, 'lqs', '2023-05-10 10:25:38', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (593, 23, 'lqs', '2023-05-10 10:25:41', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (594, 23, 'lqs', '2023-05-10 10:25:42', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (595, 23, 'lqs', '2023-05-10 10:25:42', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (596, 23, 'lqs', '2023-05-10 10:25:45', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (597, 23, 'lqs', '2023-05-10 10:26:08', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (598, 23, 'lqs', '2023-05-10 10:26:08', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (599, 23, 'lqs', '2023-05-10 10:26:10', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (600, 23, 'lqs', '2023-05-10 10:26:13', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (601, 23, 'lqs', '2023-05-10 10:26:16', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (602, 23, 'lqs', '2023-05-10 10:27:23', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (603, 23, 'lqs', '2023-05-10 10:27:25', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (604, 23, 'lqs', '2023-05-10 10:27:30', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (605, 23, 'lqs', '2023-05-10 10:27:32', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (606, 23, 'lqs', '2023-05-10 10:27:52', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (607, 23, 'lqs', '2023-05-10 10:27:53', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (608, 23, 'lqs', '2023-05-10 10:27:56', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (609, 23, 'lqs', '2023-05-10 10:29:09', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (610, 23, 'lqs', '2023-05-10 10:29:12', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (611, 23, 'lqs', '2023-05-10 10:29:34', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (612, 23, 'lqs', '2023-05-10 10:29:35', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (613, 23, 'lqs', '2023-05-10 10:29:39', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (614, 23, 'lqs', '2023-05-10 10:30:45', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (615, 23, 'lqs', '2023-05-10 10:30:48', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (616, 23, 'lqs', '2023-05-10 10:30:51', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (617, 23, 'lqs', '2023-05-10 10:30:51', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (618, 23, 'lqs', '2023-05-10 10:32:21', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (619, 23, 'lqs', '2023-05-10 10:32:23', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (620, 23, 'lqs', '2023-05-10 10:32:25', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (621, 23, 'lqs', '2023-05-10 10:32:29', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (622, 23, 'lqs', '2023-05-10 10:32:32', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (623, 23, 'lqs', '2023-05-10 10:32:32', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (624, 23, 'lqs', '2023-05-10 10:32:47', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (625, 23, 'lqs', '2023-05-10 10:32:50', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (626, 23, 'lqs', '2023-05-10 10:33:00', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (627, 23, 'lqs', '2023-05-10 10:33:02', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (628, 23, 'lqs', '2023-05-10 10:33:12', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (629, 23, 'lqs', '2023-05-10 10:33:14', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (630, 23, 'lqs', '2023-05-10 10:33:16', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (631, 23, 'lqs', '2023-05-10 10:33:19', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (632, 23, 'lqs', '2023-05-10 10:33:27', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (633, 23, 'lqs', '2023-05-10 10:33:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (634, 23, 'lqs', '2023-05-10 10:36:23', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (635, 23, 'lqs', '2023-05-10 10:36:23', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (636, 23, 'lqs', '2023-05-10 10:36:27', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (637, 23, 'lqs', '2023-05-10 10:36:28', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (638, 23, 'lqs', '2023-05-10 10:36:31', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (639, 23, 'lqs', '2023-05-10 10:36:37', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (640, 23, 'lqs', '2023-05-10 10:36:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (641, 23, 'lqs', '2023-05-10 10:36:38', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (642, 23, 'lqs', '2023-05-10 10:36:38', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (643, 23, 'lqs', '2023-05-10 10:36:39', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (644, 23, 'lqs', '2023-05-10 10:36:39', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (645, 23, 'lqs', '2023-05-10 10:36:40', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (646, 23, 'lqs', '2023-05-10 10:36:40', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (647, 23, 'lqs', '2023-05-10 10:36:45', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (648, 23, 'lqs', '2023-05-10 10:36:48', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (649, 23, 'lqs', '2023-05-10 10:36:50', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (650, 23, 'lqs', '2023-05-10 10:36:55', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (651, 23, 'lqs', '2023-05-10 10:36:57', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (652, 23, 'lqs', '2023-05-10 10:36:57', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (653, 23, 'lqs', '2023-05-10 10:37:00', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (654, 23, 'lqs', '2023-05-10 10:37:02', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (655, 23, 'lqs', '2023-05-10 10:37:07', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (656, 23, 'lqs', '2023-05-10 10:37:09', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (657, 23, 'lqs', '2023-05-10 10:37:12', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (658, 23, 'lqs', '2023-05-10 10:38:07', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (659, 23, 'lqs', '2023-05-10 10:38:09', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (660, 23, 'lqs', '2023-05-10 10:38:11', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (661, 23, 'lqs', '2023-05-10 10:38:13', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (662, 23, 'lqs', '2023-05-10 10:38:15', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (663, 23, 'lqs', '2023-05-10 10:38:20', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (664, 23, 'lqs', '2023-05-10 10:38:23', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (665, 23, 'lqs', '2023-05-10 10:38:28', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (666, 23, 'lqs', '2023-05-10 10:38:31', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (667, 23, 'lqs', '2023-05-10 10:38:36', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (668, 23, 'lqs', '2023-05-10 10:38:45', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (669, 23, 'lqs', '2023-05-10 10:38:48', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (670, 23, 'lqs', '2023-05-10 10:39:25', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (671, 23, 'lqs', '2023-05-10 10:39:27', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (672, 23, 'lqs', '2023-05-10 10:39:30', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (673, 23, 'lqs', '2023-05-10 10:39:39', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (674, 23, 'lqs', '2023-05-10 10:40:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (675, 23, 'lqs', '2023-05-10 10:40:43', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (676, 23, 'lqs', '2023-05-10 10:40:46', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (677, 23, 'lqs', '2023-05-10 10:40:49', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (678, 23, 'lqs', '2023-05-10 10:41:05', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (679, 23, 'lqs', '2023-05-10 10:41:08', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (680, 23, 'lqs', '2023-05-10 10:41:14', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (681, 23, 'lqs', '2023-05-10 10:41:19', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (682, 23, 'lqs', '2023-05-10 10:41:21', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (683, 23, 'lqs', '2023-05-10 10:41:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (684, 23, 'lqs', '2023-05-10 10:41:29', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (685, 23, 'lqs', '2023-05-10 10:41:32', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (686, 23, 'lqs', '2023-05-10 10:41:42', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (687, 23, 'lqs', '2023-05-10 10:41:43', '文件服务', '所有文件列表[所有]');
+INSERT INTO `sys_log` VALUES (688, 23, 'lqs', '2023-05-10 10:41:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (689, 23, 'lqs', '2023-05-10 10:41:48', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (690, 23, 'lqs', '2023-05-10 10:41:51', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (691, 23, 'lqs', '2023-05-10 10:42:20', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (692, 23, 'lqs', '2023-05-10 10:42:45', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (693, 23, 'lqs', '2023-05-10 10:42:54', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (694, 23, 'lqs', '2023-05-10 10:42:56', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (695, 23, 'lqs', '2023-05-10 10:43:09', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (696, 23, 'lqs', '2023-05-10 10:43:09', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (697, 23, 'lqs', '2023-05-10 10:43:20', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (698, 23, 'lqs', '2023-05-10 10:43:20', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (699, 23, 'lqs', '2023-05-10 10:43:31', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (700, 23, 'lqs', '2023-05-10 10:43:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (701, 23, 'lqs', '2023-05-10 10:43:38', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (702, 23, 'lqs', '2023-05-10 10:44:08', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (703, 23, 'lqs', '2023-05-10 10:44:08', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (704, 23, 'lqs', '2023-05-10 10:44:13', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (705, 23, 'lqs', '2023-05-10 10:44:17', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (706, 23, 'lqs', '2023-05-10 10:44:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (707, 23, 'lqs', '2023-05-10 10:44:26', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (708, 23, 'lqs', '2023-05-10 10:44:28', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (709, 23, 'lqs', '2023-05-10 10:44:33', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (710, 23, 'lqs', '2023-05-10 10:44:59', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (711, 23, 'lqs', '2023-05-10 10:45:05', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (712, 23, 'lqs', '2023-05-10 10:45:14', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (713, 23, 'lqs', '2023-05-10 10:45:17', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (714, 23, 'lqs', '2023-05-10 10:45:20', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (715, 23, 'lqs', '2023-05-10 10:45:22', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (716, 23, 'lqs', '2023-05-10 10:45:22', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (717, 23, 'lqs', '2023-05-10 10:45:24', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (718, 23, 'lqs', '2023-05-10 10:45:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (719, 23, 'lqs', '2023-05-10 10:45:35', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (720, 23, 'lqs', '2023-05-10 10:46:19', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (721, 23, 'lqs', '2023-05-10 10:46:27', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (722, 23, 'lqs', '2023-05-10 10:46:29', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (723, 23, 'lqs', '2023-05-10 10:46:37', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (724, 23, 'lqs', '2023-05-10 10:46:41', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (725, 23, 'lqs', '2023-05-10 10:46:50', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (726, 23, 'lqs', '2023-05-10 10:46:50', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (727, 23, 'lqs', '2023-05-10 10:46:52', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (728, 23, 'lqs', '2023-05-10 10:46:52', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (729, 23, 'lqs', '2023-05-10 10:46:52', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (730, 23, 'lqs', '2023-05-10 10:46:52', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (731, 23, 'lqs', '2023-05-10 10:46:52', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (732, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (733, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (734, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (735, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (736, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (737, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (738, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (739, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (740, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (741, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (742, 23, 'lqs', '2023-05-10 10:46:53', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (743, 23, 'lqs', '2023-05-10 10:46:54', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (744, 23, 'lqs', '2023-05-10 10:46:54', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (745, 23, 'lqs', '2023-05-10 10:46:54', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (746, 23, 'lqs', '2023-05-10 10:46:54', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (747, 23, 'lqs', '2023-05-10 10:46:54', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (748, 23, 'lqs', '2023-05-10 10:46:54', '系统字典服务', '展示字典');
 
 -- ----------------------------
 -- Table structure for user
@@ -561,7 +952,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (23, 'lqs', '$2a$10$ltNDgsagzDgAo2maKStbcuVHKfHGwJSgB75YV0ExLs0Tzf4dGzIXO', '男', '2023-03-24 11:13:56', '2023-05-01 01:44:56', '749062870@qq.com');
+INSERT INTO `user` VALUES (23, 'lqs', '$2a$10$ltNDgsagzDgAo2maKStbcuVHKfHGwJSgB75YV0ExLs0Tzf4dGzIXO', '男', '2023-03-24 11:13:56', '2023-05-02 15:26:26', '749062870@qq.com');
 INSERT INTO `user` VALUES (37, 'liubangqi', '$2a$10$E0WDuyXOy8EdMXYNOihaauSJ//eq0SsrkPzdw81vX0CBynyaNOifi', '女', '2023-04-25 13:10:06', '2023-04-30 19:54:07', '749062870@qq.com');
 INSERT INTO `user` VALUES (38, 'guest', '$2a$10$OEO4B8oGcvLnobQbAqLKoe/FJr3iuphz.GvFLYw89wkHjUcCYQbj.', '男', '2023-04-30 19:13:24', '2023-04-30 19:13:24', '749062870@qq.com');
 INSERT INTO `user` VALUES (40, 'lh', '$2a$10$r9c/cQcyLflEt6mUQ4NoYuFkvOflGFWD68Om0RPEQABlccaVIditq', '男', '2023-05-01 01:44:16', '2023-05-01 01:44:39', '749062870@qq.com');
@@ -602,34 +993,11 @@ CREATE TABLE `user_menu`  (
   INDEX `mrm`(`menuId` ASC) USING BTREE,
   CONSTRAINT `mrm` FOREIGN KEY (`menuId`) REFERENCES `menus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `urm` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 393 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户和菜单权限关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 441 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户和菜单权限关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_menu
 -- ----------------------------
-INSERT INTO `user_menu` VALUES (308, 23, 1);
-INSERT INTO `user_menu` VALUES (309, 23, 2);
-INSERT INTO `user_menu` VALUES (310, 23, 3);
-INSERT INTO `user_menu` VALUES (311, 23, 4);
-INSERT INTO `user_menu` VALUES (312, 23, 5);
-INSERT INTO `user_menu` VALUES (313, 23, 6);
-INSERT INTO `user_menu` VALUES (314, 23, 7);
-INSERT INTO `user_menu` VALUES (315, 23, 19);
-INSERT INTO `user_menu` VALUES (316, 23, 22);
-INSERT INTO `user_menu` VALUES (317, 23, 23);
-INSERT INTO `user_menu` VALUES (318, 23, 26);
-INSERT INTO `user_menu` VALUES (319, 23, 27);
-INSERT INTO `user_menu` VALUES (320, 23, 31);
-INSERT INTO `user_menu` VALUES (321, 23, 32);
-INSERT INTO `user_menu` VALUES (322, 23, 33);
-INSERT INTO `user_menu` VALUES (323, 23, 34);
-INSERT INTO `user_menu` VALUES (324, 23, 35);
-INSERT INTO `user_menu` VALUES (325, 23, 36);
-INSERT INTO `user_menu` VALUES (326, 23, 37);
-INSERT INTO `user_menu` VALUES (327, 23, 38);
-INSERT INTO `user_menu` VALUES (328, 23, 39);
-INSERT INTO `user_menu` VALUES (329, 23, 40);
-INSERT INTO `user_menu` VALUES (330, 23, 41);
 INSERT INTO `user_menu` VALUES (331, 38, 1);
 INSERT INTO `user_menu` VALUES (332, 38, 6);
 INSERT INTO `user_menu` VALUES (333, 38, 19);
@@ -665,8 +1033,6 @@ INSERT INTO `user_menu` VALUES (362, 37, 5);
 INSERT INTO `user_menu` VALUES (363, 37, 7);
 INSERT INTO `user_menu` VALUES (364, 37, 26);
 INSERT INTO `user_menu` VALUES (365, 37, 27);
-INSERT INTO `user_menu` VALUES (366, 37, 40);
-INSERT INTO `user_menu` VALUES (367, 37, 41);
 INSERT INTO `user_menu` VALUES (377, 40, 1);
 INSERT INTO `user_menu` VALUES (378, 40, 6);
 INSERT INTO `user_menu` VALUES (379, 40, 19);
@@ -681,8 +1047,28 @@ INSERT INTO `user_menu` VALUES (387, 40, 36);
 INSERT INTO `user_menu` VALUES (388, 40, 37);
 INSERT INTO `user_menu` VALUES (389, 40, 38);
 INSERT INTO `user_menu` VALUES (390, 40, 39);
-INSERT INTO `user_menu` VALUES (391, 40, 40);
-INSERT INTO `user_menu` VALUES (392, 40, 41);
+INSERT INTO `user_menu` VALUES (417, 23, 1);
+INSERT INTO `user_menu` VALUES (418, 23, 2);
+INSERT INTO `user_menu` VALUES (419, 23, 3);
+INSERT INTO `user_menu` VALUES (420, 23, 4);
+INSERT INTO `user_menu` VALUES (421, 23, 5);
+INSERT INTO `user_menu` VALUES (422, 23, 6);
+INSERT INTO `user_menu` VALUES (423, 23, 7);
+INSERT INTO `user_menu` VALUES (424, 23, 19);
+INSERT INTO `user_menu` VALUES (425, 23, 22);
+INSERT INTO `user_menu` VALUES (426, 23, 23);
+INSERT INTO `user_menu` VALUES (427, 23, 26);
+INSERT INTO `user_menu` VALUES (428, 23, 27);
+INSERT INTO `user_menu` VALUES (429, 23, 31);
+INSERT INTO `user_menu` VALUES (430, 23, 32);
+INSERT INTO `user_menu` VALUES (431, 23, 33);
+INSERT INTO `user_menu` VALUES (432, 23, 34);
+INSERT INTO `user_menu` VALUES (433, 23, 35);
+INSERT INTO `user_menu` VALUES (434, 23, 36);
+INSERT INTO `user_menu` VALUES (435, 23, 37);
+INSERT INTO `user_menu` VALUES (436, 23, 38);
+INSERT INTO `user_menu` VALUES (437, 23, 39);
+INSERT INTO `user_menu` VALUES (440, 23, 43);
 
 -- ----------------------------
 -- Table structure for user_permission

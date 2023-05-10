@@ -93,7 +93,7 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**"
                 ).permitAll()
                 // 可以指定请求方式再放行
-                .antMatchers("/user/register", "/user/alterPwd", "/user/email", "/image/scale").permitAll()
+                .antMatchers("/user/register", "/user/alterPwd", "/user/email", "/image/scale", "/sysDict/selectDict").permitAll()
                 .anyRequest().authenticated(); // 除了这些接口，所有接口都需要做权限认证
 
 

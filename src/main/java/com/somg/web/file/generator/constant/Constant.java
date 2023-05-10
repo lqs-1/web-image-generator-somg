@@ -113,6 +113,11 @@ public class Constant {
     public static final String RESPONSE_CODE_KEY = "code";
     // R对象中使用的常量
     public static final String RESPONSE_MSG_KEY = "msg";
+    // 父类字典
+    public static final String  DICT_TYPE_PARENT = "0";
+    // 子字典
+    public static final String  DICT_TYPE_SON = "1";
+
 
 
 

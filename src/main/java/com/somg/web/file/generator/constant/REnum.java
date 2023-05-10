@@ -110,6 +110,16 @@ public enum REnum {
     GET_ALL_PARENT_DICT_FAIL(21039, "获取所有父级字典失败"),
     IMAGE_CODE_EXPIRED(21040, "图形验证码失效"),
 
+    SELECT_DICT_LIST_SUCCESS(11041, "获取字典列表成功"),
+    SELECT_DICT_LIST_FAIL(21041, "获取字典列表失败"),
+
+    PARENT_DICT_USED(21042, "当前操作字典被引用 不允许删除"),
+    DICT_DELETE_SUCCESS(11043, "字典删除成功"),
+    DICT_DELETE_FAIL(21043, "字典删除失败"),
+    ALTER_DICT_SUCCESS(11044, "字典更新成功"),
+    ALTER_DICT_FAIL(21044, "字典更新失败"),
+
+
 
     ;
 

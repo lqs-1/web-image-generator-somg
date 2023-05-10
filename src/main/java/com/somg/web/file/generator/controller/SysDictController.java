@@ -4,6 +4,7 @@ import com.somg.web.file.generator.action.SysDictService;
 import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.pojo.SysDict;
+import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.vo.AddSysDictVo;
 import io.swagger.annotations.Api;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author somg
@@ -26,6 +28,29 @@ public class SysDictController {
 
     @Autowired
     private SysDictService sysDictService;
+
+
+    /**
+     * 展示字典，可以根据关键字
+     * @param param
+     * @return
+     */
+    @SysListenLog(serverName = "系统字典服务", action = "展示字典")
+    @GetMapping("selectDict")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('select')")
+    @ApiOperation(value = "展示字典")
+    public R selectDictByPage(@RequestParam Map<String, Object> param){
+        try {
+            PageUtils dictList = sysDictService.selectDictByPage(param);
+
+            return R.ok(REnum.SELECT_DICT_LIST_SUCCESS.getStatusCode(),
+                    REnum.SELECT_DICT_LIST_SUCCESS.getStatusMsg()).put("dictList", dictList);
+        }catch (Exception e){
+            e.printStackTrace();
+            return R.error(REnum.SELECT_DICT_LIST_FAIL.getStatusCode(), REnum.SELECT_DICT_LIST_FAIL.getStatusMsg());
+        }
+    }
+
 
 
 
@@ -50,6 +75,28 @@ public class SysDictController {
     }
 
 
+    /**
+     * 修改字典
+     * @param sysDict
+     * @return
+     */
+    @SysListenLog(serverName = "系统字典服务", action = "修改字典")
+    @PostMapping("editDict")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('update')")
+    @ApiOperation(value = "修改字典")
+    public R editDict(@RequestBody SysDict sysDict){
+        try {
+            sysDictService.updateById(sysDict);
+
+            return R.ok(REnum.ALTER_DICT_SUCCESS.getStatusCode(),REnum.ALTER_DICT_SUCCESS.getStatusMsg());
+        }catch (Exception e){
+            e.printStackTrace();
+            return R.error(REnum.ALTER_DICT_FAIL.getStatusCode(), REnum.ALTER_DICT_FAIL.getStatusMsg());
+        }
+    }
+
+
+
 
     /**
      * 获取所有父级字典
@@ -69,6 +116,26 @@ public class SysDictController {
             return R.error(REnum.GET_ALL_PARENT_DICT_FAIL.getStatusCode(), REnum.GET_ALL_PARENT_DICT_FAIL.getStatusMsg());
         }
     }
+
+
+    /**
+     * 删除字典
+     * @return
+     */
+    @SysListenLog(serverName = "系统字典服务", action = "删除字典")
+    @PostMapping("deleteDict/{dictId}")
+    @PreAuthorize("hasAnyRole('admin', 'supermanager') and hasAuthority('delete')")
+    @ApiOperation(value = "删除字典")
+    public R deleteDict(@PathVariable Long dictId){
+        try {
+            return sysDictService.deleteDict(dictId);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return R.error(REnum.DICT_DELETE_FAIL.getStatusCode(), REnum.DICT_DELETE_FAIL.getStatusMsg());
+        }
+    }
+
 
 
 
