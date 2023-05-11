@@ -214,48 +214,116 @@
         </el-tab-pane>
         <el-tab-pane label="角色管理" name="second">
           <div class="checkScrol">
-            <table class="datatable">
-              <thead>
-              <tr>
-                <th>选择</th>
-                <th>角色id</th>
-                <th>角色名</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="c in roleList">
-                <td>
-                  <input :id="c.id" v-model="roleIds" type="checkbox" :value="c.id">
-                </td>
-                <td><label :for="c.id">{{c.id}}</label></td>
-                <td><label :for="c.id">{{c.roleName}}</label></td>
-              </tr>
-              </tbody>
-            </table>
+
+            <el-table
+                ref="multipleTableRole"
+                :data="roleList"
+                tooltip-effect="dark"
+                align="center"
+                style="width: 100%"
+                border
+                height="250"
+                @selection-change="handleSelectionChangeRole">
+              <el-table-column
+                  type="selection"
+                  width="55">
+              </el-table-column>
+              <el-table-column
+                  label="角色id"
+                  width="200">
+                <template slot-scope="scope">
+                  <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium">{{ scope.row.id }}</el-tag>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column
+                  label="角色名"
+                  width="200">
+                <template slot-scope="scope">
+                  <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium">{{ scope.row.roleName }}</el-tag>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+
+<!--            <table class="datatable">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th>选择</th>-->
+<!--                <th>角色id</th>-->
+<!--                <th>角色名</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr v-for="c in roleList">-->
+<!--                <td>-->
+<!--                  <input :id="c.id" v-model="roleIds" type="checkbox" :value="c.id">-->
+<!--                </td>-->
+<!--                <td><label :for="c.id">{{c.id}}</label></td>-->
+<!--                <td><label :for="c.id">{{c.roleName}}</label></td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
           </div>
         </el-tab-pane>
 
 
         <el-tab-pane label="权限管理" name="third">
           <div class="checkScrol">
-            <table class="datatable">
-              <thead>
-              <tr>
-                <th>选择</th>
-                <th>权限id</th>
-                <th>权限名</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="c in permissionList">
-                <td>
-                  <input :id="c.id" v-model="permissionIds" type="checkbox" :value="c.id">
-                </td>
-                <td><label :for="c.id">{{c.id}}</label></td>
-                <td><label :for="c.id">{{c.permissionName}}</label></td>
-              </tr>
-              </tbody>
-            </table>
+
+            <el-table
+                ref="multipleTablePermission"
+                :data="permissionList"
+                tooltip-effect="dark"
+                align="center"
+                style="width: 100%"
+                border
+                height="250"
+                @selection-change="handleSelectionChangePermisstion">
+              <el-table-column
+                  type="selection"
+                  width="55">
+              </el-table-column>
+              <el-table-column
+                  label="权限id"
+                  width="200">
+                <template slot-scope="scope">
+                  <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium">{{ scope.row.id }}</el-tag>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column
+                  label="权限名"
+                  width="200">
+                <template slot-scope="scope">
+                  <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium">{{ scope.row.permissionName }}</el-tag>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+
+<!--            <table class="datatable">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th>选择</th>-->
+<!--                <th>权限id</th>-->
+<!--                <th>权限名</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr v-for="c in permissionList">-->
+<!--                <td>-->
+<!--                  <input :id="c.id" v-model="permissionIds" type="checkbox" :value="c.id">-->
+<!--                </td>-->
+<!--                <td><label :for="c.id">{{c.id}}</label></td>-->
+<!--                <td><label :for="c.id">{{c.permissionName}}</label></td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -313,13 +381,13 @@ export default {
         currentPage: 1,
       },
       activeName: 'first',
-      roleIds: [],
       userId:null,
       roleList: [],
       menuList: [],
       multipleTable: [],
       permissionList: [],
-      permissionIds: [],
+      multipleTableRole: [],
+      multipleTablePermission: [],
     }
   },
 
@@ -334,18 +402,52 @@ export default {
       this.multipleTable = val;
     },
 
+    handleSelectionChangeRole(val) {
+      this.multipleTableRole = val;
+    },
+
+    handleSelectionChangePermisstion(val) {
+      this.multipleTablePermission = val;
+    },
+
     getAllMenuList(){
       this.httpRequest.get("menu/menuList")
           .then(response => {
             this.menuList = response.data.menuList
           });
     },
-    // 表单默认选中
+    // 表单菜单那默认选中
     SelectionChange(checkedMenus) {
       this.$nextTick(() => {
         if (checkedMenus != null){
           checkedMenus.forEach(row => {
             this.$refs.multipleTable.toggleRowSelection(this.menuList.find(item => { return row.id == item.id}),true)
+          })
+        }
+      })
+    },
+
+    // 表单权限默认选中
+    SelectionChangePR(prList) {
+      // console.log(prList)
+
+      this.$nextTick(() => {
+        if (prList != null){
+          prList.forEach(row => {
+            this.$refs.multipleTablePermission.toggleRowSelection(this.permissionList.find(item => { return row.id == item.id}),true)
+          })
+        }
+      })
+    },
+
+    // 表单角色默认选中
+    SelectionChangeROLE(roleList) {
+      // console.log(roleList)
+
+      this.$nextTick(() => {
+        if (roleList != null){
+          roleList.forEach(row => {
+            this.$refs.multipleTableRole.toggleRowSelection(this.roleList.find(item => { return row.id == item.id}),true)
           })
         }
       })
@@ -439,6 +541,7 @@ export default {
     },
 
 
+    // 获取权限和角色信息
     handleEdit(index, data) {
       // console.log(data)
       this.userForm = data
@@ -448,26 +551,35 @@ export default {
             // console.log(response)
             this.roleList = response.data.roleList
           })
-      // console.log(this.userForm)
-      this.httpRequest.get("user/roleList?id=" + this.userForm.id)
-          .then(response => {
-            // console.log(response)
-            this.roleIds = response.data.roleIds
-          })
+
 
       this.httpRequest.get("permission/permissionList")
           .then(response => {
             // console.log(response)
             this.permissionList = response.data.permissionList
           })
+
+      this.getPermissiongAndRoleSelected()
+    },
+
+    // 获取权限和角色选中项
+    getPermissiongAndRoleSelected(){
       // console.log(this.userForm)
       this.httpRequest.get("user/permissionList?id=" + this.userForm.id)
           .then(response => {
             // console.log(response)
-            this.permissionIds = response.data.permissionIds
+            // this.permissionIds =
+            this.SelectionChangePR(response.data.permissionList)
           })
 
+      // console.log(this.userForm)
+      this.httpRequest.get("user/roleList?id=" + this.userForm.id)
+          .then(response => {
+            // console.log(response)
+            // this.roleIds = response.data.roleIds
+            this.SelectionChangeROLE(response.data.roleList)
 
+          })
     },
 
     editHandleClose() {
@@ -485,15 +597,27 @@ export default {
     editUser() {
       this.$refs.editForm.validate((valid) => {
         if (valid) {
-          // console.log(this.userForm)
+
+          let roleIds = []
+          this.multipleTableRole.forEach(item => {
+            roleIds.push(item.id)
+          })
+
+          let permissionIds = []
+          this.multipleTablePermission.forEach(item => {
+            permissionIds.push(item.id)
+          })
+
+          // console.log(roleIds, permissionIds)
+
 
           let params = {
               "id": this.userForm.id,
               "username": this.userForm.username,
               "password": this.userForm.password,
               "sex": this.userForm.sex,
-              "roleIds": this.roleIds,
-              "permissionIds": this.permissionIds
+              "roleIds": roleIds,
+              "permissionIds": permissionIds
           }
 
           this.httpRequest.post("user/editUser", params).then(response => {
