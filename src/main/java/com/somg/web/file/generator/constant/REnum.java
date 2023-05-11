@@ -123,7 +123,8 @@ public enum REnum {
     ALERT_MENUS_FAIL(21046, "更新菜单失败"),
     DEFAULT_PASSWORD_RESET_FAIL(21047, "默认密码重置失败"),
     DEFAULT_PASSWORD_RESET_SUCCESS(11047, "默认密码重置成功"),
-    UNKNOW_DEFAULT_PASSWORD_DICT(21048, "密码重置失败 未找到对应字典值")
+    UNKNOW_DEFAULT_PASSWORD_DICT(21048, "密码重置失败 未找到对应字典值"),
+    DICT_DATA_ERROR(21048, "字典数据丢失")
 
 
 

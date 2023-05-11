@@ -146,8 +146,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         this.baseMapper.insert(user);
 
+        // 获取字典数据
+        SysDict roleDict = sysDictService.findDictByParentAndSelfCode(Constant.SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE, Constant.SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_ROLE);
+        SysDict permissionDict = sysDictService.findDictByParentAndSelfCode(Constant.SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE, Constant.SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_PERMISSION);
+        SysDict menuDict = sysDictService.findDictByParentAndSelfCode(Constant.SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE, Constant.SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_MENU);
+
+        if (ObjectUtils.isEmpty(roleDict) || ObjectUtils.isEmpty(permissionDict) || ObjectUtils.isEmpty(menuDict)){
+            return R.error(REnum.DICT_DATA_ERROR.getStatusCode(), REnum.DICT_DATA_ERROR.getStatusMsg());
+        }
         // 设置默认角色
-        List<Role> roleList = roleService.selectCommonRole(Constant.COMMON_ROLE);
+
+        List<Role> roleList = roleService.selectCommonRole(roleDict.getDictValue());
 
         List<Long> roleIds = new ArrayList<>();
 
@@ -159,7 +168,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userRoleService.addUserRoleRenation(user.getId(),roleIds);
 
         // 设置默认权限
-        List<Permission> permissionList = permissionService.selectCommonPermission(Constant.COMMON_PERMISSION);
+        List<Permission> permissionList = permissionService.selectCommonPermission(permissionDict.getDictValue());
 
         List<Long> permissionIds = new ArrayList<>();
 

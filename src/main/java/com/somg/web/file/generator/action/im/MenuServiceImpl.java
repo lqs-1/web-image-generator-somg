@@ -2,14 +2,17 @@ package com.somg.web.file.generator.action.im;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.action.MenuService;
+import com.somg.web.file.generator.action.SysDictService;
 import com.somg.web.file.generator.action.UserMenuService;
 import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.mapper.MenuMapper;
 import com.somg.web.file.generator.pojo.Menus;
+import com.somg.web.file.generator.pojo.SysDict;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
 import com.somg.web.file.generator.utils.R;
@@ -34,6 +37,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
 
     @Autowired
     private UserMenuService userMenuService;
+
+    @Autowired
+    private SysDictService sysDictService;
 
     /**
      * 根据给定的menuId列表查出对应的菜单
@@ -211,12 +217,23 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menus> implements M
     @Override
     public List<Long> getCommonMenuIds() {
 
-        return this.baseMapper.selectList(new LambdaQueryWrapper<Menus>()
-                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_ONE).or()
-                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_TWO).or()
-                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_THREE).or()
-                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_FOUR).or()
-                        .like(Menus::getMenuPath, Constant.COMMON_MENU_AUTH_FIVE))
+        SysDict menuDict = sysDictService.findDictByParentAndSelfCode(Constant.SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE, Constant.SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_MENU);
+        String dictValueString = menuDict.getDictValue();
+        String[] dictValues = dictValueString.split(":");
+
+        LambdaQueryWrapper<Menus> menusLambdaQueryWrapper = new LambdaQueryWrapper<>();
+
+        for (int i = 0; i < dictValues.length; i++) {
+            if (i < dictValues.length -1){
+                menusLambdaQueryWrapper
+                        .like(Menus::getMenuPath, dictValues[i]).or();
+            }else {
+                menusLambdaQueryWrapper
+                        .like(Menus::getMenuPath, dictValues[i]);
+            }
+        }
+
+        return this.baseMapper.selectList(menusLambdaQueryWrapper)
                 .stream().distinct()
                 .map(item -> item.getId()).collect(Collectors.toList());
     }

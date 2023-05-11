@@ -483,13 +483,13 @@ public class UserController {
 
             List<Long> roleIdList = userRoleService.selectByUserId(id);
 
-            List<Long> roleIds = new ArrayList<>();
+            List<Role> roleList = new ArrayList<>();
 
             for (Long roleId : roleIdList) {
 
                 Role role = roleService.getById(roleId);
 
-                roleIds.add(role.getId());
+                roleList.add(role);
 
             }
 
@@ -497,7 +497,7 @@ public class UserController {
 
                     REnum.GET_EXIST_ROLE_SUCCESS.getStatusMsg())
 
-                    .put("roleIds", roleIds);
+                    .put("roleList", roleList);
 
         }catch (Exception e){
 
@@ -522,19 +522,19 @@ public class UserController {
         try {
             List<Long> permissionIdList = userPermissionService.selectByUserId(id);
 
-            List<Long> permissionIds = new ArrayList<>();
+            List<Permission> permissionList = new ArrayList<>();
 
             for (Long permissionId : permissionIdList) {
 
                 Permission permission = permissionService.getById(permissionId);
 
-                permissionIds.add(permission.getId());
+                permissionList.add(permission);
 
             }
 
             return R.ok(REnum.GET_EXIST_PERMISSION_SUCCESS.getStatusCode(),
                             REnum.GET_EXIST_PERMISSION_SUCCESS.getStatusMsg())
-                    .put("permissionIds", permissionIds);
+                    .put("permissionList", permissionList);
 
         }catch (Exception e){
 

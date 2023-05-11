@@ -29,17 +29,17 @@ public class Constant {
 
 
     // 默认添加的角色
-    public static final String COMMON_ROLE = "common";
+    // public static final String COMMON_ROLE = "common";
 
     // 默认添加的权限
-    public static final String COMMON_PERMISSION = "select";
+    // public static final String COMMON_PERMISSION = "select";
 
     // 添加默认菜单权限
-    public static final String COMMON_MENU_AUTH_ONE = "storage";
-    public static final String COMMON_MENU_AUTH_TWO = "chatGPT";
-    public static final String COMMON_MENU_AUTH_THREE = "image";
-    public static final String COMMON_MENU_AUTH_FOUR = "news";
-    public static final String COMMON_MENU_AUTH_FIVE = "tv";
+    // public static final String COMMON_MENU_AUTH_ONE = "storage";
+    // public static final String COMMON_MENU_AUTH_TWO = "chatGPT";
+    // public static final String COMMON_MENU_AUTH_THREE = "image";
+    // public static final String COMMON_MENU_AUTH_FOUR = "news";
+    // public static final String COMMON_MENU_AUTH_FIVE = "tv";
 
 
 
@@ -126,6 +126,9 @@ public class Constant {
     public static final String SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE = "SYSTEM_DEFAULT_SETTING";
     // 系统默认配置项中用户重置默认密码字典编码
     public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_RESET_PASSWORD = "USER_DEFAULT_PASSWORD";
+    public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_ROLE = "USER_DEFAULT_ROLE";
+    public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_PERMISSION = "USER_DEFAULT_PERMISSION";
+    public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_MENU = "USER_DEFAULT_MENU";
 
 
     // headers允许前端访问的header字段名
