@@ -40,6 +40,7 @@ instance.interceptors.response.use(function (response) {
         // 获取登录成功之后返回的菜单权限
         if (response.data.code == 11001){
             localStorage.setItem("menus", JSON.stringify(response.data.menus))
+            localStorage.setItem("username", response.data.username)
         }
         // 认证失败(token过期) 跳转登录页
         if (response.data.code == 21037){

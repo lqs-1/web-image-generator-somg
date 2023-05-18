@@ -53,12 +53,7 @@
       requestNewsList(){
         this.chart.get("/news/cnTouTiaoNews")
             .then(resp =>{
-              if (resp.data.code > 10000 && resp.data.code < 20000){
-                this.$message.success(resp.data.msg)
-                this.newsList = resp.data.result_list
-              }else {
-                this.$message.error(resp.data.msg)
-              }
+              this.newsList = resp.data.result_list
             })
       },
 
