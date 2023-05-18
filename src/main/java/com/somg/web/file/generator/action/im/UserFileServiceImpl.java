@@ -4,13 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mysql.cj.util.StringUtils;
+import com.somg.web.file.generator.action.SysDictService;
 import com.somg.web.file.generator.action.UserFileService;
 import com.somg.web.file.generator.action.UserService;
 import com.somg.web.file.generator.cloud.storage.abs.auto.UploadPlusProperties;
 import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.constant.Constant;
+import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.filter.TokenAuthFilter;
 import com.somg.web.file.generator.mapper.UserFileMapper;
+import com.somg.web.file.generator.pojo.SysDict;
 import com.somg.web.file.generator.pojo.User;
 import com.somg.web.file.generator.pojo.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -44,6 +48,8 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
     @Autowired
     private UploadPlusProperties uploadPlusProperties;
 
+    @Autowired
+    private SysDictService sysDictService;
 
     /**
      * 单文件上传
@@ -104,6 +110,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         // 条件查询
         LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userFileLambdaQueryWrapper.eq(UserFile::getUserId, user.getId());
+        userFileLambdaQueryWrapper.eq(UserFile::getIsDelete, 0);
         if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null){
             userFileLambdaQueryWrapper.and(query -> {
                 query.like(UserFile::getFileName, params.get("key"))
@@ -172,7 +179,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         User user = getUser();
 
         IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),
-                new LambdaQueryWrapper<UserFile>().eq(UserFile::getUserId, user.getId()).in(UserFile::getFileType, Constant.IMAGE_CONTENT_TYPES));
+                new LambdaQueryWrapper<UserFile>().eq(UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0).in(UserFile::getFileType, Constant.IMAGE_CONTENT_TYPES));
 
         List<UserFile> records = page.getRecords();
 
@@ -194,7 +201,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         User user = getUser();
 
         IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),
-                new LambdaQueryWrapper<UserFile>().eq(UserFile::getUserId, user.getId()).in(UserFile::getFileType, Constant.AUDIO_CONTENT_TYPES));
+                new LambdaQueryWrapper<UserFile>().eq(UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0).in(UserFile::getFileType, Constant.AUDIO_CONTENT_TYPES));
 
         List<UserFile> records = page.getRecords();
 
@@ -217,7 +224,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         User user = getUser();
 
         IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),
-                new LambdaQueryWrapper<UserFile>().eq(UserFile::getUserId, user.getId()).in(UserFile::getFileType, Constant.VIDEO_CONTENT_TYPES));
+                new LambdaQueryWrapper<UserFile>().eq(UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0).in(UserFile::getFileType, Constant.VIDEO_CONTENT_TYPES));
 
         List<UserFile> records = page.getRecords();
 
@@ -245,10 +252,9 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         User user = getUser();
 
         // 统计图片
-
         LambdaQueryWrapper<UserFile> imageWrapper = new LambdaQueryWrapper<>();
         if (currentUser){
-            imageWrapper.eq(currentUser, UserFile::getUserId, user.getId());
+            imageWrapper.eq(currentUser, UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
         }
         imageWrapper.in(UserFile::getFileType, Constant.IMAGE_CONTENT_TYPES);
 
@@ -260,7 +266,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         // 统计视频
         LambdaQueryWrapper<UserFile> videoWrapper = new LambdaQueryWrapper<>();
         if (currentUser){
-            videoWrapper.eq(currentUser, UserFile::getUserId, user.getId());
+            videoWrapper.eq(currentUser, UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
         }
         videoWrapper.in(UserFile::getFileType, Constant.VIDEO_CONTENT_TYPES);
 
@@ -272,7 +278,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         // 统计音频
         LambdaQueryWrapper<UserFile> audioWrapper = new LambdaQueryWrapper<>();
         if (currentUser){
-            audioWrapper.eq(currentUser, UserFile::getUserId, user.getId());
+            audioWrapper.eq(currentUser, UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
         }
         audioWrapper.in(UserFile::getFileType, Constant.AUDIO_CONTENT_TYPES);
 
@@ -288,7 +294,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         LambdaQueryWrapper<UserFile> otherWrapper = new LambdaQueryWrapper<>();
         if (currentUser){
-            otherWrapper.eq(currentUser, UserFile::getUserId, user.getId());
+            otherWrapper.eq(currentUser, UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
         }
         otherWrapper.notIn(UserFile::getFileType, typeList);
 
@@ -326,6 +332,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         }
 
 
+        userFileLambdaQueryWrapper.eq(UserFile::getIsDelete, 0);
         IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true), userFileLambdaQueryWrapper);
 
         List<UserFile> records = page.getRecords();
@@ -353,6 +360,103 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     }
 
+    /**
+     * 获取已经删除可以恢复的文件
+     * @param params
+     * @return
+     */
+    @Override
+    public PageUtils queryAllDeleteFile(Map<String, Object> params) {
+
+        User user = getUser();
+
+        // 查询字典值
+        SysDict dictByParentAndSelfCode = sysDictService.findDictByParentAndSelfCode(Constant.SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE, Constant.SYSTEM_DEFAULT_SETTING_DICT_FILE_DELETE_EXPIRE_TIME);
+
+        Long expireHour = Long.valueOf(dictByParentAndSelfCode.getDictValue());
+        // 条件查询
+        LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        userFileLambdaQueryWrapper.eq(UserFile::getUserId, user.getId());
+        userFileLambdaQueryWrapper.eq(UserFile::getIsDelete, 1);
+        if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null){
+            userFileLambdaQueryWrapper.and(query -> {
+                query.like(UserFile::getFileName, params.get("key"))
+                        .or().like(UserFile::getFileType, params.get("key"));
+
+            });
+        }
+
+        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),userFileLambdaQueryWrapper);
+
+        List<UserFile> records = page.getRecords();
+
+        records.stream().map(item -> {
+            item.setExpire(TimeUnit.MILLISECONDS.toHours((TimeUnit.HOURS.toMillis(expireHour) + item.getDeleteTime().getTime()) - System.currentTimeMillis()));
+            return item;
+        }).collect(Collectors.toList());
+
+        return new PageUtils(page);
+
+    }
+
+    /**
+     * 删除满足时间的文件 彻底删除 定时任务 清除
+     */
+    @Override
+    public void trueDeleteExpireFile() {
+        // 获取字典值
+        SysDict dictByParentAndSelfCode = sysDictService.findDictByParentAndSelfCode(Constant.SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE, Constant.SYSTEM_DEFAULT_SETTING_DICT_FILE_DELETE_EXPIRE_TIME);
+        Long expireHour = Long.valueOf(dictByParentAndSelfCode.getDictValue());
+
+        List<UserFile> userFileList = this.baseMapper.selectList(new LambdaQueryWrapper<UserFile>().eq(UserFile::getIsDelete, 1));
+
+        if (userFileList != null && userFileList.size() > 0){
+            List<UserFile> timeOutFileList = userFileList.stream().filter(item -> TimeUnit.MILLISECONDS.toHours((TimeUnit.HOURS.toMillis(expireHour) + item.getDeleteTime().getTime()) - System.currentTimeMillis()) <= 0).collect(Collectors.toList());
+
+            if (timeOutFileList != null && timeOutFileList.size() > 0){
+                List<String> timeOutFilePath = timeOutFileList.stream().map(item -> item.getFile()).collect(Collectors.toList());
+
+                List<Long> timeOutFileIds = timeOutFileList.stream().map(item -> item.getId()).collect(Collectors.toList());
+
+                R deleteResponse = fileUpload.build().batchFileClear(timeOutFilePath);
+
+                if (deleteResponse.parseCode() > 10000) {
+                    this.baseMapper.deleteBatchIds(timeOutFileIds);
+                }
+            }
+        }
+    }
+
+    /**
+     * 根据文件id恢复文件
+     * @param fileId
+     */
+    @Override
+    public void fileRecovery(String fileId) {
+        // 恢复文件 修改删除状态
+        UserFile file = this.getById(fileId);
+        file.setIsDelete(0);
+
+        this.updateById(file);
+    }
+
+
+    /**
+     * 手动彻底删除文件
+     * @param fileId
+     */
+    @Override
+    public void trueDeleteFile(String fileId) {
+
+        UserFile file = this.getById(fileId);
+
+        R deleteResponse = fileUpload.build().singleFileClear(file.getFile());
+
+        if (deleteResponse.parseCode() > 10000) {
+            this.baseMapper.deleteById(fileId);
+        }
+    }
+
 
     /**
      * 删除文件
@@ -362,13 +466,27 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
     @Override
     @Transactional(readOnly = false)
     public R deleteFile(UserFile userFile) {
-        R deleteResponse = fileUpload.build().singleFileClear(userFile.getFile());
+        // 原始删除
+        //  R deleteResponse = fileUpload.build().singleFileClear(userFile.getFile());
 
-        if (deleteResponse.parseCode() > 10000) {
-            this.baseMapper.deleteById(userFile.getId());
+        // if (deleteResponse.parseCode() > 10000) {
+        //     this.baseMapper.deleteById(userFile.getId());
+        // }
+
+        // 逻辑删除
+        try {
+            userFile.setIsDelete(1);
+            userFile.setDeleteTime(new Date());
+            this.updateById(userFile);
+
+            return R.ok(REnum.WEB_FILE_SINGLE_DELETE_SUCCESS.getStatusCode(),
+                    REnum.WEB_FILE_SINGLE_DELETE_SUCCESS.getStatusMsg());
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
-        return deleteResponse;
+        return R.error(REnum.WEB_FILE_SINGLE_DELETE_FAIL.getStatusCode(),
+                REnum.WEB_FILE_SINGLE_DELETE_FAIL.getStatusMsg());
     }
 
 

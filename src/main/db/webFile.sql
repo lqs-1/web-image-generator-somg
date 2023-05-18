@@ -11,7 +11,7 @@
  Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 18/05/2023 19:25:45
+ Date: 18/05/2023 22:30:06
 */
 
 SET NAMES utf8mb4;
@@ -1670,6 +1670,7 @@ CREATE TABLE `user_file`  (
   `isDelete` int NOT NULL DEFAULT 0 COMMENT '是否删除',
   `uploadTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上传时间',
   `fileName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件名',
+  `deleteTime` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fru`(`userId` ASC) USING BTREE,
   CONSTRAINT `fru` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1678,8 +1679,8 @@ CREATE TABLE `user_file`  (
 -- ----------------------------
 -- Records of user_file
 -- ----------------------------
-INSERT INTO `user_file` VALUES (421, 23, 'public/2023-04-25/be6e63f57d054fb2b8ce72625b973275.png', 'image/png', 0, '2023-04-25 13:24:16', 'ximiao');
-INSERT INTO `user_file` VALUES (422, 23, 'public/2023-04-30/48e0ae33ab5f41e7bc0e30240dbeb19d.crt', 'application/x-x509-ca-cert', 0, '2023-04-30 19:16:34', 'ca');
+INSERT INTO `user_file` VALUES (421, 23, 'public/2023-04-25/be6e63f57d054fb2b8ce72625b973275.png', 'image/png', 0, '2023-04-25 13:24:16', 'ximiao', NULL);
+INSERT INTO `user_file` VALUES (422, 23, 'public/2023-04-30/48e0ae33ab5f41e7bc0e30240dbeb19d.crt', 'application/x-x509-ca-cert', 0, '2023-04-30 19:16:34', 'ca', NULL);
 
 -- ----------------------------
 -- Table structure for user_menu

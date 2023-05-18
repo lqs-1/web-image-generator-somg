@@ -35,4 +35,12 @@ public interface UserFileService extends IService<UserFile> {
     PageUtils superAdminAllFilePage(Map<String, Object> params);
 
     List<String> queryCurrentUserAllFilePath();
+
+    PageUtils queryAllDeleteFile(Map<String, Object> params);
+
+    void trueDeleteExpireFile();
+
+    void fileRecovery(String fileId);
+
+    void trueDeleteFile(String fileId);
 }

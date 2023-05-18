@@ -29,10 +29,14 @@ public class UserFile {
 
     private String fileName;
 
-    @TableLogic
+    private Date deleteTime;
+
     private Integer isDelete;
 
     @TableField(exist = false)
     private String userName;
+
+    @TableField(exist = false)
+    private Long expire;
 
 }

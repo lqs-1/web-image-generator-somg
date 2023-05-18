@@ -53,6 +53,9 @@ public class UserFileController {
     }
 
 
+
+
+
     /**
      * 超级管理员可以查看所有用户的文件
      * @param params
@@ -79,11 +82,80 @@ public class UserFileController {
 
 
     /**
+     * 获取当前用户的所有可恢复文件
+     * @param params
+     * @return
+     */
+    @SysListenLog(serverName = "文件服务", action = "获取用户可恢复文件")
+    @GetMapping("allDeleteFile")
+    @ApiOperation(value = "获取用户可恢复文件")
+    public R allDeleteFile(@RequestParam Map<String, Object> params){
+        try {
+            PageUtils userDeleteFileList = userFileService.queryAllDeleteFile(params);
+
+            return R.ok(REnum.REQUEST_CURRENT_USER_DELETE_SUCCESS.getStatusCode(),
+                            REnum.REQUEST_CURRENT_USER_DELETE_SUCCESS.getStatusMsg())
+                    .put("fileList", userDeleteFileList);
+        } catch (Exception e){
+            e.printStackTrace();
+            return R.ok(REnum.REQUEST_CURRENT_USER_DELETE_FILE.getStatusCode(),
+                    REnum.REQUEST_CURRENT_USER_DELETE_FILE.getStatusMsg());
+        }
+
+    }
+
+
+    /**
+     * 恢复文件
+     * @param
+     * @return
+     */
+    @SysListenLog(serverName = "文件服务", action = "恢复文件")
+    @PostMapping("fileRecovery/{fileId}")
+    @ApiOperation(value = "恢复文件")
+    public R fileRecovery(@PathVariable String fileId){
+        try {
+            userFileService.fileRecovery(fileId);
+
+            return R.ok(REnum.USER_FILE_RECOVERY_SUCCESS.getStatusCode(),
+                            REnum.USER_FILE_RECOVERY_SUCCESS.getStatusMsg());
+        } catch (Exception e){
+            e.printStackTrace();
+            return R.ok(REnum.USER_FILE_RECOVERY_FAIL.getStatusCode(),
+                    REnum.USER_FILE_RECOVERY_FAIL.getStatusMsg());
+        }
+
+    }
+
+    /**
+     * 手动彻底删除文件
+     * @param
+     * @return
+     */
+    @SysListenLog(serverName = "文件服务", action = "彻底删除文件")
+    @PostMapping("trueDeleteFile/{fileId}")
+    @ApiOperation(value = "彻底删除文件")
+    public R trueDeleteFile(@PathVariable String fileId){
+        try {
+            userFileService.trueDeleteFile(fileId);
+
+            return R.ok(REnum.USER_TRUE_DELETE_FILE_SUCCESS.getStatusCode(),
+                    REnum.USER_TRUE_DELETE_FILE_SUCCESS.getStatusMsg());
+        } catch (Exception e){
+            e.printStackTrace();
+            return R.ok(REnum.USER_TRUE_DELETE_FILE_FAIL.getStatusCode(),
+                    REnum.USER_TRUE_DELETE_FILE_FAIL.getStatusMsg());
+        }
+
+    }
+
+
+    /**
      * 删除文件 单个
      * @param userFile
      * @return
      */
-    @SysListenLog(serverName = "上传服务", action = "删除文件")
+    @SysListenLog(serverName = "文件服务", action = "删除文件[逻辑删除]")
     @PostMapping("deleteFile")
     @ApiOperation(value = "删除文件")
     public R deleteFile(@RequestBody UserFile userFile){

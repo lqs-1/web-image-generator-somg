@@ -127,6 +127,12 @@ public enum REnum {
     DICT_DATA_ERROR(21048, "字典数据丢失"),
     THIRD_SYS_LOG_SAVE_SUCCESS(11049, "第三方系统日志保存成功"),
     THIRD_SYS_LOG_SAVE_FAIL(21049, "第三方系统日志保存失败"),
+    REQUEST_CURRENT_USER_DELETE_SUCCESS(11050, "获取可恢复文件成功"),
+    REQUEST_CURRENT_USER_DELETE_FILE(21050, "获取可恢复文件失败"),
+    USER_FILE_RECOVERY_SUCCESS(11051, "恢复文件成功"),
+    USER_FILE_RECOVERY_FAIL(21051, "恢复文件失败"),
+    USER_TRUE_DELETE_FILE_SUCCESS(10052, "文件彻底删除成功"),
+    USER_TRUE_DELETE_FILE_FAIL(20052, "文件彻底删除成功"),
 
 
 

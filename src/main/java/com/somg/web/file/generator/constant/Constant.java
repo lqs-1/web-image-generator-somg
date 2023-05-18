@@ -129,6 +129,7 @@ public class Constant {
     public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_ROLE = "USER_DEFAULT_ROLE";
     public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_PERMISSION = "USER_DEFAULT_PERMISSION";
     public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_MENU = "USER_DEFAULT_MENU";
+    public static final String SYSTEM_DEFAULT_SETTING_DICT_FILE_DELETE_EXPIRE_TIME = "FILE_DELETE_DEFAULT_EXPIRE_TIME";
 
 
     // headers允许前端访问的header字段名
