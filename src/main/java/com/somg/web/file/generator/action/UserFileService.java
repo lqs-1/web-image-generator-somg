@@ -33,4 +33,6 @@ public interface UserFileService extends IService<UserFile> {
     List<StatisticalDataVo> allStatisticalData(Boolean currentUser);
 
     PageUtils superAdminAllFilePage(Map<String, Object> params);
+
+    List<String> queryCurrentUserAllFilePath();
 }

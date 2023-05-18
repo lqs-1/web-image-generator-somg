@@ -340,6 +340,19 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         return new PageUtils(page);
     }
 
+    /**
+     * 获取当前用户所有的文件路径
+     * @return
+     */
+    @Override
+    public List<String> queryCurrentUserAllFilePath() {
+        User user = getUser();
+        List<UserFile> userFileList = this.baseMapper.selectList(new LambdaQueryWrapper<UserFile>().eq(UserFile::getUserId, user.getId()));
+
+        return userFileList.stream().map(item -> item.getFile()).collect(Collectors.toList());
+
+    }
+
 
     /**
      * 删除文件

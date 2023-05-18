@@ -20,6 +20,7 @@ public class User {
     private String password;
     private Date createTime;
     private Date loginTime;
+    private Integer isDelete;
     private String sex;
     private String email;
 

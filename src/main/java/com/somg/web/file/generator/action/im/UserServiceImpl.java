@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.somg.web.file.generator.action.*;
+import com.somg.web.file.generator.cloud.storage.abs.upload.FileUploadPlus;
 import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.pojo.*;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
@@ -57,6 +58,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private SysDictService sysDictService;
+
+    @Autowired
+    private FileUploadPlus fileUpload;
+
+    @Autowired
+    private UserFileService userFileService;
 
 
     /**
@@ -110,7 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         IPage<User> page = this.page(new QueryPage<User>().getPage(params, true),
                 new LambdaQueryWrapper<User>().like(User::getUsername,
-                        (String) params.get("username")));
+                        (String) params.get("username")).eq(User::getIsDelete, 0));
 
         return new  PageUtils(page);
 
@@ -216,7 +223,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional(readOnly = false)
     public void deleteUserById(Long id) {
 
-        this.baseMapper.deleteById(id);
+        // 删除所有的文件
+        // List<String> currentUserAllFilePath = userFileService.queryCurrentUserAllFilePath();
+        // fileUpload.build().batchFileClear(currentUserAllFilePath);
+
+        User user = this.getById(id);
+        user.setIsDelete(1);
+
+        this.baseMapper.updateById(user);
 
     }
 

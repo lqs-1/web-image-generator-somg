@@ -72,6 +72,7 @@ public class UserController {
     private EmailCodeClient emailCodeClient;
 
 
+
     /**
      * 图像验证码
      * @param httpServletResponse
@@ -355,9 +356,9 @@ public class UserController {
 
             userService.deleteUserById(user.getId());
 
-            userRoleService.deleteUserRoleRelation(user.getId());
+            // userRoleService.deleteUserRoleRelation(user.getId());
 
-            userPermissionService.deleteUserPermissionRelation(user.getId());
+            // userPermissionService.deleteUserPermissionRelation(user.getId());
 
             return R.ok(REnum.DELETE_USER_SUCCESS.getStatusCode(),
                     REnum.DELETE_USER_SUCCESS.getStatusMsg());
