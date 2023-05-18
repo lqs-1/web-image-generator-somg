@@ -1,7 +1,7 @@
 import json
 
 import requests
-from flask import g
+from flask import g, current_app
 
 from chat.models import models
 
@@ -15,6 +15,8 @@ def doSaveSysLogRequest(action: str):
 
     # 获取请求地址
     third_sys_log_request_path = models.SysDict.query.filter_by(dictCode="THIRD_SYS_LOG_DEFAULT_REQUEST_PATH").first().dictValue
+
+    current_app.logger.info(f"获取到保存系统日志的地址为=={third_sys_log_request_path}")
 
     # 处理数据
     data = sys_log.__dict__

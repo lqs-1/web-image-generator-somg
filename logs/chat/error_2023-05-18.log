@@ -926,3 +926,13 @@
 2023-05-18 12:53:56 [INFO] - file_name:_internal.py - func_name:_log - [224] ---  * Restarting with stat
 2023-05-18 12:53:58 [WARNING] - file_name:_internal.py - func_name:_log - [224] ---  * Debugger is active!
 2023-05-18 12:53:58 [INFO] - file_name:_internal.py - func_name:_log - [224] ---  * Debugger PIN: 466-297-527
+2023-05-18 12:58:12 [INFO] - file_name:_internal.py - func_name:_log - [224] --- [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2023-05-18 12:58:12 [INFO] - file_name:_internal.py - func_name:_log - [224] --- [33mPress CTRL+C to quit[0m
+2023-05-18 12:58:12 [INFO] - file_name:_internal.py - func_name:_log - [224] ---  * Restarting with stat
+2023-05-18 12:58:14 [WARNING] - file_name:_internal.py - func_name:_log - [224] ---  * Debugger is active!
+2023-05-18 12:58:14 [INFO] - file_name:_internal.py - func_name:_log - [224] ---  * Debugger PIN: 466-297-527
+2023-05-18 12:58:30 [INFO] - file_name:_internal.py - func_name:_log - [224] --- 127.0.0.1 - - [18/May/2023 12:58:30] "OPTIONS /chat/session HTTP/1.1" 200 -
+2023-05-18 12:58:30 [INFO] - file_name:chatBluePrint.py - func_name:index - [33] --- lqs======> ÌáÎÊ =====> hellohellohello
+2023-05-18 12:58:40 [INFO] - file_name:sys_log_save_request.py - func_name:doSaveSysLogRequest - [19] --- »ñÈ¡µ½±£´æÏµÍ³ÈÕÖ¾µÄµØÖ·Îª==http://127.0.0.1:8888/sysLog/thirdSysLog
+2023-05-18 12:58:40 [INFO] - file_name:_internal.py - func_name:_log - [224] --- 127.0.0.1 - - [18/May/2023 12:58:40] "POST /chat/session HTTP/1.1" 200 -

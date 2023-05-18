@@ -30,7 +30,7 @@ def index():
     # 获取会话的问题数据
     data = request.get_json()
 
-    current_app.logger.info("======> 提问 =====> " + data.get("request"))
+    current_app.logger.info(f"{g.sys_log.userName}======> 提问 =====> " + data.get("request"))
 
     action_text = data.get('request')
     if len(action_text) > 10:
