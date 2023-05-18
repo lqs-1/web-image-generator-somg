@@ -59,12 +59,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private SysDictService sysDictService;
 
-    @Autowired
-    private FileUploadPlus fileUpload;
-
-    @Autowired
-    private UserFileService userFileService;
-
 
     /**
      * 登录的时候采用session方式来存储用户 已经过时不用
