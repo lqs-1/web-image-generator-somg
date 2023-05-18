@@ -1,19 +1,42 @@
-from flask import Blueprint, jsonify, current_app
+from flask import Blueprint, jsonify, current_app, request, g
 from flask_cors import cross_origin
 import datetime
 import requests
 from bs4 import BeautifulSoup
+
+from chat.models import models
 from chat.utils.respon_result import ResponseResult
 from chat.utils.respon_enum import REnum
+import jwt
+
+from chat.utils.sys_log_save_request import doSaveSysLogRequest
 
 # 新闻模块路由
 news_view = Blueprint("news_view", __name__, url_prefix="/news")
+
+
+@news_view.before_request
+def requestNewsBefore():
+
+    # 在钩子函数中配置g对象
+    if request.method != 'OPTIONS':
+        sys_log = models.SysLog(serverName="新闻服务", userName=request.headers.get('username'))
+        g.sys_log = sys_log
+
+
+
 
 
 @news_view.route("/cnJingJiItNews", methods=["GET"])
 @cross_origin(supports_credentials=True)
 # 获取中国经济网的it要闻
 def cnJingJiItNews():
+
+
+    action = "查看中国经济网IT要闻"
+    doSaveSysLogRequest(action)
+
+
     url = 'http://www.ce.cn/cysc/tech/'  # 中国经济网中产经下IT页面的URL + 新闻前缀
     try:
         response = requests.get(url)
@@ -50,6 +73,10 @@ def cnJingJiItNews():
 @cross_origin(supports_credentials=True)
 # 获取人民网的滚动要闻
 def cnPeopleNews():
+
+    action = "查看人民日报滚动要闻"
+    doSaveSysLogRequest(action)
+
     # 用于动态拼接爬取的地址
     flag = 1
 
@@ -105,6 +132,10 @@ def cnPeopleNews():
 @cross_origin(supports_credentials=True)
 # 获取今日头条上面的热榜新闻
 def cnTouTiaoNews():
+
+    action = "查看今日头条热搜新闻"
+    doSaveSysLogRequest(action)
+
     url = 'https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc'  # 人民网的滚动要闻的URL
     try:
         response = requests.get(url)
@@ -145,6 +176,10 @@ def cnTouTiaoNews():
 @cross_origin(supports_credentials=True)
 # 获取微博热搜榜单
 def cnWeiBoHotNews():
+
+    action = "查看微博热搜新闻"
+    doSaveSysLogRequest(action)
+
     url = 'https://weibo.com/ajax/statuses/hot_band'  # 获取微博热搜数据的url
 
     link_base = 'https://s.weibo.com/weibo?q='

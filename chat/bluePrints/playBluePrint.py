@@ -1,21 +1,35 @@
 import re
 
 import requests
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app, g
 from flask_cors import cross_origin
 from bs4 import BeautifulSoup
+
+from chat.models import models
 from chat.utils.respon_result import ResponseResult
 from chat.utils.respon_enum import REnum
+from chat.utils.sys_log_save_request import doSaveSysLogRequest
 
 # 娱乐模块路由
 play_view = Blueprint("play_view", __name__, url_prefix="/play")
 
+@play_view.before_request
+def requestPlayBefore():
+
+    # 在钩子函数中配置g对象
+    if request.method != 'OPTIONS':
+        sys_log = models.SysLog(serverName="影视服务", userName=request.headers.get('username'))
+        g.sys_log = sys_log
 
 # 根据关键字搜索影视
 @play_view.route("/searchMovies", methods=["get"])
 @cross_origin(supports_credentials=True)
 def searchMovies():
+
     search_key = request.args.get("searchKey")
+
+    action = f"搜索影视=={search_key}"
+    doSaveSysLogRequest(action)
 
     if search_key is None:
         return jsonify({"code": 500, "msg": "请传递搜索参数"})
