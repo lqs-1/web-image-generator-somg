@@ -24,3 +24,10 @@ toml
 tqdm
 urllib3
 Werkzeug
+beautifulsoup4
+redis
+flask_sqlalchemy
+flask-migrate==1.8.1
+flask_script==0.6.7
+pymysql
+cryptography

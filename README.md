@@ -30,3 +30,8 @@ flask run
 ```bash
 python app.py
 ```
+
+> 非常推荐
+```bash
+python app.py runserver
+```
