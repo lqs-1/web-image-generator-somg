@@ -25,6 +25,7 @@ import CnJingJiItNews from "@/views/newsViews/CnJingJiItNews";
 import CnWeiBoHotSearch from "@/views/newsViews/CnWeiBoHotSearch";
 import TvSearch from "@/views/tvViews/TvSearch";
 import SysDictList from "@/views/userViews/SysDictList";
+import FileRecovery from "@/views/storageViews/FileRecovery";
 
 // 自己定义的请求包。只能在组件中使用，如果非要在这里使用，必须引入
 
@@ -163,6 +164,14 @@ const routes = [
           isLogin: true
         },
         component: AudioList
+      },
+      {
+        path: '/storage/fileRecovery',
+        name: 'fileRecovery',
+        meta: {
+          isLogin: true
+        },
+        component: FileRecovery
       },
 
 
