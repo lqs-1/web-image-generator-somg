@@ -475,6 +475,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         // 逻辑删除
         try {
+            userFile.setFile(null);
             userFile.setIsDelete(1);
             userFile.setDeleteTime(new Date());
             this.updateById(userFile);
