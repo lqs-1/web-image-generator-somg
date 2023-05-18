@@ -3,17 +3,16 @@ package com.somg.web.file.generator.controller;
 import com.somg.web.file.generator.action.SysLogService;
 import com.somg.web.file.generator.annotation.SysListenLog;
 import com.somg.web.file.generator.constant.REnum;
+import com.somg.web.file.generator.pojo.SysLog;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -54,6 +53,32 @@ public class SysLogController {
 
             return R.error(REnum.GET_LOG_LIST_FAIL.getStatusCode(),
                     REnum.GET_LOG_LIST_FAIL.getStatusMsg());
+        }
+    }
+
+
+    /**
+     * 第三方日志保存
+     * @param sysLog
+     * @return
+     */
+    @PostMapping("thirdSysLog")
+    @ApiOperation(value = "第三方日志保存")
+    public R thirdSysLog(@RequestBody SysLog sysLog){
+
+        try{
+            sysLog.setTime(new Date());
+            sysLogService.save(sysLog);
+
+            return R.ok(REnum.THIRD_SYS_LOG_SAVE_SUCCESS.getStatusCode(),
+                            REnum.THIRD_SYS_LOG_SAVE_SUCCESS.getStatusMsg());
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+            return R.error(REnum.THIRD_SYS_LOG_SAVE_FAIL.getStatusCode(),
+                    REnum.THIRD_SYS_LOG_SAVE_FAIL.getStatusMsg());
         }
     }
 

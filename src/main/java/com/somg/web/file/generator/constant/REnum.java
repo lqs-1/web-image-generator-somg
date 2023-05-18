@@ -124,7 +124,9 @@ public enum REnum {
     DEFAULT_PASSWORD_RESET_FAIL(21047, "默认密码重置失败"),
     DEFAULT_PASSWORD_RESET_SUCCESS(11047, "默认密码重置成功"),
     UNKNOW_DEFAULT_PASSWORD_DICT(21048, "密码重置失败 未找到对应字典值"),
-    DICT_DATA_ERROR(21048, "字典数据丢失")
+    DICT_DATA_ERROR(21048, "字典数据丢失"),
+    THIRD_SYS_LOG_SAVE_SUCCESS(11049, "第三方系统日志保存成功"),
+    THIRD_SYS_LOG_SAVE_FAIL(21049, "第三方系统日志保存失败"),
 
 
 

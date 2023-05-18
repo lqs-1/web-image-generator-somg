@@ -147,7 +147,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader(Constant.ACCESS_CONTROL_EXPOSE_HEADERS, jwtToken.authHeaderName);
 
         // 回写数据
-        ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()).put("token", token).put("menus", menuVoList));
+        ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()).put("token", token).put("menus", menuVoList).put("username", username));
 
     }
 
