@@ -31,7 +31,7 @@ logger.addHandler(console_handler)
 
 # 文件日志配置
 # 获取文件日志处理器 输出到的文件位置 最大100MB 保存的日志文件的个数上限为10个
-file_log_error_handler = RotatingFileHandler(f"/home/logs/chat/error_{time.strftime('%Y-%m-%d')}.log", maxBytes=1024*1024*100, backupCount=10)
+file_log_error_handler = RotatingFileHandler(f"logs/chat/error_{time.strftime('%Y-%m-%d')}.log", maxBytes=1024*1024*100, backupCount=10)
 # 设置输出到文件的日志的等级
 file_log_error_handler.setLevel(logging.INFO)
 # 给文件日志设置输出格式
@@ -86,4 +86,5 @@ def create_app(env):
     # supports_credentials允许跨域带cookie, resources={r"/spider/*": {r"origins": "*"}这个spider路径下的所有资源都可以被所有主机访问
     CORS(app=app, supports_credentials=True, resources={r"/*": {r"origins": "*"}})
 
-    return manage
+    # return manage
+    return app
