@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from chat.models import models
 from chat.utils.respon_result import ResponseResult
 from chat.utils.respon_enum import REnum
-import jwt
 
 from chat.utils.sys_log_save_request import doSaveSysLogRequest
 

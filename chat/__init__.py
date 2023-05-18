@@ -3,6 +3,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 import time
 
+from flask_cors import CORS
+
 import config
 from chat.bluePrints import register_all_views
 from chat.models import register_db
@@ -82,6 +84,6 @@ def create_app(env):
 
     # 全局配置跨域
     # supports_credentials允许跨域带cookie, resources={r"/spider/*": {r"origins": "*"}这个spider路径下的所有资源都可以被所有主机访问
-    # CORS(app=app, supports_credentials=True, resources={r"/spider/*": {r"origins": "*"}})
+    CORS(app=app, supports_credentials=True, resources={r"/*": {r"origins": "*"}})
 
     return manage
