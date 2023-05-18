@@ -5,6 +5,7 @@ import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
 import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
+import com.somg.web.file.generator.handler.security.utils.TokenObj;
 import com.somg.web.file.generator.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -68,7 +69,7 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
 
                 if (!StringUtils.isNullOrEmpty(token)){
 
-                    String username = jwtToken.parseSingleParamFormToken(token);
+                    TokenObj tokenObj = jwtToken.parseObject(token, TokenObj.class);
 
                     // 刷新token
                     if (jwtToken.refresh(token)){
@@ -78,10 +79,15 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
 
                     }
 
-                    log.info(username +" 正从缓存中获取权限");
-                    // 从redis中获得该用户的权限
-                    List<String> permissionValueList = (List<String>) redisTemplate.opsForValue().get(username);
-                    log.info(username + " 的权限为: " + permissionValueList);
+                    String userName = tokenObj.getUserName();
+                    List<String> permissionValueList = tokenObj.getPermissionValueList();
+
+                    log.info(userName +" 正从token中获取权限");
+                    // 从redis中获得该用户的权限 原始方式
+                    // List<String> permissionValueList = (List<String>) redisTemplate.opsForValue().get(username);
+
+
+                    log.info(userName + " 的权限为: " + permissionValueList);
 
                     // 将取出的权限存储到权限上下文
                     Collection<GrantedAuthority> authorityCollection = new ArrayList<>();
@@ -92,11 +98,11 @@ public class TokenAuthFilter extends BasicAuthenticationFilter {
                         }
                     }
                     // 生成权限信息对象
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,token, authorityCollection);
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName,token, authorityCollection);
                     // 把权限信息对象存入到权限上下文中
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-                    userNameThreadLocal.set(username);
+                    userNameThreadLocal.set(userName);
                 }
 
                 log.info((userNameThreadLocal.get() == null ? "匿名用户" : userNameThreadLocal.get()) + " 获取了权限 -> 访问路径 [" + request.getRequestURI() + "] -> 放行");

@@ -1,6 +1,7 @@
 package com.somg.web.file.generator.handler.security.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.somg.web.file.generator.pojo.User;
 import com.sun.istack.NotNull;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -47,7 +48,8 @@ public class JwtToken {
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime))
                 .signWith(SignatureAlgorithm.HS256, securityKey)
                 .setSubject(singleParam)
-                .setIssuedAt(new Date()).compact();
+                .setIssuedAt(new Date())
+                .compact();
     }
 
 
@@ -60,9 +62,11 @@ public class JwtToken {
         HashMap<String, Object> claims = new HashMap<>();
         claims.put(objectKeyName, obj);
         return Jwts.builder()
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
                 .signWith(SignatureAlgorithm.HS256, securityKey)
-                .setClaims(claims).compact();
+                .setClaims(claims)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .compact();
     }
 
     /**
@@ -117,6 +121,29 @@ public class JwtToken {
         Object obj = Jwts.parser().setSigningKey(securityKey).parseClaimsJws(token).getBody().get(objectKeyName);
         return JSON.parseObject(JSON.toJSONString(obj), type);
         // return new ObjectMapper().convertValue(obj, type);
+    }
+
+
+    public static void main(String[] args) throws InterruptedException {
+        User user = new User();
+        user.setPassword("123456");
+        user.setEmail("1234567@gmail.com");
+        user.setUsername("lqs");
+        user.setCreateTime(new Date());
+        user.setLoginTime(new Date());
+        user.setId(23l);
+        user.setToken("token:123456");
+        user.setSex("男");
+        user.setEmailCode("somg520");
+
+        JwtToken jwtToken = new JwtToken();
+        String token = jwtToken.createTokenObjectAsBody(user);
+        System.out.println("token is " + token);
+
+        System.out.println("is expire " + jwtToken.refresh(token));
+
+        System.out.println("content is " + jwtToken.parseObject(token, User.class));
+
     }
 
 

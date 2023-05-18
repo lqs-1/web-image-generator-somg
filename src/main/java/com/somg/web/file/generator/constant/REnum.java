@@ -43,7 +43,7 @@ public enum REnum {
     GET_USER_LIST_SUCCESS(11006, "获取用户列表成功"),
     GET_USER_LIST_FAIL(21008, "获取用户列表失败"),
     USER_PERMISSIONS_ERROR(21009, "权限不足"),
-    LOGIN_FAIL(21010, "登录失败"),
+    LOGIN_FAIL(21010, "登录失败 用户名或者密码错误"),
     REGISTER_SUCCESS(11007, "用户注册成功"),
     REGISTER_FAIL(21011, "用户注册失败"),
     ALTER_PASSWORD_SUCCESS(11008, "用户密码修改成功"),

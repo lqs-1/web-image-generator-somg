@@ -3,6 +3,7 @@ package com.somg.web.file.generator.handler.security;
 import com.mysql.cj.util.StringUtils;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
+import com.somg.web.file.generator.handler.security.utils.TokenObj;
 import com.somg.web.file.generator.utils.R;
 import com.somg.web.file.generator.handler.security.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -48,10 +49,10 @@ public class LogoutSuccessHandler implements LogoutHandler {
 
         if (!StringUtils.isNullOrEmpty(token)){
             // 从token中解析出userName
-            String username = jwtToken.parseSingleParamFormToken(token);
-            // 删除redis中的权限数据
-            redisTemplate.delete(username);
-            log.info(username + " 退出登录了");
+            TokenObj tokenObj = jwtToken.parseObject(token, TokenObj.class);
+            // 删除redis中的权限数据 原始方式
+            // redisTemplate.delete(username);
+            log.info(tokenObj.getUserName() + " 退出登录了");
         }
 
         ResponseUtils.out(response, R.ok(REnum.LOGOUT_SUCCESS_E.getStatusCode(), REnum.LOGOUT_SUCCESS_E.getStatusMsg()));

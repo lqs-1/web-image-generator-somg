@@ -6,6 +6,7 @@ import com.somg.web.file.generator.action.UserService;
 import com.somg.web.file.generator.constant.Constant;
 import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.handler.security.utils.JwtToken;
+import com.somg.web.file.generator.handler.security.utils.TokenObj;
 import com.somg.web.file.generator.pojo.SecurityUser;
 import com.somg.web.file.generator.pojo.User;
 import com.somg.web.file.generator.utils.R;
@@ -117,26 +118,35 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         log.info(securityUser.getUsername() + " 登录成功了");
         String username = securityUser.getUsername();
 
-        // 生成token
-        String token = jwtToken.createTokenSingleParamAsSub(username);
-
-
         // 权限存入redis
         List<String> permissionValueList = securityUser.getPermissionValueList();
-        log.info(username + " 存权限");
+        log.info(username + " 存权限-token");
 
-        redisTemplate.opsForValue().set(username, permissionValueList);
+        // 原始方式从redis中获取权限
+        // redisTemplate.opsForValue().set(username, permissionValueList);
 
+
+        // 组织token对象
+        TokenObj tokenObj = new TokenObj();
+        tokenObj.setUserName(username);
+        tokenObj.setPermissionValueList(permissionValueList);
+
+        // 生成token
+        String token = jwtToken.createTokenObjectAsBody(tokenObj);
+
+        // 获取菜单权限
         List<MenuVo> menuVoList = securityUser.getMenuVoList();
 
         log.info(username + " 登录成功返回数据");
 
+        // 更新登录时间
         userService.updateLoginTimeByUserName(username);
 
+        // 设置请求头
         response.addHeader(jwtToken.authHeaderName, token);
         response.addHeader(Constant.ACCESS_CONTROL_EXPOSE_HEADERS, jwtToken.authHeaderName);
 
-
+        // 回写数据
         ResponseUtils.out(response, R.ok(REnum.LOGIN_SUCCESS.getStatusCode(), REnum.LOGIN_SUCCESS.getStatusMsg()).put("token", token).put("menus", menuVoList));
 
     }
