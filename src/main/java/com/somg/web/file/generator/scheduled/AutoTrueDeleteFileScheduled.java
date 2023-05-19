@@ -28,7 +28,7 @@ public class AutoTrueDeleteFileScheduled {
 
 
     @Async
-    @Scheduled(cron = "* * */2 ? * *") // 每两个小时执行一次
+    @Scheduled(cron = "0 0 */2 ? * *") // 每两个小时执行一次
     public void autoCleanLocalImageScheduled(){
         try {
             log.info("自动删除满足时间的文件开始了");
