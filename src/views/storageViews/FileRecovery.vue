@@ -1,8 +1,8 @@
 <template>
   <div>
 
-    <el-button type="success" class="queryButton" @click="queryFile">文件查询</el-button>
-    <el-input v-model="key" placeholder="请输入关键字" class="queryFile"></el-input>
+<!--    <el-button type="success" class="queryButton" @click="queryFile">文件查询</el-button>-->
+<!--    <el-input v-model="key" placeholder="请输入关键字" class="queryFile"></el-input>-->
     <el-table
         :data="fileList"
         height="700"

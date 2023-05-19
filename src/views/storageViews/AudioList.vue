@@ -14,21 +14,30 @@
         </template>
       </el-table-column>
 
-
       <el-table-column
-          label="网络地址"
-          width="700"
+          label="预览"
+          width="400"
           align="center">
         <template slot-scope="scope">
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.file }}</el-tag>
-          </div>
+          <audio :id="scope.row.id" style="width: 300px; height: 30px" controls :src="scope.row.file" ref="audio" @play="onPlay(scope.row.id)"></audio>
         </template>
       </el-table-column>
 
+
+<!--      <el-table-column-->
+<!--          label="网络地址"-->
+<!--          width="700"-->
+<!--          align="center">-->
+<!--        <template slot-scope="scope">-->
+<!--          <div slot="reference" class="name-wrapper">-->
+<!--            <el-tag size="medium">{{ scope.row.file }}</el-tag>-->
+<!--          </div>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+
       <el-table-column
           label="上传时间"
-          width="150"
+          width="250"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -39,7 +48,7 @@
 
       <el-table-column
           label="文件名"
-          width="150"
+          width="250"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -51,7 +60,7 @@
 
       <el-table-column
           label="文件类型"
-          width="150"
+          width="250"
           align="center">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -63,7 +72,7 @@
 
       <el-table-column
           label="操作"
-          width="250"
+          width="300"
           align="center">
         <template slot-scope="scope">
           <el-button
@@ -120,7 +129,8 @@ export default {
         total: 0,
         // 当前页
         currentPage: 1,
-      }
+      },
+      currentAudioId: null
     }
   },
 
@@ -130,6 +140,16 @@ export default {
   },
 
   methods: {
+
+    onPlay(id){
+      if (this.currentAudioId && this.currentAudioId !== id){
+        let audio = document.getElementById(this.currentAudioId)
+        if (!audio.paused){
+          audio.pause()
+        }
+      }
+      this.currentAudioId = id
+    },
 
     changeCurrentPageHandler(currentPage) {
       this.httpRequest.get("storage/allAudioPage?page=" + currentPage +

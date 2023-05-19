@@ -15,12 +15,19 @@
 
 
       <el-table-column
-          label="图片"
+          label="预览"
           width="80"
           align="center"
       >
         <template slot-scope="scope">
-          <img  :src="scope.row.file" alt="" style="width: 70px;height: 60px">
+          <div class="video">
+            <el-dialog title="预览详情" width="50%" style="height: 100%" append-to-body top="10px" :visible.sync="dialogVisible" @closed="closeDialog">
+              <img  width="100%" :src="showImgUrl"></img>
+            </el-dialog>
+            <!-- 页面table显示的video标签 -->
+            <img :src="scope.row.file" width="100%"></img>
+            <i class="el-icon-picture-outline-round" @click="handleCheck(scope.row.file)"></i>
+          </div>
         </template>
       </el-table-column>
 
@@ -113,6 +120,8 @@ export default {
   name: "ImageList",
   data() {
     return {
+      showImgUrl: "",
+      dialogVisible: false,
       fileList: [],
       deleteLoading: false,
 
@@ -137,6 +146,17 @@ export default {
   },
 
   methods: {
+
+    // 查看
+    handleCheck(file) {
+      this.showImgUrl = file // 存储用户点击的视频播放链接
+      this.dialogVisible = true
+    },
+
+    closeDialog(){
+      this.showImgUrl = ""
+      this.dialogVisible = false
+    },
 
     changeCurrentPageHandler(currentPage) {
       this.httpRequest.get("storage/allImagePage?page=" + currentPage +
