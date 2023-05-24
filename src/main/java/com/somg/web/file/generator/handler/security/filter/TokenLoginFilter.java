@@ -102,6 +102,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         // 校验验证码是否过期
         if (StringUtils.isNullOrEmpty(realImageCode)){
             ResponseUtils.out(response, R.error(REnum.IMAGE_CODE_EXPIRED.getStatusCode(), REnum.IMAGE_CODE_EXPIRED.getStatusMsg()));
+            return;
         }
 
         if (!code.toLowerCase().equals(realImageCode.toLowerCase())){
@@ -114,6 +115,12 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 获取当前用户 UserDetails
         SecurityUser securityUser = (SecurityUser) authResult.getPrincipal();
+
+        // 用户被删除了
+        if (securityUser.getCurrentUser().getIsDelete() == 1) {
+            ResponseUtils.out(response, R.error(REnum.USER_DOES_NOT_EXIST.getStatusCode(), REnum.USER_DOES_NOT_EXIST.getStatusMsg()));
+            return;
+        }
 
         log.info(securityUser.getUsername() + " 登录成功了");
         String username = securityUser.getUsername();

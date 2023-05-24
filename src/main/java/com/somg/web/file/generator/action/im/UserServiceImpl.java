@@ -16,6 +16,7 @@ import com.somg.web.file.generator.constant.REnum;
 import com.somg.web.file.generator.mapper.UserMapper;
 import com.somg.web.file.generator.vo.MenuVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -128,11 +129,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         User queryUser = this.baseMapper.getUserByUserName(user.getUsername());
 
-        if (queryUser != null){
+        if (queryUser != null && queryUser.getIsDelete() == 0){
 
             return R.error(REnum.USER_DOES_EXIST.getStatusCode(),
                     REnum.USER_DOES_EXIST.getStatusMsg());
 
+        } else if (queryUser != null && queryUser.getIsDelete() == 1) {
+            // 填充数据 这总情况在于用户已经逻辑删除但是又要创建用户
+            queryUser.setSex(user.getSex());
+            queryUser.setEmail(user.getEmail());
+            queryUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            queryUser.setIsDelete(0);
+            queryUser.setLoginTime(new Date());
+
+            this.baseMapper.updateById(queryUser);
+
+            return R.ok(REnum.REGISTER_SUCCESS.getStatusCode(),
+                    REnum.REGISTER_SUCCESS.getStatusMsg());
         }
 
         String password = user.getPassword();
@@ -239,12 +252,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         User userByUserName = this.baseMapper.getUserByUserName(user.getUsername());
 
-        if(userByUserName == null){
+        // 被删除的用户不能修改密码 用户不存在也不能修改密码
+        if(userByUserName == null || userByUserName.getIsDelete() == 1){
 
             return R.error(REnum.USER_DOES_NOT_EXIST.getStatusCode(),
                     REnum.USER_DOES_NOT_EXIST.getStatusMsg());
 
         }
+
+
 
         if (!user.getEmail().equals(userByUserName.getEmail())){
             return R.error(REnum.USER_VALID_ERROR.getStatusCode(),
@@ -340,6 +356,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         List<String> simpleGrantedAuthorities = new ArrayList<>();
 
+        List<MenuVo> menuVoList = new ArrayList<>();
+
         log.info(username + " 执行了登录逻辑UserDetailService");
 
         try {
@@ -369,38 +387,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
                 }
 
+                // 获取菜单访问
+                List<Long> menuIds = userMenuService.getMenuIds(user.getId());
+                if (menuIds.size() > 0){
+                    List<Menus> menuList = menuService.getMenus(menuIds);
+                    // 封装
+
+                    List<Menus> parentMenuList = menuList.stream().filter(menu -> menu.getMenuIndex() != null ? true : false).collect(Collectors.toList());
+
+                    menuVoList = parentMenuList.stream().map(parentMenu -> {
+                        MenuVo menuVo = new MenuVo();
+                        menuVo.setMenuIndex(parentMenu.getMenuIndex());
+                        menuVo.setMenuName(parentMenu.getMenuName());
+
+                        List<MenuVo.MenuItem> menuItemList = new ArrayList<>();
+
+                        menuList.stream().filter(menu -> menu.getParentIndex() != null && menu.getParentIndex() == parentMenu.getMenuIndex() ? true : false)
+                                .forEach(menu -> {
+                                    MenuVo.MenuItem menuItem = new MenuVo.MenuItem();
+                                    menuItem.setMenuPath(menu.getMenuPath());
+                                    menuItem.setMenuName(menu.getMenuName());
+                                    menuItemList.add(menuItem);
+                                });
+                        menuVo.setMenuItems(menuItemList);
+                        return menuVo;
+                    }).collect(Collectors.toList());
+                }
+
 
             }
-
-            List<MenuVo> menuVoList = new ArrayList<>();
-
-            // 获取菜单访问
-            List<Long> menuIds = userMenuService.getMenuIds(user.getId());
-            if (menuIds.size() > 0){
-                List<Menus> menuList = menuService.getMenus(menuIds);
-                // 封装
-
-                List<Menus> parentMenuList = menuList.stream().filter(menu -> menu.getMenuIndex() != null ? true : false).collect(Collectors.toList());
-
-                menuVoList = parentMenuList.stream().map(parentMenu -> {
-                    MenuVo menuVo = new MenuVo();
-                    menuVo.setMenuIndex(parentMenu.getMenuIndex());
-                    menuVo.setMenuName(parentMenu.getMenuName());
-
-                    List<MenuVo.MenuItem> menuItemList = new ArrayList<>();
-
-                    menuList.stream().filter(menu -> menu.getParentIndex() != null && menu.getParentIndex() == parentMenu.getMenuIndex() ? true : false)
-                            .forEach(menu -> {
-                                MenuVo.MenuItem menuItem = new MenuVo.MenuItem();
-                                menuItem.setMenuPath(menu.getMenuPath());
-                                menuItem.setMenuName(menu.getMenuName());
-                                menuItemList.add(menuItem);
-                            });
-                    menuVo.setMenuItems(menuItemList);
-                    return menuVo;
-                }).collect(Collectors.toList());
-            }
-
 
 
             SecurityUser securityUser = new SecurityUser();
