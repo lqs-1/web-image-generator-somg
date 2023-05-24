@@ -6,8 +6,8 @@ import { Message } from 'element-ui'
 
 // 创建axios实例
 var instance =  axios.create({
-    // baseURL: 'http://nobibibi.top:5000/', // 添加基本地址
-    baseURL: 'http://127.0.0.1:5000/', // 添加基本地址
+    baseURL: 'http://nobibibi.top:5000/', // 添加基本地址
+    // baseURL: 'http://127.0.0.1:5000/', // 添加基本地址
 })
 
 
