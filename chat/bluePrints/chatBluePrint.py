@@ -30,7 +30,7 @@ def index():
     # 获取会话的问题数据
     data = request.get_json()
 
-    current_app.logger.info(f"{g.sys_log.userName}======> 提问 =====> " + data.get("request"))
+    current_app.logger.info(f"{g.sys_log.userName} ======> 提问 =====> " + data.get("request"))
 
     action_text = data.get('request')
     if len(action_text) > 10:
@@ -55,8 +55,10 @@ def index():
 
         action = f"提问=={action_text}...  花费token=={chartResponse.get('usage').get('total_tokens')}个"
         doSaveSysLogRequest(action)
-    except Exception as e:
+        current_app.logger.info(f"{g.sys_log.userName}======> 回复 =====> " + data.get("request") + f" ====> {chartResponse.get('choices')[0].get('message').get('content')}")
 
+    except Exception as e:
+        current_app.logger.error(f"{g.sys_log.userName} ======> 问答失败 ChatGPT通信失败")
         return jsonify(ResponseResult.error(REnum.CHATGPT_SESSION_FAIL.code, REnum.CHATGPT_SESSION_FAIL.msg))
 
     return jsonify(

@@ -16,7 +16,7 @@ def doSaveSysLogRequest(action: str):
     # 获取请求地址
     third_sys_log_request_path = models.SysDict.query.filter_by(dictCode="THIRD_SYS_LOG_DEFAULT_REQUEST_PATH").first().dictValue
 
-    current_app.logger.info(f"获取到保存系统日志的地址为=={third_sys_log_request_path}")
+    current_app.logger.info(f"获取到保存系统日志的地址为 =====> {third_sys_log_request_path}")
 
     # 处理数据
     data = sys_log.__dict__
@@ -24,4 +24,7 @@ def doSaveSysLogRequest(action: str):
 
     headers = {'content-type': "application/json"}
     # 发送请求
-    requests.post(third_sys_log_request_path, data=json.dumps(data), headers=headers)
+    try:
+        requests.post(third_sys_log_request_path, data=json.dumps(data), headers=headers)
+    except Exception as e:
+        current_app.logger.error(f"网络连接失败 =====> {third_sys_log_request_path}")

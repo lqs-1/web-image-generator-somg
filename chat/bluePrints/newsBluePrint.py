@@ -3,11 +3,9 @@ from flask_cors import cross_origin
 import datetime
 import requests
 from bs4 import BeautifulSoup
-
 from chat.models import models
 from chat.utils.respon_result import ResponseResult
 from chat.utils.respon_enum import REnum
-
 from chat.utils.sys_log_save_request import doSaveSysLogRequest
 
 # 新闻模块路由
@@ -21,9 +19,6 @@ def requestNewsBefore():
     if request.method != 'OPTIONS':
         sys_log = models.SysLog(serverName="新闻服务", userName=request.headers.get('username'))
         g.sys_log = sys_log
-
-
-
 
 
 @news_view.route("/cnJingJiItNews", methods=["GET"])
@@ -40,7 +35,7 @@ def cnJingJiItNews():
     try:
         response = requests.get(url)
     except Exception as e:
-        current_app.logger.info('Failed to retrieve data from ' + url)
+        current_app.logger.error('网络连接失败 =====> ' + url)
         return jsonify(ResponseResult.error(REnum.NET_CONNECTION_ERROR.code, REnum.NET_CONNECTION_ERROR.msg))
 
     if response.status_code == 200:
@@ -62,6 +57,8 @@ def cnJingJiItNews():
     else:
         return jsonify(
             ResponseResult.error(REnum.SPIDER_CN_JINGJI_IT_NEWS_FAIL.code, REnum.SPIDER_CN_JINGJI_IT_NEWS_FAIL.msg))
+    
+    current_app.logger.info(f"{g.sys_log.userName} ======> f{action}")
 
     return jsonify(ResponseResult.success_has_args_diff_key(REnum.SPIDER_CN_JINGJI_IT_NEWS_SUCCESS.code,
                                                             REnum.SPIDER_CN_JINGJI_IT_NEWS_SUCCESS.msg, "result_list",
@@ -96,7 +93,7 @@ def cnPeopleNews():
         try:
             response = requests.get(url)
         except Exception as e:
-            current_app.logger.info('Failed to retrieve data from ' + url)
+            current_app.logger.error('网络连接失败 =====> ' + url)
             return jsonify(ResponseResult.error(REnum.NET_CONNECTION_ERROR.code, REnum.NET_CONNECTION_ERROR.msg))
 
         if response.status_code == 200:
@@ -122,6 +119,8 @@ def cnPeopleNews():
 
         flag += 1
 
+    current_app.logger.info(f"{g.sys_log.userName} ======> f{action}")
+
     return jsonify(ResponseResult.success_has_args_diff_key(REnum.SPIDER_CN_PEOPLE_NEWS_SUCCESS.code,
                                                             REnum.SPIDER_CN_PEOPLE_NEWS_SUCCESS.msg,
                                                             "result_list", result_list))
@@ -139,7 +138,7 @@ def cnTouTiaoNews():
     try:
         response = requests.get(url)
     except Exception as e:
-        current_app.logger.info('Failed to retrieve data from ' + url)
+        current_app.logger.error('网络连接失败 =====> ' + url)
         return jsonify(ResponseResult.error(REnum.NET_CONNECTION_ERROR.code, REnum.NET_CONNECTION_ERROR.msg))
 
     if response.status_code == 200:
@@ -165,6 +164,8 @@ def cnTouTiaoNews():
     else:
         return jsonify(
             ResponseResult.error(REnum.SPIDER_CN_TOUTIAO_NEWS_FAIL.code, REnum.SPIDER_CN_TOUTIAO_NEWS_FAIL.msg))
+    
+    current_app.logger.info(f"{g.sys_log.userName} ======> f{action}")
 
     return jsonify(ResponseResult.success_has_args_diff_key(REnum.SPIDER_CN_TOUTIAO_NEWS_SUCCESS.code,
                                                             REnum.SPIDER_CN_TOUTIAO_NEWS_SUCCESS.msg,
@@ -186,7 +187,7 @@ def cnWeiBoHotNews():
     try:
         response = requests.get(url)
     except Exception as e:
-        current_app.logger.info('Failed to retrieve data from ' + url)
+        current_app.logger.error('网络连接失败 =====> ' + url)
         return jsonify(ResponseResult.error(REnum.NET_CONNECTION_ERROR.code, REnum.NET_CONNECTION_ERROR.msg))
 
     if response.status_code == 200:
@@ -214,9 +215,11 @@ def cnWeiBoHotNews():
 
             result_list.append(hot_top_result)
     else:
-        print('Failed to retrieve data from ' + url)
+        print('网络连接失败 =====> ' + url)
         return jsonify(
             ResponseResult.error(REnum.SPIDER_CN_WEIBO_NEWS_FAIL.code, REnum.SPIDER_CN_WEIBO_NEWS_FAIL.msg))
+    
+    current_app.logger.info(f"{g.sys_log.userName} ======> f{action}")
 
     return jsonify(ResponseResult.success_has_args_diff_key(REnum.SPIDER_CN_WEIBO_NEWS_SUCCESS.code,
                                                             REnum.SPIDER_CN_WEIBO_NEWS_SUCCESS.msg,

@@ -42,7 +42,7 @@ def searchMovies():
         # 请求获取有几页结果
         response = requests.get(search_url)
     except Exception as e:
-        current_app.logger.info('Failed to retrieve data from ' + search_url)
+        current_app.logger.error('网络连接失败 =====> ' + search_url)
         return jsonify(ResponseResult.error(REnum.NET_CONNECTION_ERROR.code, REnum.NET_CONNECTION_ERROR.msg))
 
     if response.status_code == 200:
@@ -69,6 +69,8 @@ def searchMovies():
                 page_result = doRquest(page_search_url)
                 result_list += page_result
 
+        current_app.logger.info(f"{g.sys_log.userName} ======> 搜索影视 =====> {search_key}")
+
         return jsonify(ResponseResult.success_has_args_diff_key(REnum.SPIDER_PLAY_BY_KEYWORD_SUCCESS.code,
                                                                         REnum.SPIDER_PLAY_BY_KEYWORD_SUCCESS.msg,
                                                                         "result_list",
@@ -87,7 +89,7 @@ def doRquest(page_search_url):
         # 请求获取有几页结果
         response = requests.get(page_search_url)
     except Exception as e:
-        current_app.logger.info('Failed to retrieve data from ' + page_search_url)
+        current_app.logger.error('网络连接失败 =====> ' + page_search_url)
         return jsonify(ResponseResult.error(REnum.NET_CONNECTION_ERROR.code, REnum.NET_CONNECTION_ERROR.msg))
 
     if response.status_code == 200:
@@ -102,6 +104,6 @@ def doRquest(page_search_url):
             title = play_div.find('strong').text
             result = {'title': title, 'img_link': img_link, 'play_link': play_link}
             result_list.append(result)
-
+    
     return result_list
 
