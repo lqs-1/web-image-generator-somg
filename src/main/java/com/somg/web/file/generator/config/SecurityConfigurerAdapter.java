@@ -79,7 +79,8 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
                 // 放行一些功能接口 这个可以是任何请求方式
                 .antMatchers(
                         "/user/captcha",
-                        "/",
+                        "/up",
+                        "/up.html",
                         "/favicon.ico",
                         "/static/**",
                         "/somg/web-file-generate/simple",

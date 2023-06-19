@@ -8,7 +8,7 @@
     <contextName>logback-spring</contextName>
 
     <!-- name的值是变量的名称，value的值时变量定义的值。这里的路径是输出到log文件的路径，可以是本地或者服务器 -->
-    <property name="logging.path" value="/home/logs" />
+    <property name="logging.path" value="/home/logs/back" />
 
     <!--0. 日志格式和颜色渲染 -->
     <!-- 彩色日志依赖的渲染类 -->
