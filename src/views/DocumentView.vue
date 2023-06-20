@@ -29,6 +29,10 @@ export default {
     return {
       tableData: [
         {
+          interfaceName: 'http://www.nobibibi.top/#/doc',
+          desc: '端口文档地址',
+        },
+        {
           interfaceName: 'http://www.nobibibi.top',
           desc: '工具网站地址 游客登录账号guest 密码initsomg',
         },
