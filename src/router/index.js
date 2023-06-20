@@ -26,6 +26,7 @@ import CnWeiBoHotSearch from "@/views/newsViews/CnWeiBoHotSearch";
 import TvSearch from "@/views/tvViews/TvSearch";
 import SysDictList from "@/views/userViews/SysDictList";
 import FileRecovery from "@/views/storageViews/FileRecovery";
+import DocumentView from "@/views/DocumentView"
 
 // 自己定义的请求包。只能在组件中使用，如果非要在这里使用，必须引入
 
@@ -34,11 +35,21 @@ Vue.use(VueRouter)
 
 
 const routes = [
+  // 端口文档路由
+  {
+    path: '/doc',
+    name: 'doc',
+    meta: {
+      isLogin: false
+    },
+    component: DocumentView
+  },
     // 登录相关路由-单独的
   {
     path: '/',
     name: 'login',
     meta:{
+      // 已经登录 如果这里为true 那么就不在登录
       isExist:true
     },
     component: Login
@@ -266,6 +277,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
