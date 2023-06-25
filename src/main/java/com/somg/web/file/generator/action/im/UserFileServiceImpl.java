@@ -19,12 +19,14 @@ import com.somg.web.file.generator.pojo.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.Pagination.QueryPage;
 import com.somg.web.file.generator.utils.R;
+import com.somg.web.file.generator.vo.MessageSendVo;
 import com.somg.web.file.generator.vo.StatisticalDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -53,6 +55,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 单文件上传
+     *
      * @param file
      * @return
      */
@@ -62,7 +65,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         R result = fileUpload.build().singleFileUpload(file);
 
-        if (result.parseCode() >= 10000 && result.parseCode() < 20000){
+        if (result.parseCode() >= 10000 && result.parseCode() < 20000) {
 
             User user = this.getUser();
 
@@ -86,9 +89,10 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 同一个线程中获取用户，用户是在用户请求经过TokenAuthFilter过滤器的时候添加的
+     *
      * @return
      */
-    private User getUser(){
+    private User getUser() {
         String username = TokenAuthFilter.userNameThreadLocal.get();
 
         // System.out.println("username" + username);
@@ -98,6 +102,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 获取用户的文件分页数据
+     *
      * @param params
      * @return
      */
@@ -111,15 +116,15 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userFileLambdaQueryWrapper.eq(UserFile::getUserId, user.getId());
         userFileLambdaQueryWrapper.eq(UserFile::getIsDelete, 0);
-        if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null){
+        if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null) {
             userFileLambdaQueryWrapper.and(query -> {
                 query.like(UserFile::getFileName, params.get("key"))
                         .or().like(UserFile::getFileType, params.get("key"));
 
-                    });
+            });
         }
 
-        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),userFileLambdaQueryWrapper);
+        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true), userFileLambdaQueryWrapper);
 
         List<UserFile> records = page.getRecords();
 
@@ -134,6 +139,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 批量文件上传
+     *
      * @param files
      * @return
      */
@@ -146,7 +152,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         for (MultipartFile file : files) {
             result = fileUpload.build().singleFileUpload(file);
 
-            if (result.parseCode() >= 10000 && result.parseCode() <= 20000){
+            if (result.parseCode() >= 10000 && result.parseCode() <= 20000) {
                 String originalFilename = file.getOriginalFilename();
                 String fileName = originalFilename.substring(0, originalFilename.lastIndexOf("."));
 
@@ -171,6 +177,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 获取用户所有的图片文件分页数据
+     *
      * @param params
      * @return
      */
@@ -193,6 +200,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 获取用户所有的音频文件分页数据
+     *
      * @param params
      * @return
      */
@@ -216,6 +224,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 获取用户所有的视频文件分页数据
+     *
      * @param params
      * @return
      */
@@ -239,6 +248,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 获取当前用户或者所有用户的各种文件的个数 作为前端的统计数据
+     *
      * @param currentUser
      * @return
      */
@@ -253,7 +263,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         // 统计图片
         LambdaQueryWrapper<UserFile> imageWrapper = new LambdaQueryWrapper<>();
-        if (currentUser){
+        if (currentUser) {
             imageWrapper.eq(currentUser, UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
         }
         imageWrapper.in(UserFile::getFileType, Constant.IMAGE_CONTENT_TYPES);
@@ -265,7 +275,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         // 统计视频
         LambdaQueryWrapper<UserFile> videoWrapper = new LambdaQueryWrapper<>();
-        if (currentUser){
+        if (currentUser) {
             videoWrapper.eq(currentUser, UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
         }
         videoWrapper.in(UserFile::getFileType, Constant.VIDEO_CONTENT_TYPES);
@@ -277,7 +287,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         // 统计音频
         LambdaQueryWrapper<UserFile> audioWrapper = new LambdaQueryWrapper<>();
-        if (currentUser){
+        if (currentUser) {
             audioWrapper.eq(currentUser, UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
         }
         audioWrapper.in(UserFile::getFileType, Constant.AUDIO_CONTENT_TYPES);
@@ -288,12 +298,12 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         statisticalAllaudioData.setName(Constant.AUDIO_STATISTICAL_NAME);
 
         // 统计其他项目
-        ArrayList typeList=new ArrayList(Arrays.asList(Constant.IMAGE_CONTENT_TYPES));
+        ArrayList typeList = new ArrayList(Arrays.asList(Constant.IMAGE_CONTENT_TYPES));
         typeList.addAll(Arrays.asList(Constant.VIDEO_CONTENT_TYPES));
         typeList.addAll(Arrays.asList(Constant.AUDIO_CONTENT_TYPES));
 
         LambdaQueryWrapper<UserFile> otherWrapper = new LambdaQueryWrapper<>();
-        if (currentUser){
+        if (currentUser) {
             otherWrapper.eq(currentUser, UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
         }
         otherWrapper.notIn(UserFile::getFileType, typeList);
@@ -315,6 +325,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 超级管理员查看所有用户的文件
+     *
      * @param params
      * @return
      */
@@ -326,8 +337,8 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         // 查询条件
         LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
 
-        if(!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null){
-            userIds = userService.selectUserLikeName((String)params.get("key"));
+        if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null) {
+            userIds = userService.selectUserLikeName((String) params.get("key"));
             userFileLambdaQueryWrapper.in(userIds.size() > 0, UserFile::getUserId, userIds).or().like(UserFile::getFileType, params.get("key")).or().like(UserFile::getFileName, params.get("key"));
         }
 
@@ -349,6 +360,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 获取当前用户所有的文件路径
+     *
      * @return
      */
     @Override
@@ -362,6 +374,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 获取已经删除可以恢复的文件
+     *
      * @param params
      * @return
      */
@@ -378,7 +391,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         LambdaQueryWrapper<UserFile> userFileLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userFileLambdaQueryWrapper.eq(UserFile::getUserId, user.getId());
         userFileLambdaQueryWrapper.eq(UserFile::getIsDelete, 1);
-        if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null){
+        if (!StringUtils.isNullOrEmpty((String) params.get("key")) && params.get("key") != null) {
             userFileLambdaQueryWrapper.and(query -> {
                 query.like(UserFile::getFileName, params.get("key"))
                         .or().like(UserFile::getFileType, params.get("key"));
@@ -386,7 +399,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
             });
         }
 
-        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true),userFileLambdaQueryWrapper);
+        IPage<UserFile> page = this.page(new QueryPage<UserFile>().getPage(params, true), userFileLambdaQueryWrapper);
 
         List<UserFile> records = page.getRecords();
 
@@ -403,6 +416,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
      * 删除满足时间的文件 彻底删除 定时任务 清除
      */
     @Override
+    @Transactional(readOnly = false)
     public void trueDeleteExpireFile() {
         // 获取字典值
         SysDict dictByParentAndSelfCode = sysDictService.findDictByParentAndSelfCode(Constant.SYSTEM_DEFAULT_SETTING_DICT_PARENT_CODE, Constant.SYSTEM_DEFAULT_SETTING_DICT_FILE_DELETE_EXPIRE_TIME);
@@ -410,10 +424,10 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         List<UserFile> userFileList = this.baseMapper.selectList(new LambdaQueryWrapper<UserFile>().eq(UserFile::getIsDelete, 1));
 
-        if (userFileList != null && userFileList.size() > 0){
+        if (userFileList != null && userFileList.size() > 0) {
             List<UserFile> timeOutFileList = userFileList.stream().filter(item -> TimeUnit.MILLISECONDS.toHours((TimeUnit.HOURS.toMillis(expireHour) + item.getDeleteTime().getTime()) - System.currentTimeMillis()) <= 0).collect(Collectors.toList());
 
-            if (timeOutFileList != null && timeOutFileList.size() > 0){
+            if (timeOutFileList != null && timeOutFileList.size() > 0) {
                 List<String> timeOutFilePath = timeOutFileList.stream().map(item -> item.getFile()).collect(Collectors.toList());
 
                 List<Long> timeOutFileIds = timeOutFileList.stream().map(item -> item.getId()).collect(Collectors.toList());
@@ -429,9 +443,11 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 根据文件id恢复文件
+     *
      * @param fileId
      */
     @Override
+    @Transactional(readOnly = false)
     public void fileRecovery(String fileId) {
         // 恢复文件 修改删除状态
         UserFile file = this.getById(fileId);
@@ -443,8 +459,10 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
     /**
      * 手动彻底删除文件
+     *
      * @param fileId
      */
+    @Transactional(readOnly = false)
     @Override
     public void trueDeleteFile(String fileId) {
 
@@ -457,9 +475,87 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
         }
     }
 
+    /**
+     * 统计所有用户上周的数据
+     *
+     * @return
+     */
+    @Override
+    public List<MessageSendVo> statisticalLastWeekData() {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime lastMondayStart = now.minusWeeks(1).with(DayOfWeek.MONDAY).with(LocalTime.MIN);
+        LocalDateTime lastSundayEnd = now.minusWeeks(1).with(DayOfWeek.SUNDAY).with(LocalTime.MAX);
+
+        List<MessageSendVo> messageSendVoList = null;
+
+        // 获取所有的用户
+        List<User> userList = userService.getUserList();
+
+        messageSendVoList = userList.stream().map(user -> {
+
+            MessageSendVo messageSendVo = new MessageSendVo();
+            messageSendVo.setUserName(user.getUsername());
+            messageSendVo.setEmail(user.getEmail());
+
+            // 统计图片文件个数
+            LambdaQueryWrapper<UserFile> imageWrapper = new LambdaQueryWrapper<>();
+            imageWrapper.eq(UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
+            imageWrapper.in(UserFile::getFileType, Constant.IMAGE_CONTENT_TYPES);
+            imageWrapper.between(UserFile::getUploadTime, lastMondayStart, lastSundayEnd);
+            Integer imageFileCount = this.baseMapper.selectCount(imageWrapper);
+
+            // 统计音频文件个数
+            LambdaQueryWrapper<UserFile> audioWrapper = new LambdaQueryWrapper<>();
+            audioWrapper.eq(UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
+            audioWrapper.in(UserFile::getFileType, Constant.AUDIO_CONTENT_TYPES);
+            audioWrapper.between(UserFile::getUploadTime, lastMondayStart, lastSundayEnd);
+            Integer audioFileCount = this.baseMapper.selectCount(audioWrapper);
+
+            // 统计视频文件个数
+            LambdaQueryWrapper<UserFile> videoWrapper = new LambdaQueryWrapper<>();
+            videoWrapper.eq(UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
+            videoWrapper.in(UserFile::getFileType, Constant.VIDEO_CONTENT_TYPES);
+            videoWrapper.between(UserFile::getUploadTime, lastMondayStart, lastSundayEnd);
+            Integer videoFileCount = this.baseMapper.selectCount(videoWrapper);
+
+            // 统计其他文件个数
+            ArrayList typeList = new ArrayList(Arrays.asList(Constant.IMAGE_CONTENT_TYPES));
+            typeList.addAll(Arrays.asList(Constant.VIDEO_CONTENT_TYPES));
+            typeList.addAll(Arrays.asList(Constant.AUDIO_CONTENT_TYPES));
+
+            LambdaQueryWrapper<UserFile> otherWrapper = new LambdaQueryWrapper<>();
+            otherWrapper.eq(UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
+            otherWrapper.notIn(UserFile::getFileType, typeList);
+            otherWrapper.between(UserFile::getUploadTime, lastMondayStart, lastSundayEnd);
+            Integer otherFileCount = this.baseMapper.selectCount(otherWrapper);
+
+            // 统计总文件个数
+            LambdaQueryWrapper<UserFile> totalWarapper = new LambdaQueryWrapper<>();
+            totalWarapper.eq(UserFile::getUserId, user.getId()).eq(UserFile::getIsDelete, 0);
+            totalWarapper.between(UserFile::getUploadTime, lastMondayStart, lastSundayEnd);
+            Integer totalFileCount = this.baseMapper.selectCount(totalWarapper);
+
+
+            messageSendVo.setTotalCount(totalFileCount);
+            messageSendVo.setAudioCount(audioFileCount);
+            messageSendVo.setVideoCount(videoFileCount);
+            messageSendVo.setImageCount(imageFileCount);
+            messageSendVo.setOtherCount(otherFileCount);
+
+            return messageSendVo;
+
+        }).collect(Collectors.toList());
+
+        return messageSendVoList;
+
+
+    }
+
 
     /**
      * 删除文件
+     *
      * @param userFile
      * @return
      */
@@ -482,7 +578,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
             return R.ok(REnum.WEB_FILE_SINGLE_DELETE_SUCCESS.getStatusCode(),
                     REnum.WEB_FILE_SINGLE_DELETE_SUCCESS.getStatusMsg());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

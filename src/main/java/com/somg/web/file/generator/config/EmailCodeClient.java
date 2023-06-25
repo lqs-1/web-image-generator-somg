@@ -39,7 +39,7 @@ public class EmailCodeClient {
      * @param isHtml
      * @return
      */
-    public R sendEmailCode(String email, String emailCode, Boolean isHtml) throws AddressException, UnsupportedEncodingException {
+    public R sendEmailCode(String email, String emailCode, Boolean isHtml) {
         if(isHtml){
             return sendHtmlEmailCode(email, emailCode);
         }
@@ -52,7 +52,7 @@ public class EmailCodeClient {
      * @param emailCode
      * @return
      */
-    public R sendSimpleEmailCode(String email, String emailCode) throws UnsupportedEncodingException, AddressException {
+    public R sendSimpleEmailCode(String email, String emailCode){
         SimpleMailMessage message = new SimpleMailMessage();
         // 加昵称版本
 //        message.setFrom(new InternetAddress(MimeUtility.encodeText(formEmail)).toString());
@@ -75,10 +75,15 @@ public class EmailCodeClient {
             return R.error(REnum.EMAIL_VALIDATE_CODE_SEND_FAIL.getStatusCode(),
                     REnum.EMAIL_VALIDATE_CODE_SEND_FAIL.getStatusMsg());
         }
-
     }
 
 
+    /**
+     * 发送带格式的邮件
+     * @param email
+     * @param emailCode
+     * @return
+     */
     public R sendHtmlEmailCode(String email, String emailCode){
         MimeMessage mailMessage = javaMailSender.createMimeMessage();
         //需要借助Helper类 TODO 这个地方可以随便改
@@ -104,6 +109,68 @@ public class EmailCodeClient {
             // 失败返回错误信息
             return R.error(REnum.EMAIL_VALIDATE_CODE_SEND_FAIL.getStatusCode(),
                     REnum.EMAIL_VALIDATE_CODE_SEND_FAIL.getStatusMsg());
+        }
+
+    }
+
+
+
+    /**
+     * 发送简单邮件(不带附件，不带格式)
+     * @param email
+     * @param content
+     * @param subJect 主题
+     * @return
+     */
+    public void sendSimpleEmail(String email, String content, String subJect){
+        SimpleMailMessage message = new SimpleMailMessage();
+        // 加昵称版本
+//        message.setFrom(new InternetAddress(MimeUtility.encodeText(formEmail)).toString());
+        message.setFrom(emailProperties.getFormEmailNickName() + "<" + emailProperties.getFormEmail() + ">");
+        // 不加昵称版本
+        // message.setFrom(formEmail);
+        message.setTo(email);
+        message.setSubject(subJect);
+        message.setText(content);
+        // message.setCc("抄送人");
+        // message.setBcc("密送人");
+        try{
+            javaMailSender.send(message);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+
+
+    /**
+     * 发送带格式的邮件
+     * @param email
+     * @param content
+     * @param subJect 主题
+     * @return
+     */
+    public void sendHtmlEmail(String email, String content, String subJect){
+        MimeMessage mailMessage = javaMailSender.createMimeMessage();
+        //需要借助Helper类 TODO 这个地方可以随便改
+        MimeMessageHelper helper=new MimeMessageHelper(mailMessage);
+
+        try {
+            helper.setFrom(emailProperties.getFormEmailNickName() + "<" + emailProperties.getFormEmail() + ">");
+            helper.setTo(email);
+            // helper.setBcc("密送人");
+            helper.setSubject(subJect);
+            helper.setSentDate(new Date()); //发送时间
+            // 这个是html格式
+            helper.setText(content,true);
+            //第一个参数要发送的内容，第二个参数不是Html格式。
+
+            javaMailSender.send(mailMessage);
+
+        }catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

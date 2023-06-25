@@ -114,7 +114,7 @@ public class UserController {
 
     @GetMapping("email")
     @ApiOperation(value = "获取邮箱验证码")
-    public R getEmailValidate(@RequestParam(value = "email", required = true) String email) throws AddressException, UnsupportedEncodingException {
+    public R getEmailValidate(@RequestParam(value = "email", required = true) String email){
 
         // 验证验证码是否已经存在
         String code = (String) redisTemplate.opsForValue().get(emailCodeClient.getEmailProperties().getCacheKeyPrefix() + email);

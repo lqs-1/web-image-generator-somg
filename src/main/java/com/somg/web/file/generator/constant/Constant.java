@@ -130,6 +130,14 @@ public class Constant {
     public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_PERMISSION = "USER_DEFAULT_PERMISSION";
     public static final String SYSTEM_DEFAULT_SETTING_DICT_USER_DEFAULT_MENU = "USER_DEFAULT_MENU";
     public static final String SYSTEM_DEFAULT_SETTING_DICT_FILE_DELETE_EXPIRE_TIME = "FILE_DELETE_DEFAULT_EXPIRE_TIME";
+    public static final String TIMED_TASK_PROPERTIES_DICT_PARENT_CODE = "TIMED_TASK_PROPERTIES";
+    public static final String DAILY_SEND_MESSAGE_SWITCH_DICT_CODE = "DAILY_SEND_MESSAGE_SWITCH";
+    public static final String DAILY_SEND_MESSAGE_DICT_CODE = "DAILY_SEND_MESSAGE";
+    public static final String DAILY_SEND_SUBJECT_DICT_CODE = "DAILY_SEND_SUBJECT";
+    public static final String WEEK_SEND_MESSAGE_SWITCH_DICT_CODE = "WEEK_SEND_MESSAGE_SWITCH";
+    public static final String WEEK_SEND_MESSAGE_DICT_CODE = "WEEK_SEND_MESSAGE";
+    public static final String WEEK_SEND_SUBJECT_DICT_CODE = "WEEK_SEND_SUBJECT";
+
 
 
     // headers允许前端访问的header字段名

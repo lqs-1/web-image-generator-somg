@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.somg.web.file.generator.pojo.UserFile;
 import com.somg.web.file.generator.utils.Pagination.PageUtils;
 import com.somg.web.file.generator.utils.R;
+import com.somg.web.file.generator.vo.MessageSendVo;
 import com.somg.web.file.generator.vo.StatisticalDataVo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,4 +44,6 @@ public interface UserFileService extends IService<UserFile> {
     void fileRecovery(String fileId);
 
     void trueDeleteFile(String fileId);
+
+    List<MessageSendVo> statisticalLastWeekData();
 }

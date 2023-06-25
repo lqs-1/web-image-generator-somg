@@ -97,7 +97,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> getUserList() {
 
-        List<User> userList = this.baseMapper.selectList(null);
+        List<User> userList = this.baseMapper.selectList(new LambdaQueryWrapper<User>().eq(User::getIsDelete, 0));
 
         return userList;
     }
