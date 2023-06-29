@@ -428,7 +428,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
             List<UserFile> timeOutFileList = userFileList.stream().filter(item -> TimeUnit.MILLISECONDS.toHours((TimeUnit.HOURS.toMillis(expireHour) + item.getDeleteTime().getTime()) - System.currentTimeMillis()) <= 0).collect(Collectors.toList());
 
             if (timeOutFileList != null && timeOutFileList.size() > 0) {
-                List<String> timeOutFilePath = timeOutFileList.stream().map(item -> item.getFile()).collect(Collectors.toList());
+                List<String> timeOutFilePath = timeOutFileList.stream().map(item -> uploadPlusProperties.getBaseUrl() + item.getFile()).collect(Collectors.toList());
 
                 List<Long> timeOutFileIds = timeOutFileList.stream().map(item -> item.getId()).collect(Collectors.toList());
 
@@ -468,7 +468,7 @@ public class UserFileServiceImpl extends ServiceImpl<UserFileMapper, UserFile> i
 
         UserFile file = this.getById(fileId);
 
-        R deleteResponse = fileUpload.build().singleFileClear(file.getFile());
+        R deleteResponse = fileUpload.build().singleFileClear(uploadPlusProperties.getBaseUrl() + file.getFile());
 
         if (deleteResponse.parseCode() > 10000) {
             this.baseMapper.deleteById(fileId);
