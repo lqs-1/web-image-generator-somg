@@ -11,7 +11,7 @@
  Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 20/06/2023 07:35:25
+ Date: 30/06/2023 06:22:46
 */
 
 SET NAMES utf8mb4;
@@ -30,15 +30,6 @@ CREATE TABLE `file_location`  (
 -- ----------------------------
 -- Records of file_location
 -- ----------------------------
-INSERT INTO `file_location` VALUES (74, '/home/somg/img/local/e972aba946504e32856dd47aa786f75a.PNG');
-INSERT INTO `file_location` VALUES (75, '/home/somg/img/scale/38fa765bb7e1426ca0ec596ef1e01474.PNG');
-INSERT INTO `file_location` VALUES (76, '/home/somg/img/local/999c6093041b447c93a68043b76eaa99.PNG');
-INSERT INTO `file_location` VALUES (77, '/home/somg/img/scale/1cae8413dbd645a38bb3995fb4200ec8.PNG');
-INSERT INTO `file_location` VALUES (78, '/home/somg/img/local/35e489b90d7e4a7f80277e4f08ae4d8f.PNG');
-INSERT INTO `file_location` VALUES (79, '/home/somg/img/local/89af4f122b58412d986755fa8200e1da.PNG');
-INSERT INTO `file_location` VALUES (80, '/home/somg/img/scale/ca30e590c7d64eb08b5654124a991f10.PNG');
-INSERT INTO `file_location` VALUES (81, '/home/somg/img/local/f75d443a6cac4412a31246355e94c39b.PNG');
-INSERT INTO `file_location` VALUES (82, '/home/somg/img/scale/276eae0ccb374f63bd84f746d2735a3f.PNG');
 
 -- ----------------------------
 -- Table structure for menus
@@ -128,7 +119,7 @@ CREATE TABLE `sys_dict`  (
   `dictDesc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '字典描述',
   `dictValue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '字典值',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统字典表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 73 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统字典表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict
@@ -141,6 +132,13 @@ INSERT INTO `sys_dict` VALUES (11, 'USER_DEFAULT_MENU', 6, '系统添加用户�
 INSERT INTO `sys_dict` VALUES (13, 'THIRD_SYS_LOG_DEFAULT_REQUEST_PATH', 6, '系统默认第三方系统日志请求路径', 'http://nobibibi.top:8888/sysLog/thirdSysLog');
 INSERT INTO `sys_dict` VALUES (14, 'FILE_DELETE_DEFAULT_EXPIRE_TIME', 6, '删除文件可恢复默认时间(小时)', '360');
 INSERT INTO `sys_dict` VALUES (64, 'AI_DEFAULT_CONFIG', NULL, 'AI模块默认配置', NULL);
+INSERT INTO `sys_dict` VALUES (65, 'TIMED_TASK_PROPERTIES', NULL, '定时任务配置', NULL);
+INSERT INTO `sys_dict` VALUES (66, 'DAILY_SEND_MESSAGE_SWITCH', 65, '每日推送消息开关(0开启,1关闭)', '1');
+INSERT INTO `sys_dict` VALUES (68, 'DAILY_SEND_MESSAGE', 65, '每日推送消息(对应开启生效)', '我叫向金花');
+INSERT INTO `sys_dict` VALUES (69, 'WEEK_SEND_MESSAGE_SWITCH', 65, '每周推送消息开关(0开启,1关闭)', '0');
+INSERT INTO `sys_dict` VALUES (70, 'WEEK_SEND_MESSAGE', 65, '每周推送消息(对应开启生效)', '感谢您使用本站，祝您新的一周天天开心，工作顺利！');
+INSERT INTO `sys_dict` VALUES (71, 'DAILY_SEND_SUBJECT', 65, '每日推送消息主题', '惊喜 50秒一个 只有我儿可以收到');
+INSERT INTO `sys_dict` VALUES (72, 'WEEK_SEND_SUBJECT', 65, '每周推送消息主题', '每周推送消息');
 
 -- ----------------------------
 -- Table structure for sys_log
@@ -154,7 +152,7 @@ CREATE TABLE `sys_log`  (
   `serverName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '服务模块名字',
   `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '执行的操作',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3829 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4074 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_log
@@ -3938,6 +3936,251 @@ INSERT INTO `sys_log` VALUES (3825, 46, 'lqs', '2023-06-20 12:51:00', '文件服
 INSERT INTO `sys_log` VALUES (3826, 46, 'lqs', '2023-06-20 12:55:04', 'ChatGPT', '提问==你的key有效期是多...  花费token==60个');
 INSERT INTO `sys_log` VALUES (3827, 46, 'lqs', '2023-06-20 14:43:36', 'ChatGPT', '提问==ubuntu清理空间...  花费token==217个');
 INSERT INTO `sys_log` VALUES (3828, 46, 'lqs', '2023-06-20 14:49:41', '影视服务', '搜索影视==三体');
+INSERT INTO `sys_log` VALUES (3829, 46, 'lqs', '2023-06-20 15:43:58', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (3830, 46, 'lqs', '2023-06-20 15:52:01', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3831, 46, 'lqs', '2023-06-20 16:30:10', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (3832, 46, 'lqs', '2023-06-20 16:32:17', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3833, 46, 'lqs', '2023-06-20 16:32:52', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3834, 46, 'lqs', '2023-06-20 16:32:59', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3835, 46, 'lqs', '2023-06-20 16:33:03', '文件服务', '所有视频列表[用户]');
+INSERT INTO `sys_log` VALUES (3836, 46, 'lqs', '2023-06-20 16:33:05', '文件服务', '所有音频列表[用户]');
+INSERT INTO `sys_log` VALUES (3837, 46, 'lqs', '2023-06-20 16:51:11', 'ChatGPT', '提问==hello...  花费token==33个');
+INSERT INTO `sys_log` VALUES (3838, 46, 'lqs', '2023-06-20 16:51:18', 'ChatGPT', '提问==...  花费token==69个');
+INSERT INTO `sys_log` VALUES (3839, 46, 'lqs', '2023-06-20 16:51:36', 'ChatGPT', '提问==...  花费token==392个');
+INSERT INTO `sys_log` VALUES (3840, 46, 'lqs', '2023-06-20 16:51:40', '新闻服务', '查看中国经济网IT要闻');
+INSERT INTO `sys_log` VALUES (3841, 46, 'lqs', '2023-06-20 16:51:45', '新闻服务', '查看人民日报滚动要闻');
+INSERT INTO `sys_log` VALUES (3842, 46, 'lqs', '2023-06-20 16:51:50', '新闻服务', '查看今日头条热搜新闻');
+INSERT INTO `sys_log` VALUES (3843, 46, 'lqs', '2023-06-20 16:51:55', '新闻服务', '查看微博热搜新闻');
+INSERT INTO `sys_log` VALUES (3844, 46, 'lqs', '2023-06-20 16:52:07', '影视服务', '搜索影视==三体');
+INSERT INTO `sys_log` VALUES (3845, 46, 'lqs', '2023-06-21 00:28:36', 'ChatGPT', '提问==mysqld.soc...  花费token==120个');
+INSERT INTO `sys_log` VALUES (3846, 46, 'lqs', '2023-06-21 00:29:11', 'ChatGPT', '提问==mysqld.soc...  花费token==317个');
+INSERT INTO `sys_log` VALUES (3847, 46, 'lqs', '2023-06-22 11:47:18', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3848, 46, 'lqs', '2023-06-23 10:59:53', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3849, 46, 'lqs', '2023-06-23 10:59:56', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (3850, 46, 'lqs', '2023-06-23 11:00:14', '文件服务', '所有视频列表[用户]');
+INSERT INTO `sys_log` VALUES (3851, 46, 'lqs', '2023-06-23 11:03:12', '文件服务', '所有视频列表[用户]');
+INSERT INTO `sys_log` VALUES (3852, 58, 'resource', '2023-06-23 20:54:54', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (3853, 58, 'resource', '2023-06-23 20:55:01', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3854, 58, 'resource', '2023-06-23 20:55:08', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3855, 58, 'resource', '2023-06-23 20:56:14', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3856, 58, 'resource', '2023-06-24 12:01:17', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3857, 58, 'resource', '2023-06-24 13:21:31', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3858, 46, 'lqs', '2023-06-24 14:47:37', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (3859, 46, 'lqs', '2023-06-24 14:48:07', 'ChatGPT', '提问==hello...  花费token==33个');
+INSERT INTO `sys_log` VALUES (3860, 46, 'lqs', '2023-06-24 14:48:26', '新闻服务', '查看中国经济网IT要闻');
+INSERT INTO `sys_log` VALUES (3861, 46, 'lqs', '2023-06-24 14:48:30', '新闻服务', '查看人民日报滚动要闻');
+INSERT INTO `sys_log` VALUES (3862, 46, 'lqs', '2023-06-24 14:48:34', '新闻服务', '查看今日头条热搜新闻');
+INSERT INTO `sys_log` VALUES (3863, 46, 'lqs', '2023-06-24 14:48:40', '新闻服务', '查看微博热搜新闻');
+INSERT INTO `sys_log` VALUES (3864, 46, 'lqs', '2023-06-24 15:29:18', '新闻服务', '查看微博热搜新闻');
+INSERT INTO `sys_log` VALUES (3865, 46, 'lqs', '2023-06-24 15:49:23', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (3866, 46, 'lqs', '2023-06-24 16:14:06', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (3867, 46, 'lqs', '2023-06-24 16:16:05', 'ChatGPT', '提问==独裁者啥意思...  花费token==194个');
+INSERT INTO `sys_log` VALUES (3868, 46, 'lqs', '2023-06-24 16:16:39', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (3869, 46, 'lqs', '2023-06-24 16:16:45', '菜单服务', '获取根菜单');
+INSERT INTO `sys_log` VALUES (3870, 46, 'lqs', '2023-06-24 16:16:48', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (3871, 46, 'lqs', '2023-06-24 16:17:15', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (3872, 46, 'lqs', '2023-06-24 16:21:55', '菜单服务', '菜单列表[展示]');
+INSERT INTO `sys_log` VALUES (3873, 46, 'lqs', '2023-06-24 16:22:28', 'ChatGPT', '提问==世界上有多少个独裁国...  花费token==231个');
+INSERT INTO `sys_log` VALUES (3874, 46, 'lqs', '2023-06-25 21:12:17', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3875, 46, 'lqs', '2023-06-25 21:12:26', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3876, 46, 'lqs', '2023-06-25 21:12:42', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3877, 46, 'lqs', '2023-06-25 21:12:44', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3878, 46, 'lqs', '2023-06-25 21:12:47', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3879, 46, 'lqs', '2023-06-25 21:13:03', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3880, 46, 'lqs', '2023-06-25 21:13:08', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3881, 46, 'lqs', '2023-06-25 21:13:16', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3882, 46, 'lqs', '2023-06-25 21:13:20', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3883, 46, 'lqs', '2023-06-25 21:14:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3884, 46, 'lqs', '2023-06-25 21:14:39', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3885, 46, 'lqs', '2023-06-25 21:15:05', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (3886, 46, 'lqs', '2023-06-25 21:15:07', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3887, 46, 'lqs', '2023-06-25 21:15:15', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3888, 46, 'lqs', '2023-06-25 21:18:27', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (3889, 46, 'lqs', '2023-06-25 21:18:29', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3890, 46, 'lqs', '2023-06-25 21:18:32', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3891, 46, 'lqs', '2023-06-25 21:19:22', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (3892, 46, 'lqs', '2023-06-25 21:19:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3893, 46, 'lqs', '2023-06-25 21:19:39', '系统字典服务', '删除字典');
+INSERT INTO `sys_log` VALUES (3894, 46, 'lqs', '2023-06-25 21:19:40', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3895, 46, 'lqs', '2023-06-25 21:19:46', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3896, 46, 'lqs', '2023-06-25 21:20:27', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (3897, 46, 'lqs', '2023-06-25 21:20:29', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3898, 46, 'lqs', '2023-06-25 21:20:33', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3899, 46, 'lqs', '2023-06-25 21:20:36', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3900, 46, 'lqs', '2023-06-25 21:21:45', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3901, 46, 'lqs', '2023-06-25 21:22:19', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (3902, 46, 'lqs', '2023-06-25 21:22:21', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3903, 46, 'lqs', '2023-06-25 21:22:43', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3904, 46, 'lqs', '2023-06-25 21:22:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3905, 46, 'lqs', '2023-06-25 21:23:04', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3906, 46, 'lqs', '2023-06-25 21:23:06', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3907, 46, 'lqs', '2023-06-25 21:23:14', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3908, 46, 'lqs', '2023-06-25 21:24:05', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (3909, 46, 'lqs', '2023-06-25 21:24:06', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3910, 46, 'lqs', '2023-06-25 21:24:26', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3911, 46, 'lqs', '2023-06-25 21:24:27', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3912, 46, 'lqs', '2023-06-25 21:24:48', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3913, 46, 'lqs', '2023-06-25 21:24:49', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3914, 46, 'lqs', '2023-06-25 21:24:52', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3915, 46, 'lqs', '2023-06-25 21:25:42', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3916, 46, 'lqs', '2023-06-25 21:30:14', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3917, 46, 'lqs', '2023-06-25 21:32:34', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3918, 46, 'lqs', '2023-06-25 21:32:37', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3919, 46, 'lqs', '2023-06-25 21:59:58', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3920, 46, 'lqs', '2023-06-25 22:00:38', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (3921, 46, 'lqs', '2023-06-25 22:00:40', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3922, 46, 'lqs', '2023-06-25 22:04:55', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3923, 46, 'lqs', '2023-06-25 22:05:32', '系统字典服务', '添加字典');
+INSERT INTO `sys_log` VALUES (3924, 46, 'lqs', '2023-06-25 22:05:33', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3925, 46, 'lqs', '2023-06-25 22:05:45', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3926, 46, 'lqs', '2023-06-25 22:05:47', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3927, 46, 'lqs', '2023-06-25 22:35:06', 'ChatGPT', '提问==java如何获取上周...  花费token==424个');
+INSERT INTO `sys_log` VALUES (3928, 46, 'lqs', '2023-06-25 23:02:08', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3929, 46, 'lqs', '2023-06-25 23:02:11', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3930, 46, 'lqs', '2023-06-25 23:02:19', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3931, 46, 'lqs', '2023-06-25 23:02:38', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3932, 46, 'lqs', '2023-06-25 23:02:40', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3933, 46, 'lqs', '2023-06-25 23:03:40', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3934, 46, 'lqs', '2023-06-25 23:03:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3935, 46, 'lqs', '2023-06-25 23:04:29', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3936, 46, 'lqs', '2023-06-25 23:04:31', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3937, 46, 'lqs', '2023-06-25 23:06:05', 'ChatGPT', '提问==@Scheduled...  花费token==187个');
+INSERT INTO `sys_log` VALUES (3938, 46, 'lqs', '2023-06-25 23:10:50', 'ChatGPT', '提问==@Scheduled...  花费token==466个');
+INSERT INTO `sys_log` VALUES (3939, 46, 'lqs', '2023-06-25 23:22:22', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3940, 46, 'lqs', '2023-06-25 23:23:06', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3941, 46, 'lqs', '2023-06-25 23:23:11', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3942, 46, 'lqs', '2023-06-25 23:23:14', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3943, 46, 'lqs', '2023-06-25 23:23:42', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3944, 46, 'lqs', '2023-06-25 23:23:43', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3945, 46, 'lqs', '2023-06-25 23:24:20', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3946, 46, 'lqs', '2023-06-25 23:24:21', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3947, 46, 'lqs', '2023-06-25 23:25:43', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3948, 46, 'lqs', '2023-06-25 23:25:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3949, 46, 'lqs', '2023-06-25 23:28:42', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3950, 46, 'lqs', '2023-06-25 23:28:44', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3951, 46, 'lqs', '2023-06-25 23:30:12', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3952, 46, 'lqs', '2023-06-25 23:30:15', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3953, 46, 'lqs', '2023-06-25 23:47:33', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3954, 46, 'lqs', '2023-06-25 23:47:38', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3955, 46, 'lqs', '2023-06-25 23:47:40', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3956, 46, 'lqs', '2023-06-25 23:48:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3957, 46, 'lqs', '2023-06-25 23:48:27', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3958, 46, 'lqs', '2023-06-25 23:48:29', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3959, 46, 'lqs', '2023-06-25 23:49:06', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3960, 46, 'lqs', '2023-06-25 23:49:07', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3961, 46, 'lqs', '2023-06-25 23:51:15', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3962, 46, 'lqs', '2023-06-25 23:51:30', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3963, 46, 'lqs', '2023-06-25 23:52:28', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3964, 46, 'lqs', '2023-06-25 23:52:31', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (3965, 46, 'lqs', '2023-06-25 23:52:52', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3966, 46, 'lqs', '2023-06-25 23:54:38', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3967, 46, 'lqs', '2023-06-25 23:54:55', '上传服务', '上传单文件');
+INSERT INTO `sys_log` VALUES (3968, 46, 'lqs', '2023-06-25 23:54:56', '上传服务', '上传单文件');
+INSERT INTO `sys_log` VALUES (3969, 46, 'lqs', '2023-06-25 23:54:59', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3970, 46, 'lqs', '2023-06-25 23:55:46', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3971, 46, 'lqs', '2023-06-25 23:56:03', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3972, 46, 'lqs', '2023-06-25 23:58:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3973, 46, 'lqs', '2023-06-25 23:58:28', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3974, 46, 'lqs', '2023-06-25 23:58:32', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3975, 46, 'lqs', '2023-06-25 23:58:45', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3976, 46, 'lqs', '2023-06-25 23:58:46', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3977, 46, 'lqs', '2023-06-26 05:16:48', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3978, 46, 'lqs', '2023-06-26 05:17:47', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3979, 46, 'lqs', '2023-06-26 10:10:13', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3980, 46, 'lqs', '2023-06-26 10:15:05', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3981, 46, 'lqs', '2023-06-26 10:15:10', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3982, 46, 'lqs', '2023-06-26 10:15:13', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3983, 46, 'lqs', '2023-06-26 10:16:05', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3984, 46, 'lqs', '2023-06-26 10:16:06', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3985, 46, 'lqs', '2023-06-26 10:16:26', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3986, 46, 'lqs', '2023-06-26 10:16:27', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3987, 46, 'lqs', '2023-06-26 10:29:05', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3988, 46, 'lqs', '2023-06-26 10:31:45', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3989, 46, 'lqs', '2023-06-26 10:31:54', '文件服务', '删除文件[逻辑删除]');
+INSERT INTO `sys_log` VALUES (3990, 46, 'lqs', '2023-06-26 10:31:54', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3991, 46, 'lqs', '2023-06-26 10:31:56', '文件服务', '删除文件[逻辑删除]');
+INSERT INTO `sys_log` VALUES (3992, 46, 'lqs', '2023-06-26 10:31:56', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (3993, 46, 'lqs', '2023-06-26 10:32:02', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (3994, 46, 'lqs', '2023-06-26 11:51:03', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (3995, 46, 'lqs', '2023-06-26 14:42:22', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3996, 46, 'lqs', '2023-06-26 14:42:26', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (3997, 46, 'lqs', '2023-06-26 14:42:29', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (3998, 46, 'lqs', '2023-06-26 14:42:55', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (3999, 46, 'lqs', '2023-06-26 14:42:57', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4000, 46, 'lqs', '2023-06-26 14:43:02', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (4001, 46, 'lqs', '2023-06-26 14:45:27', '用户服务', '修改用户角色');
+INSERT INTO `sys_log` VALUES (4002, 46, 'lqs', '2023-06-26 14:45:27', '用户服务', '修改用户权限');
+INSERT INTO `sys_log` VALUES (4003, 46, 'lqs', '2023-06-26 14:45:27', '角色服务', '角色列表[授权]');
+INSERT INTO `sys_log` VALUES (4004, 46, 'lqs', '2023-06-26 14:45:27', '权限服务', '权限列表[授权]');
+INSERT INTO `sys_log` VALUES (4005, 46, 'lqs', '2023-06-26 14:45:32', '用户服务', '重置密码');
+INSERT INTO `sys_log` VALUES (4006, 46, 'lqs', '2023-06-26 14:45:33', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (4007, 46, 'lqs', '2023-06-26 14:45:47', '角色服务', '角色列表[展示]');
+INSERT INTO `sys_log` VALUES (4008, 46, 'lqs', '2023-06-26 21:27:18', '角色服务', '角色列表[展示]');
+INSERT INTO `sys_log` VALUES (4009, 46, 'lqs', '2023-06-27 10:10:28', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4010, 46, 'lqs', '2023-06-27 10:10:35', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (4011, 46, 'lqs', '2023-06-27 10:10:38', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4012, 46, 'lqs', '2023-06-27 10:10:48', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (4013, 46, 'lqs', '2023-06-27 10:10:48', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4014, 46, 'lqs', '2023-06-27 14:13:32', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4015, 46, 'lqs', '2023-06-27 14:18:08', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4016, 46, 'lqs', '2023-06-27 14:18:11', '系统字典服务', '获取父级字典列表');
+INSERT INTO `sys_log` VALUES (4017, 46, 'lqs', '2023-06-27 14:18:15', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4018, 46, 'lqs', '2023-06-27 14:18:22', '系统字典服务', '修改字典');
+INSERT INTO `sys_log` VALUES (4019, 46, 'lqs', '2023-06-27 14:18:24', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4020, 46, 'lqs', '2023-06-27 18:49:14', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4021, 46, 'lqs', '2023-06-27 23:59:39', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4022, 46, 'lqs', '2023-06-27 23:59:48', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (4023, 46, 'lqs', '2023-06-28 00:00:02', '文件服务', '所有图片列表[用户]');
+INSERT INTO `sys_log` VALUES (4024, 46, 'lqs', '2023-06-28 21:16:46', '系统字典服务', '展示字典');
+INSERT INTO `sys_log` VALUES (4025, 46, 'lqs', '2023-06-28 21:16:50', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (4026, 46, 'lqs', '2023-06-29 13:01:36', '用户模块', '用户列表');
+INSERT INTO `sys_log` VALUES (4027, 46, 'lqs', '2023-06-29 14:15:48', 'ChatGPT', '提问==hello...  花费token==31个');
+INSERT INTO `sys_log` VALUES (4028, 58, 'resource', '2023-06-29 16:03:10', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4029, 58, 'resource', '2023-06-29 16:03:23', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4030, 58, 'resource', '2023-06-29 16:21:45', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4031, 58, 'resource', '2023-06-29 16:22:03', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4032, 58, 'resource', '2023-06-29 16:31:49', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4033, 58, 'resource', '2023-06-29 16:32:10', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4034, 58, 'resource', '2023-06-29 16:32:45', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4035, 58, 'resource', '2023-06-29 16:34:04', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4036, 58, 'resource', '2023-06-29 16:34:06', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4037, 58, 'resource', '2023-06-29 16:34:12', '文件服务', '删除文件[逻辑删除]');
+INSERT INTO `sys_log` VALUES (4038, 58, 'resource', '2023-06-29 16:34:13', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4039, 58, 'resource', '2023-06-29 16:34:16', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4040, 58, 'resource', '2023-06-29 16:34:20', '文件服务', '彻底删除文件');
+INSERT INTO `sys_log` VALUES (4041, 58, 'resource', '2023-06-29 16:34:21', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4042, 58, 'resource', '2023-06-29 16:41:01', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4043, 46, 'lqs', '2023-06-29 16:41:42', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4044, 46, 'lqs', '2023-06-29 16:41:51', '上传服务', '上传单文件');
+INSERT INTO `sys_log` VALUES (4045, 46, 'lqs', '2023-06-29 16:42:22', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4046, 46, 'lqs', '2023-06-29 16:42:24', '文件服务', '删除文件[逻辑删除]');
+INSERT INTO `sys_log` VALUES (4047, 46, 'lqs', '2023-06-29 16:42:25', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4048, 46, 'lqs', '2023-06-29 16:42:36', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4049, 46, 'lqs', '2023-06-29 16:42:40', '文件服务', '彻底删除文件');
+INSERT INTO `sys_log` VALUES (4050, 46, 'lqs', '2023-06-29 16:42:41', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4051, 46, 'lqs', '2023-06-29 17:04:58', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4052, 46, 'lqs', '2023-06-29 17:05:56', '上传服务', '上传单文件');
+INSERT INTO `sys_log` VALUES (4053, 46, 'lqs', '2023-06-29 17:05:59', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4054, 46, 'lqs', '2023-06-29 17:06:16', '文件服务', '删除文件[逻辑删除]');
+INSERT INTO `sys_log` VALUES (4055, 46, 'lqs', '2023-06-29 17:06:17', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4056, 46, 'lqs', '2023-06-29 17:06:20', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4057, 46, 'lqs', '2023-06-29 17:06:30', '文件服务', '彻底删除文件');
+INSERT INTO `sys_log` VALUES (4058, 46, 'lqs', '2023-06-29 17:06:31', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4059, 58, 'resource', '2023-06-29 17:07:25', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4060, 58, 'resource', '2023-06-29 17:07:27', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4061, 58, 'resource', '2023-06-29 17:18:30', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4062, 58, 'resource', '2023-06-29 17:26:50', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4063, 58, 'resource', '2023-06-29 17:27:01', '文件服务', '获取用户可恢复文件');
+INSERT INTO `sys_log` VALUES (4064, 58, 'resource', '2023-06-29 17:27:34', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4065, 58, 'resource', '2023-06-29 17:27:56', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4066, 58, 'resource', '2023-06-29 17:33:03', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4067, 58, 'resource', '2023-06-29 17:40:24', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4068, 46, 'lqs', '2023-06-29 17:43:57', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4069, 46, 'lqs', '2023-06-29 17:50:21', '上传服务', '批量上传');
+INSERT INTO `sys_log` VALUES (4070, 46, 'lqs', '2023-06-29 17:51:14', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4071, 46, 'lqs', '2023-06-29 17:51:19', '文件服务', '所有视频列表[用户]');
+INSERT INTO `sys_log` VALUES (4072, 46, 'lqs', '2023-06-29 17:52:27', '文件服务', '所有视频列表[用户]');
+INSERT INTO `sys_log` VALUES (4073, 46, 'lqs', '2023-06-29 17:53:08', '文件服务', '所有视频列表[用户]');
 
 -- ----------------------------
 -- Table structure for user
@@ -3960,14 +4203,14 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (42, 'guest', '$2a$10$nukwr9X1oYiXshzI4KJgwuq0ohFLg3uGF2mytpEjzqUkbeVWRncDy', '男', '2023-05-11 10:17:32', '2023-06-19 14:55:39', '749062870@qq.com', 0);
 INSERT INTO `user` VALUES (45, 'xiang', '$2a$10$7xA8brGwGHI9ZaLOhrqWIOKQXaImOtX51fFlc.ZGRwHpVTOKUd/Ya', '女', '2023-05-18 18:40:37', '2023-05-18 18:41:03', '3228949325@qq.com', 0);
-INSERT INTO `user` VALUES (46, 'lqs', '$2a$10$XPJe3R.qQoNZ8uOwawDQquD5uZJ.wLXgBxTsQnGLBPvBnBOMhctWO', '男', '2023-05-18 18:44:40', '2023-06-20 12:49:29', '749062870@qq.com', 0);
+INSERT INTO `user` VALUES (46, 'lqs', '$2a$10$XPJe3R.qQoNZ8uOwawDQquD5uZJ.wLXgBxTsQnGLBPvBnBOMhctWO', '男', '2023-05-18 18:44:40', '2023-06-29 17:43:51', '749062870@qq.com', 0);
 INSERT INTO `user` VALUES (47, 'lbq', '$2a$10$QabzBRvZoplGo1gt9tj.jeR7f0jbVfbOb2hBDKPUiF4kUIHLTTE1G', '男', '2023-05-22 13:06:13', '2023-05-22 17:26:13', '2367733864@qq.com', 0);
 INSERT INTO `user` VALUES (53, 'haha', '$2a$10$y0HkziwmpIsez43M24/R/uieT/shUnfrtgb8tsTayhqlMyR3frO3q', '男', '2023-05-24 12:55:45', '2023-05-24 12:55:45', '749062870@qq.com', 1);
 INSERT INTO `user` VALUES (54, 'admin', '$2a$10$Py2YUw4gdhnMTn0wqlnTCefgJnH4Q9Lkw9eZgHiFwWnRmeGkoiSjS', '男', '2023-05-28 17:16:54', '2023-05-28 17:18:49', '749062870@qq.com', 0);
 INSERT INTO `user` VALUES (55, 'qwe123', '$2a$10$X00iKfWv9wh1DKYVwpklFesA8Pwr9nmmYcg53baV4jCNE/EjxdiB.', '男', '2023-06-07 10:02:26', '2023-06-07 10:02:42', '758805824@qq.com', 0);
 INSERT INTO `user` VALUES (56, 'random', '$2a$10$oBitBVETYuXJ..YGcfHyxOMy6pOCbn183vSnt1B51PB3O7KaEKWlW', '男', '2023-06-12 22:14:20', '2023-06-12 22:15:08', 'srijamar.is.a.7.26@googlemail.com', 0);
 INSERT INTO `user` VALUES (57, 'initsomg', '$2a$10$IAiYb33vGq.3jkuH3euojOLgDnpOgP0.2UALtXFtlZEjIk45kACKi', '男', '2023-06-18 13:29:18', '2023-06-18 13:32:33', '749062870@qq.com', 0);
-INSERT INTO `user` VALUES (58, 'resource', '$2a$10$2UajobDq5d6GUu.IKNFbOOu5ynBQm8rHHkLfIdI2MEmhckwl4DspS', '男', '2023-06-19 13:29:25', '2023-06-19 15:09:58', '749062870@qq.com', 0);
+INSERT INTO `user` VALUES (58, 'resource', '$2a$10$JfMllIbVrV6kTV/MevgwFeWJCNxF0AV2Z2kG2Cj5SviJYB03EINqO', '男', '2023-06-19 13:29:25', '2023-06-29 16:21:40', '749062870@qq.com', 0);
 
 -- ----------------------------
 -- Table structure for user_file
@@ -3985,7 +4228,7 @@ CREATE TABLE `user_file`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fru`(`userId` ASC) USING BTREE,
   CONSTRAINT `fru` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 655 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户文件表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 662 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户文件表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_file
@@ -4170,6 +4413,10 @@ INSERT INTO `user_file` VALUES (651, 58, 'public/tools/pcre-8.42-linux.tar.gz', 
 INSERT INTO `user_file` VALUES (652, 58, 'public/tools/zlib-1.2.11-liunx.tar.gz', 'tar', 0, '2023-06-19 14:40:12', 'zlib-1.2.11-liunx', NULL);
 INSERT INTO `user_file` VALUES (653, 58, 'public/tools/nginx-1.24.0-windows.zip', 'zip', 0, '2023-06-19 14:40:43', 'nginx-1.24.0-windows', NULL);
 INSERT INTO `user_file` VALUES (654, 58, 'public/tools/redis-stable-linux.tar.gz', 'tar', 0, '2023-06-19 14:41:19', 'redis-stable-linux.tar.gz', '2023-06-19 15:11:26');
+INSERT INTO `user_file` VALUES (655, 46, 'public/2023-06-25/31a0687fad5043e6b3e3cafab90b7c91.pdf', 'application/pdf', 1, '2023-06-25 23:54:55', 'content_1687151124961', '2023-06-26 10:31:56');
+INSERT INTO `user_file` VALUES (656, 46, 'public/2023-06-25/c7a0346c96064a21b395408c9c35ece2.pdf', 'application/pdf', 1, '2023-06-25 23:54:56', '7d1dba28cd4348e185aaed28fe9e744a', '2023-06-26 10:31:54');
+INSERT INTO `user_file` VALUES (658, 58, 'public/tools/shadowsocks-5.3.3.apk', 'apk', 0, '2023-06-29 16:40:51', 'shadowscoks-5.3.3', NULL);
+INSERT INTO `user_file` VALUES (661, 46, 'public/2023-06-29/92b4c307b0da48be96df835b68b7f59b.mp4', 'video/mp4', 0, '2023-06-29 17:50:21', 'Screenrecorder-2023-06-29-17-35-08-542', NULL);
 
 -- ----------------------------
 -- Table structure for user_menu
