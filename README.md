@@ -53,3 +53,22 @@
 ![upload](https://pub-pce.oss-cn-chengdu.aliyuncs.com/public/2023-03-26/b9b52e4fff11437586d73d76ea75e653.PNG)
 
 
+### 数据库备份脚本
+> `src/main/db/main.py`
+
+```python
+pip install pymysql
+pip install apscheduler
+
+
+# 数据库主机地址
+MYSQL_HOST = '47.108.229.150'
+# MySQL数据库用户名
+MYSQL_USERNAME = 'somg'
+# 数据库端口
+MYSQL_PORT = 3306
+# 数据库密码
+MYQSL_PASSWORD = 'somg'
+```
+
+

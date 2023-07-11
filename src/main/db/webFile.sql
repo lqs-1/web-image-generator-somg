@@ -11,7 +11,7 @@
  Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 30/06/2023 06:22:46
+ Date: 09/07/2023 00:11:31
 */
 
 SET NAMES utf8mb4;
@@ -152,7 +152,7 @@ CREATE TABLE `sys_log`  (
   `serverName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '服务模块名字',
   `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '执行的操作',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4074 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4076 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_log
@@ -4181,6 +4181,8 @@ INSERT INTO `sys_log` VALUES (4070, 46, 'lqs', '2023-06-29 17:51:14', '文件服
 INSERT INTO `sys_log` VALUES (4071, 46, 'lqs', '2023-06-29 17:51:19', '文件服务', '所有视频列表[用户]');
 INSERT INTO `sys_log` VALUES (4072, 46, 'lqs', '2023-06-29 17:52:27', '文件服务', '所有视频列表[用户]');
 INSERT INTO `sys_log` VALUES (4073, 46, 'lqs', '2023-06-29 17:53:08', '文件服务', '所有视频列表[用户]');
+INSERT INTO `sys_log` VALUES (4074, 46, 'lqs', '2023-07-09 00:10:46', '文件服务', '所有文件列表[用户]');
+INSERT INTO `sys_log` VALUES (4075, 46, 'lqs', '2023-07-09 00:11:03', '上传服务', '上传单文件');
 
 -- ----------------------------
 -- Table structure for user
@@ -4228,7 +4230,7 @@ CREATE TABLE `user_file`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fru`(`userId` ASC) USING BTREE,
   CONSTRAINT `fru` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 662 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户文件表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 663 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户文件表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_file
@@ -4417,6 +4419,7 @@ INSERT INTO `user_file` VALUES (655, 46, 'public/2023-06-25/31a0687fad5043e6b3e3
 INSERT INTO `user_file` VALUES (656, 46, 'public/2023-06-25/c7a0346c96064a21b395408c9c35ece2.pdf', 'application/pdf', 1, '2023-06-25 23:54:56', '7d1dba28cd4348e185aaed28fe9e744a', '2023-06-26 10:31:54');
 INSERT INTO `user_file` VALUES (658, 58, 'public/tools/shadowsocks-5.3.3.apk', 'apk', 0, '2023-06-29 16:40:51', 'shadowscoks-5.3.3', NULL);
 INSERT INTO `user_file` VALUES (661, 46, 'public/2023-06-29/92b4c307b0da48be96df835b68b7f59b.mp4', 'video/mp4', 0, '2023-06-29 17:50:21', 'Screenrecorder-2023-06-29-17-35-08-542', NULL);
+INSERT INTO `user_file` VALUES (662, 46, 'public/2023-07-08/f2b4376a8bc04590bbdbb05791257727.xml', 'text/xml', 0, '2023-07-09 00:11:03', 'vcc', NULL);
 
 -- ----------------------------
 -- Table structure for user_menu
