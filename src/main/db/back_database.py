@@ -1,45 +1,46 @@
 import smtplib
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 import os
 import logging
+from email.mime.text import MIMEText
+
 import pymysql
 from apscheduler.schedulers.blocking import BlockingScheduler
 import shutil
 from apscheduler.triggers.interval import IntervalTrigger
 
-# Set log format
+# 设置日志
 logging.basicConfig(format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s:%(message)s',
                     level=logging.INFO)
 
-# MySQL database details to which backup to be done. Make sure below user having enough privileges to take databases backup.
+# 通用配置
 # 数据库主机地址
-MYSQL_HOST = '47.108.229.150'
+# MYSQL_HOST = '47.108.229.150'
+MYSQL_HOST = '172.245.10.200'
+# MYSQL_HOST = '127.0.0.1'
 # MySQL数据库用户名
 MYSQL_USERNAME = 'somg'
 # 数据库端口
 MYSQL_PORT = 3306
 # 数据库密码
 MYQSL_PASSWORD = 'somg'
-# 需要备份的数据库名称
-# DB_NAME = 'main'
 # 排除，不进行备份操作的数据库名称集合
 DISABLED_DATABASES = {'information_schema', 'mysql', 'performance_schema', 'sys'}
 # 备份文件存放路径
-BACKUP_PATH = '/home/'
+BACKUP_PATH = '/home/db_file/'
 
 
 
 
 class DatabaseBR:
 
-    def send_email(self, back_path, database):
+    def send_email(self):
         """发送邮件的方法"""
         # 设置发件人和收件人邮箱以及邮件内容
         sender_email = '749062870@qq.com'
         sender_password = 'idyvzneokcpjbgah'
-        receiver_email = '749062870@qq.com'
+        receiver_email = 'liqisong2002@gmail.com'
         subject = '备份文件'
 
         # 创建一个带附件的邮件对象
@@ -51,23 +52,27 @@ class DatabaseBR:
         smtp_port = 465
 
         # 添加邮件正文
-        msg.attach(MIMEText(f'备份数据库{database}', 'plain', 'utf-8'))
+        msg_text = '备份数据库 ==>  '
+
 
         # 添加附件
-          # 替换为实际文件路径
-        with open(back_path, 'rb') as attachment:
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload(attachment.read().decode('utf-8'))
-            part.add_header('Content-Disposition', f'attachment; filename={database}')
+        for sql_file in os.listdir(BACKUP_PATH):
+            with open(BACKUP_PATH + sql_file, 'rb') as attachment:
+                part = MIMEBase('application', 'octet-stream')
+                part.set_payload(attachment.read().decode('utf-8'))
+                part.add_header('Content-Disposition', f'attachment; filename={sql_file}')
 
-            msg.attach(part)
+                msg.attach(part)
+                msg_text = msg_text + sql_file.split('.')[0] + ' '
+
+        msg.attach(MIMEText(msg_text, 'plain', 'utf-8'))
 
         # 连接到SMTP服务器并发送邮件
         with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
             server.login(sender_email, sender_password)
             server.sendmail(sender_email, receiver_email, msg.as_string().encode('utf8'))
             server.quit()
-        logging.info(f'邮件发送成功{database}')
+        logging.info(f'邮件发送成功')
 
     def backing(self):
         """备份数据库"""
@@ -81,7 +86,9 @@ class DatabaseBR:
         # 逐个对数据库进行备份
         for database in databases:
             self.backup_database(database)
-            # 阻塞10秒
+
+        # 发送邮件
+        self.send_email()
 
         # 删除旧备份
         self.del_old_backup(BACKUP_PATH)
@@ -124,12 +131,11 @@ class DatabaseBR:
         """
         logging.info(f'开始备份数据库{database}...')
         # 通过调用mysqldump完成指定数据库的备份
-        command = f'mysqldump -u {MYSQL_USERNAME}  {database} > {BACKUP_PATH}{database}.sql'
+        command = f'mysqldump -h {MYSQL_HOST} -P {MYSQL_PORT} -u {MYSQL_USERNAME} -p{MYQSL_PASSWORD}  {database} > {BACKUP_PATH}{database}.sql'
         os.system(command)
         # 判断命令是否正常执行，异常则直接抛出
         logging.info(f'数据库 {database} 备份完毕！')
         logging.info(f'数据库备份位置 {BACKUP_PATH}{database}.sql')
-        self.send_email(f'{BACKUP_PATH}{database}.sql', f'{database}.sql')
 
     def del_old_backup(self, path):
         """
@@ -161,3 +167,6 @@ class DatabaseBR:
 if __name__ == '__main__':
     dbBack = DatabaseBR()
     dbBack.con_task()
+
+
+

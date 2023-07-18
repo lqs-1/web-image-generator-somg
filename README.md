@@ -54,7 +54,7 @@
 
 
 ### 数据库备份脚本
-> `src/main/db/main.py`
+> `src/main/db/back_database.py`
 
 ```python
 pip install pymysql
