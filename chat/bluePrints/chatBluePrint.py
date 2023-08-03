@@ -11,15 +11,21 @@ from chat.utils.sys_log_save_request import doSaveSysLogRequest
 chat_view = Blueprint("chat_view", __name__, url_prefix="/chat")
 
 # 自己的cecretKey
-openai.api_key = ""
+# openai.api_key = ""
 
 @chat_view.before_request
 def requestPlayBefore():
-
     # 在钩子函数中配置g对象
     if request.method != 'OPTIONS':
         sys_log = models.SysLog(serverName="ChatGPT", userName=request.headers.get('username'))
         g.sys_log = sys_log
+        
+        # 获取自己的secretKey
+        chat_gpt_secret_key = models.SysDict.query.filter_by(
+            dictCode="CHAT_GPT_SECRET_KEY").first().dictValue
+        
+        current_app.logger.info(f"chat_gpt_secret_key ======> {chat_gpt_secret_key}")
+        openai.api_key = chat_gpt_secret_key
 
 
 # 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
