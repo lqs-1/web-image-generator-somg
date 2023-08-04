@@ -90,8 +90,6 @@ class DatabaseBR:
         """
         读取全部数据库名称，并对这些数据库的数据和结构进行备份
         """
-        # 检查备份路径是否存在，不存在则进行创建
-        self.mkdir_if_not_exists(self.BACKUP_PATH)
 
         databases = list()
 
@@ -106,6 +104,9 @@ class DatabaseBR:
         else:
             # 读取全部待备份数据库名称
             databases = self.read_all_databases()
+
+        # 检查备份路径是否存在，不存在则进行创建
+        self.mkdir_if_not_exists(self.BACKUP_PATH)
 
         # 逐个对数据库进行备份
         for database in databases:
