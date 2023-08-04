@@ -1,3 +1,4 @@
+import datetime
 import smtplib
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -14,26 +15,36 @@ from apscheduler.triggers.interval import IntervalTrigger
 logging.basicConfig(format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s:%(message)s',
                     level=logging.INFO)
 
-# 通用配置
-# 数据库主机地址
-# MYSQL_HOST = '47.108.229.150'
-MYSQL_HOST = '172.245.10.200'
-# MYSQL_HOST = '127.0.0.1'
-# MySQL数据库用户名
-MYSQL_USERNAME = 'somg'
-# 数据库端口
-MYSQL_PORT = 3306
-# 数据库密码
-MYQSL_PASSWORD = 'somg'
-# 排除，不进行备份操作的数据库名称集合
-DISABLED_DATABASES = {'information_schema', 'mysql', 'performance_schema', 'sys'}
-# 备份文件存放路径
-BACKUP_PATH = '/home/db_file/'
-
-
-
+# 字典值配置 读取字典
+MYSQL_DICT_HOST = '172.245.10.200'
+MYSQL_DICT_PORT = 3306
+MYSQL_DICT_USERNAME = 'somg'
+MYSQL_DICT_PASSWORD = 'somg'
+MYSQL_DICT_DB = 'storage'
 
 class DatabaseBR:
+
+    # 通用配置 要备份的配置 先从配置的字典数据库中获取 没有在按这里的默认配置
+    # 数据库主机地址
+    MYSQL_HOST = '192.168.153.128'
+
+    # MySQL数据库用户名
+    MYSQL_USERNAME = 'root'
+
+    # 数据库密码
+    MYQSL_PASSWORD = '123456'
+
+    # 数据库端口
+    MYSQL_PORT = 3306
+
+    # 排除，不进行备份操作的数据库名称集合
+    IGNORE_DATABASES = {}
+
+    # 备份文件存放路径
+    BACKUP_PATH = 'D:/home/db_file/'
+
+    # 需要备份的数据库
+    DATABASES = []
 
     def send_email(self):
         """发送邮件的方法"""
@@ -56,14 +67,14 @@ class DatabaseBR:
 
 
         # 添加附件
-        for sql_file in os.listdir(BACKUP_PATH):
-            with open(BACKUP_PATH + sql_file, 'rb') as attachment:
+        for sql_file in os.listdir(self.BACKUP_PATH):
+            with open(self.BACKUP_PATH + sql_file, 'rb') as attachment:
                 part = MIMEBase('application', 'octet-stream')
                 part.set_payload(attachment.read().decode('utf-8'))
                 part.add_header('Content-Disposition', f'attachment; filename={sql_file}')
 
                 msg.attach(part)
-                msg_text = msg_text + sql_file.split('.')[0] + ' '
+                msg_text = msg_text + " [" + sql_file.split('.')[0] + "] "
 
         msg.attach(MIMEText(msg_text, 'plain', 'utf-8'))
 
@@ -80,9 +91,22 @@ class DatabaseBR:
         读取全部数据库名称，并对这些数据库的数据和结构进行备份
         """
         # 检查备份路径是否存在，不存在则进行创建
-        self.mkdir_if_not_exists(BACKUP_PATH)
-        # 读取全部待备份数据库名称
-        databases = self.read_all_databases()
+        self.mkdir_if_not_exists(self.BACKUP_PATH)
+
+        databases = list()
+
+        if all([MYSQL_DICT_PORT, MYSQL_DICT_DB, MYSQL_DICT_PASSWORD, MYSQL_DICT_USERNAME, MYSQL_DICT_HOST]):
+            # 填充数据库配置
+            self.fill_db_field()
+            # 读取全部待备份数据库名称
+            if (len(self.DATABASES) > 0):
+                databases = self.DATABASES
+            elif (len(self.IGNORE_DATABASES) > 0):
+                databases = self.read_all_databases()
+        else:
+            # 读取全部待备份数据库名称
+            databases = self.read_all_databases()
+
         # 逐个对数据库进行备份
         for database in databases:
             self.backup_database(database)
@@ -91,7 +115,7 @@ class DatabaseBR:
         self.send_email()
 
         # 删除旧备份
-        self.del_old_backup(BACKUP_PATH)
+        self.del_old_backup(self.BACKUP_PATH)
 
     def mkdir_if_not_exists(self, path):
         """
@@ -117,7 +141,7 @@ class DatabaseBR:
         res = cursor.fetchall()
         databases = {item[0] for item in res}
         # 排除掉指定不备份的数据库
-        databases = list(databases - DISABLED_DATABASES)
+        databases = list(databases - self.IGNORE_DATABASES)
         cursor.close()
         conn.close()
         logging.info(f'读取数据库完毕，数据库列表如下：{databases}')
@@ -131,11 +155,11 @@ class DatabaseBR:
         """
         logging.info(f'开始备份数据库{database}...')
         # 通过调用mysqldump完成指定数据库的备份
-        command = f'mysqldump -h {MYSQL_HOST} -P {MYSQL_PORT} -u {MYSQL_USERNAME} -p{MYQSL_PASSWORD}  {database} > {BACKUP_PATH}{database}.sql'
+        command = f'mysqldump -h {self.MYSQL_HOST} -P {self.MYSQL_PORT} -u {self.MYSQL_USERNAME} -p{self.MYQSL_PASSWORD}  {database} > {self.BACKUP_PATH}{database}.sql'
         os.system(command)
         # 判断命令是否正常执行，异常则直接抛出
         logging.info(f'数据库 {database} 备份完毕！')
-        logging.info(f'数据库备份位置 {BACKUP_PATH}{database}.sql')
+        logging.info(f'数据库备份位置 {self.BACKUP_PATH}{database}.sql')
 
     def del_old_backup(self, path):
         """
@@ -150,11 +174,67 @@ class DatabaseBR:
         Args:
             db:要连接的数据库名称
         """
-        conn = pymysql.connect(host=MYSQL_HOST, port=MYSQL_PORT, user=MYSQL_USERNAME, password=MYQSL_PASSWORD,
+        conn = pymysql.connect(host=self.MYSQL_HOST, port=self.MYSQL_PORT, user=self.MYSQL_USERNAME, password=self.MYQSL_PASSWORD,
                                db='mysql')
         return conn
 
+    def create_dict_mysql_conn(self):
+        """
+        创建并返回一个MySQL数据库连接
+        Args:
+            db:要连接的数据库名称
+        """
+        conn = pymysql.connect(host=MYSQL_DICT_HOST, port=MYSQL_DICT_PORT, user=MYSQL_DICT_USERNAME,
+                               password=MYSQL_DICT_PASSWORD,
+                               db=MYSQL_DICT_DB)
+        return conn
 
+    def fill_db_field(self):
+        """
+        根据字典编号查出对应的值 并且赋值
+        :return:
+        """
+        logging.info(f'读取字典配置开始')
+
+        conn_dict = self.create_dict_mysql_conn()
+        cursor = conn_dict.cursor()
+
+        # 查询各字段的值
+        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_IGNORE_NAMES'")
+        res = cursor.fetchall()
+        IGNORE_DATABASES_STRING = list({item[0] for item in res})[0]
+        self.IGNORE_DATABASES = set(IGNORE_DATABASES_STRING.split(':'))
+
+
+
+        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_NAMES'")
+        res = cursor.fetchall()
+        DATABASES_STRING = list({item[0] for item in res})[0]
+        self.DATABASES = DATABASES_STRING.split(':')
+
+
+        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PASSWORD'")
+        res = cursor.fetchall()
+        self.MYQSL_PASSWORD = list({item[0] for item in res})[0]
+
+        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_USERNAME'")
+        res = cursor.fetchall()
+        self.MYSQL_USERNAME = list({item[0] for item in res})[0]
+
+        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_HOST'")
+        res = cursor.fetchall()
+        self.MYSQL_HOST = list({item[0] for item in res})[0]
+
+        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PORT'")
+        res = cursor.fetchall()
+        self.MYSQL_PORT = list({item[0] for item in res})[0]
+
+
+        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PATH'")
+        res = cursor.fetchall()
+        self.BACKUP_PATH = list({item[0] for item in res})[0]
+
+        logging.info(f'读取字典配置结束')
 
     def con_task(self):
         """执行定时任务的方法"""
@@ -167,6 +247,3 @@ class DatabaseBR:
 if __name__ == '__main__':
     dbBack = DatabaseBR()
     dbBack.con_task()
-
-
-
