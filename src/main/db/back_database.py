@@ -1,4 +1,5 @@
-import datetime
+import getpass
+import platform
 import smtplib
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -38,13 +39,13 @@ class DatabaseBR:
     MYSQL_PORT = 3306
 
     # 排除，不进行备份操作的数据库名称集合
-    IGNORE_DATABASES = {}
+    IGNORE_DATABASES = set()
 
     # 备份文件存放路径
-    BACKUP_PATH = 'D:/home/db_file/'
+    BACKUP_PATH = ''
 
     # 需要备份的数据库
-    DATABASES = []
+    DATABASES = list()
 
     def send_email(self):
         """发送邮件的方法"""
@@ -68,7 +69,7 @@ class DatabaseBR:
 
         # 添加附件
         for sql_file in os.listdir(self.BACKUP_PATH):
-            with open(self.BACKUP_PATH + sql_file, 'rb') as attachment:
+            with open(os.path.join(self.BACKUP_PATH, sql_file), 'rb') as attachment:
                 part = MIMEBase('application', 'octet-stream')
                 part.set_payload(attachment.read().decode('utf-8'))
                 part.add_header('Content-Disposition', f'attachment; filename={sql_file}')
@@ -91,6 +92,13 @@ class DatabaseBR:
         读取全部数据库名称，并对这些数据库的数据和结构进行备份
         """
 
+        # 根据系统生成默认sql保存目录
+        if platform.system().lower() == "windows" :
+            self.BACKUP_PATH = "C:/.db/db_file/"
+        else:
+            # 如果是mac或者linux就在这里创建默认得保存文件夹  /home/用户/db_file
+            self.BACKUP_PATH = os.path.join(f"/home/{getpass.getuser()}", "db_file/")
+
         databases = list()
 
         if all([MYSQL_DICT_PORT, MYSQL_DICT_DB, MYSQL_DICT_PASSWORD, MYSQL_DICT_USERNAME, MYSQL_DICT_HOST]):
@@ -108,7 +116,7 @@ class DatabaseBR:
         # 检查备份路径是否存在，不存在则进行创建
         self.mkdir_if_not_exists(self.BACKUP_PATH)
 
-        # 逐个对数据库进行备份
+        # 逐个对数据库进行备份eee
         for database in databases:
             self.backup_database(database)
 
@@ -240,11 +248,12 @@ class DatabaseBR:
     def con_task(self):
         """执行定时任务的方法"""
         blocking = BlockingScheduler()  # 实例化父类
-        trigger_min = IntervalTrigger(minutes=30)
+        trigger_min = IntervalTrigger(hours=1)
         blocking.add_job(self.backing, trigger=trigger_min)
         blocking.start()
 
 
 if __name__ == '__main__':
+
     dbBack = DatabaseBR()
     dbBack.con_task()
