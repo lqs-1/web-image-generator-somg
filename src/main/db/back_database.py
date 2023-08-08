@@ -47,6 +47,9 @@ class DatabaseBR:
     # 需要备份的数据库
     DATABASES = list()
 
+    # 实例化父类 创建定时任务调度器
+    blocking = BlockingScheduler()
+
     def send_email(self):
         """发送邮件的方法"""
         # 设置发件人和收件人邮箱以及邮件内容
@@ -109,14 +112,17 @@ class DatabaseBR:
                 databases = self.DATABASES
             elif (len(self.IGNORE_DATABASES) > 0):
                 databases = self.read_all_databases()
+            else:
+                databases = self.read_all_databases()
         else:
             # 读取全部待备份数据库名称
+            logging.info(f"备份文件路径使用默认生成路径 : {self.BACKUP_PATH}")
             databases = self.read_all_databases()
 
         # 检查备份路径是否存在，不存在则进行创建
         self.mkdir_if_not_exists(self.BACKUP_PATH)
 
-        # 逐个对数据库进行备份eee
+        # 逐个对数据库进行备份
         for database in databases:
             self.backup_database(database)
 
@@ -205,52 +211,61 @@ class DatabaseBR:
         """
         logging.info(f'读取字典配置开始')
 
-        conn_dict = self.create_dict_mysql_conn()
-        cursor = conn_dict.cursor()
+        try:
+            conn_dict = self.create_dict_mysql_conn()
+            cursor = conn_dict.cursor()
 
-        # 查询各字段的值
-        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_IGNORE_NAMES'")
-        res = cursor.fetchall()
-        IGNORE_DATABASES_STRING = list({item[0] for item in res})[0]
-        self.IGNORE_DATABASES = set(IGNORE_DATABASES_STRING.split(':'))
+            # 查询各字段的值
+            cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_IGNORE_NAMES'")
+            res = cursor.fetchall()
+            IGNORE_DATABASES_STRING = list({item[0] for item in res})[0]
+            self.IGNORE_DATABASES = set(IGNORE_DATABASES_STRING.split(':')) if len(IGNORE_DATABASES_STRING) > 0 else self.IGNORE_DATABASES
+            # information_schema: mysql:performance_schema: sys
+            logging.info(f'读取忽略数据库 {self.IGNORE_DATABASES}')
+
+            cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_NAMES'")
+            res = cursor.fetchall()
+            DATABASES_STRING = list({item[0] for item in res})[0]
+            self.DATABASES = DATABASES_STRING.split(':') if len(DATABASES_STRING) > 0 else self.DATABASES
+            logging.info(f'读取备份数据库 {self.DATABASES}')
+
+            cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PASSWORD'")
+            res = cursor.fetchall()
+            self.MYQSL_PASSWORD = list({item[0] for item in res})[0]
+            logging.info(f'读取数据库密码 {self.MYQSL_PASSWORD}')
+
+            cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_USERNAME'")
+            res = cursor.fetchall()
+            self.MYSQL_USERNAME = list({item[0] for item in res})[0]
+            logging.info(f'读取数据库用户名 {self.MYSQL_USERNAME}')
+
+            cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_HOST'")
+            res = cursor.fetchall()
+            self.MYSQL_HOST = list({item[0] for item in res})[0]
+            logging.info(f'读取数据库地址 {self.MYSQL_HOST}')
+
+            cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PORT'")
+            res = cursor.fetchall()
+            self.MYSQL_PORT = int(list({item[0] for item in res})[0])
+            logging.info(f'读取数据库端口 {self.MYSQL_PORT}')
 
 
+            cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PATH'")
+            res = cursor.fetchall()
+            self.BACKUP_PATH = list({item[0] for item in res})[0] if len(list({item[0] for item in res})[0]) > 0 else self.BACKUP_PATH
+            logging.info(f'读取备份文件存储目录 {self.MYQSL_PASSWORD}')
 
-        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_NAMES'")
-        res = cursor.fetchall()
-        DATABASES_STRING = list({item[0] for item in res})[0]
-        self.DATABASES = DATABASES_STRING.split(':')
-
-
-        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PASSWORD'")
-        res = cursor.fetchall()
-        self.MYQSL_PASSWORD = list({item[0] for item in res})[0]
-
-        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_USERNAME'")
-        res = cursor.fetchall()
-        self.MYSQL_USERNAME = list({item[0] for item in res})[0]
-
-        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_HOST'")
-        res = cursor.fetchall()
-        self.MYSQL_HOST = list({item[0] for item in res})[0]
-
-        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PORT'")
-        res = cursor.fetchall()
-        self.MYSQL_PORT = list({item[0] for item in res})[0]
-
-
-        cursor.execute("select dictValue from sys_dict where dictCode = 'MYSQL_BACK_UP_DB_PATH'")
-        res = cursor.fetchall()
-        self.BACKUP_PATH = list({item[0] for item in res})[0]
-
+        except Exception as e:
+            logging.error(f'读取字典配置不全或者网络错误')
         logging.info(f'读取字典配置结束')
 
     def con_task(self):
         """执行定时任务的方法"""
-        blocking = BlockingScheduler()  # 实例化父类
         trigger_min = IntervalTrigger(hours=1)
-        blocking.add_job(self.backing, trigger=trigger_min)
-        blocking.start()
+        self.blocking.add_job(self.backing, trigger=trigger_min, id="backing-task")
+        self.blocking.start()
+        # self.blocking.pause_job(job_id="backing-task")  # 暂停任务
+        # self.blocking.resume_job(job_id="backing-task")  # 恢复任务
 
 
 if __name__ == '__main__':
