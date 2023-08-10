@@ -2,10 +2,10 @@
   <div>
     <div style="background-color: #F0DAD2; width: 90%; height: 75vh;  margin:0 auto; overflow: auto;word-wrap:break-word;word-break:break-all; border-radius:5px">
 
-      <ul v-for="sessson in sessionList" :key="sessson.request">
-        <li v-clipboard:copy="sessson.request" v-clipboard:success="onCopy" style="font-family: 楷体;list-style-type: none;margin-bottom: 5px;border-radius:2px; margin-top: 5px;width: 95%;background-color: #B45B3E">{{sessson.request}}</li>
+      <ul v-for="sessson in sessionList" :key="sessson.response + idUU">
+        <li v-clipboard:copy="sessson.request" v-clipboard:success="onCopy" style="font-family: 楷体;list-style-type: none;margin-bottom: 5px;border-radius:2px; margin-top: 8px;width: 95%;background-color: #B45B3E">{{sessson.request}}</li>
 
-        <li  v-clipboard:copy="sessson.response" v-clipboard:success="onCopy" style="font-family: 楷体;list-style-type: none;border-radius:2px; margin-top: 5px;width: 95%;background-color: #00B271"><vue-markdown>{{sessson.response}}</vue-markdown></li>
+        <li  v-clipboard:copy="sessson.response" v-clipboard:success="onCopy" style="font-family: 楷体;list-style-type: none;border-radius:2px; margin-top: 8px;width: 95%;background-color: #00B271"><vue-markdown>{{sessson.response}}</vue-markdown></li>
 
       </ul>
 
@@ -33,6 +33,7 @@
 
 <script>
   import VueMarkdown from 'vue-markdown';
+  import uuid from "uuid";
   export default {
     name: "TextRequest",
     components:{
@@ -42,7 +43,9 @@
       return {
         requestText:null,
         isResponse:false,
-        sessionList: []
+        sessionList: [],
+        idUU: "",
+        methodss: "onRequest()"
 
       }
     },
@@ -76,6 +79,40 @@
               })
         }
       },
+
+      // http://127.0.0.1:5000/chat/sse?request='你是什么人'
+
+      onRequestSSE() {
+        // 创建EventSource对象，连接到SSE的后端URL
+
+        this.idUU = Date.now()
+
+        const eventSource = new EventSource("http://nobibibi.top:5000/chat/session-sse?request=" + this.requestText);
+
+        this.sessionList.push({"request": this.requestText, "response": ""})
+        this.requestText = ""
+        this.isResponse = true
+
+
+        // 监听message事件，接收从服务器发送的数据
+        // 监听'servermessage'事件
+        eventSource.addEventListener('message', event => {
+          // console.log("eeee" + event.data)
+          this.sessionList[this.sessionList.length -1].response = this.sessionList[this.sessionList.length -1].response + event.data
+          console.log(this.sessionList)
+
+        });
+
+
+        // 监听错误事件，处理可能的连接错误
+        eventSource.addEventListener("error", error => {
+          // console.error("SSE Error:", error);
+          eventSource.close();
+          this.isResponse = false
+        });
+      },
+
+
 
       clearRequestText() {
        this.requestText = null
