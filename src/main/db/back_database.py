@@ -47,24 +47,33 @@ class DatabaseBR:
     # 需要备份的数据库
     DATABASES = list()
 
+
+    # 设置发件人和收件人邮箱以及邮件内容
+    # 发送备份文件邮箱地址
+    sender_email = '749062870@qq.com'
+    # 发送备份文件邮箱授权码
+    sender_password = 'idyvzneokcpjbgah'
+    # 接收备份文件邮箱
+    receiver_email = 'liqisong2002@gmail.com'
+    # 发送备份文件邮箱服务商
+    smtp_server = 'smtp.qq.com'
+    # 发送备份文件邮箱端口
+    smtp_port = 465
+
+
     # 实例化父类 创建定时任务调度器
     blocking = BlockingScheduler()
 
     def send_email(self):
         """发送邮件的方法"""
-        # 设置发件人和收件人邮箱以及邮件内容
-        sender_email = '749062870@qq.com'
-        sender_password = 'idyvzneokcpjbgah'
-        receiver_email = 'liqisong2002@gmail.com'
+
         subject = '备份文件'
 
         # 创建一个带附件的邮件对象
         msg = MIMEMultipart()
-        msg['From'] = sender_email
-        msg['To'] = receiver_email
+        msg['From'] = self.sender_email
+        msg['To'] = self.receiver_email
         msg['Subject'] = subject
-        smtp_server = 'smtp.qq.com'
-        smtp_port = 465
 
         # 添加邮件正文
         msg_text = '备份数据库 ==>  '
@@ -83,9 +92,9 @@ class DatabaseBR:
         msg.attach(MIMEText(msg_text, 'plain', 'utf-8'))
 
         # 连接到SMTP服务器并发送邮件
-        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
-            server.login(sender_email, sender_password)
-            server.sendmail(sender_email, receiver_email, msg.as_string().encode('utf8'))
+        with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port) as server:
+            server.login(self.sender_email, self.sender_password)
+            server.sendmail(self.sender_email, self.receiver_email, msg.as_string().encode('utf8'))
             server.quit()
         logging.info(f'邮件发送成功')
 
@@ -101,6 +110,9 @@ class DatabaseBR:
         else:
             # 如果是mac或者linux就在这里创建默认得保存文件夹  /home/用户/db_file
             self.BACKUP_PATH = os.path.join(f"/home/{getpass.getuser()}", "db_file/")
+            
+        logging.info(f'当前系统为 {platform.system().lower()}')
+        logging.info(f'当前系统登录用户为 {getpass.getuser()}')
 
         databases = list()
 
@@ -272,3 +284,5 @@ if __name__ == '__main__':
 
     dbBack = DatabaseBR()
     dbBack.con_task()
+
+
