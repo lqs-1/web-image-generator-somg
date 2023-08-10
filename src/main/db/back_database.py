@@ -23,6 +23,7 @@ MYSQL_DICT_USERNAME = 'somg'
 MYSQL_DICT_PASSWORD = 'somg'
 MYSQL_DICT_DB = 'storage'
 
+
 class DatabaseBR:
     # 通用配置 要备份的配置 先从配置的字典数据库中获取 没有在按这里的默认配置
     # 数据库主机地址
@@ -321,7 +322,7 @@ class DatabaseBR:
 
     def con_task(self):
         """执行定时任务的方法"""
-        trigger_min = IntervalTrigger(seconds=6)
+        trigger_min = IntervalTrigger(hours=1)
         self.blocking.add_job(self.backing, trigger=trigger_min, id="backing-task")
         self.blocking.start()
         # self.blocking.pause_job(job_id="backing-task")  # 暂停任务
