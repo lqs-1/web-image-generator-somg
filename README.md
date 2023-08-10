@@ -56,6 +56,8 @@
 ### 数据库备份脚本
 > `src/main/db/back_database.py`
 
+> 两种方式,配置了字典就必须走字典(除了存储路径和忽略/备份数据库三个),没配置字典必须走硬编码
+
 ```python
 pip install pymysql
 pip install apscheduler
